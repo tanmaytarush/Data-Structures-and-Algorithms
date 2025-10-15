@@ -1,35 +1,71 @@
-<h1>Striver's A2Z DSA Sheet</h1>
- contains everything related to Stiver's A2Z sheet along with question, approach and code.
- 
-Each topic has its own directory, which is further divided into difficulties containing the solutions to the problems within that category along with approach. The filenames correspond to the problem number or a brief description for easier identification.
+# Striver's A2Z DSA Sheet
 
-<i>...cpp</i>
-<ul>
-    <li>Question: [Problem Statement]</li>
-    <li>Approach: [Brief explanation of the approach used]</li>
-    <li>Code: [C++ code of the following approach]</li>
-    <li>Time Complexity: [Time complexity analysis]</li>
-    <li>Space Complexity: [Space complexity analysis]</li>
-</ul>
+This repository contains solutions, approaches, and explanations for problems from [Striver's A2Z DSA Sheet](https://takeuforward.org/strivers-a2z-dsa-course/strivers-a2z-dsa-course-sheet-2/).
 
-<h2>Contribution guidelines</h2>
-Contributions to this repository are welcome. If you'd like to contribute your own solutions or suggest improvements, please follow these guidelines:
+## 📂 Repository Structure
 
-<p>
-    Fork the repository.
-    Create a new branch for your contributions: git checkout -b your-branch-name.
-    Make your changes and add your solutions.
-    Commit your changes with descriptive commit messages: git commit -m "Add solution to Problem X".
-    Push your changes to your forked repository: git push origin your-branch-name.
-    Open a pull request on the original repository, explaining the changes you made and why they should be merged.
-</p>
+- Each topic is organized into its own directory.
+- Within each topic, problems are grouped by difficulty (Easy, Medium, Hard).
+- Each solution file includes:
+  - **Question:** Problem statement
+  - **Approach:** Brief explanation of the solution strategy
+  - **Code:** C++ implementation
+  - **Time Complexity:** Analysis of time complexity
+  - **Space Complexity:** Analysis of space complexity
 
-<h2>Disclamer</h2>
-The solutions in this repository are intended to serve as a reference and learning resource. It is recommended to understand the problem-solving techniques and attempt to solve the problems yourself before referring to the solutions.
+## 📝 Example File Structure
 
-<h2>Resources</h2>
-<a href="https://takeuforward.org/strivers-a2z-dsa-course/strivers-a2z-dsa-course-sheet-2/">Striver's A2Z DSA Sheet
- 
+```
+/Topic/
+  /Difficulty/
+    problem_name.cpp
+```
+
+Each `.cpp` file contains:
+- **Question:** [Problem Statement]
+- **Approach:** [Brief explanation]
+- **Code:** [C++ code]
+- **Time Complexity:** [e.g., O(N)]
+- **Space Complexity:** [e.g., O(1)]
+
+---
+
+## 🤝 Contribution Guidelines
+
+Contributions are welcome! To contribute:
+
+1. **Fork** this repository.
+2. **Create a new branch** for your changes:
+   ```sh
+   git checkout -b your-branch-name
+   ```
+3. **Add your solutions** or improvements.
+4. **Commit** with a descriptive message:
+   ```sh
+   git commit -m "Add solution to Problem X"
+   ```
+5. **Push** to your fork:
+   ```sh
+   git push origin your-branch-name
+   ```
+6. **Open a Pull Request** with a clear explanation of your changes.
+
+---
+
+## ⚠️ Disclaimer
+
+The solutions in this repository are for reference and learning purposes only.  
+It is highly recommended to attempt solving the problems yourself before referring to these solutions.
+
+---
+
+## 📚 Resources
+
+- [Striver's A2Z DSA Sheet](https://takeuforward.org/strivers-a2z-dsa-course/strivers-a2z-dsa-course-sheet-2/)
+
+---
+
 ### ----- Consistency Matters -----
+
 ![1000](https://github.com/Codensity30/Striver-s-A2Z-DSA-Sheet/assets/129579058/d23fb219-4930-4c1a-9e8d-fd18ab902cdc)
 
