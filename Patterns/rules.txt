@@ -1,0 +1,9 @@
+Pattern Problems rules :-
+
+1. Will have two nested loops
+2. Outer loops are for the rows
+3. Inner loops are for the columns
+4. For the outer loop count the number of lines/rows
+5. For the inner loop, focus on columns and connect them to rows
+6. Print stuff inside inner loop
+7. Observe symmetry in some cases
