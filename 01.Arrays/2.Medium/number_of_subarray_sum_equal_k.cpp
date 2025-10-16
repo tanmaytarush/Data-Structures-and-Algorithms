@@ -16,44 +16,75 @@ To find the total number of subarrays with sum equal to k, we can use the techni
 6. Check if the current prefix sum minus k exists in the `sumCount` hashmap. If it does, add the count of that prefix sum to the `count` variable.
 7. Increment the count of the current prefix sum in the `sumCount` hashmap.
 8. Finally, return the `count` variable as the total number of subarrays with sum equal to k.
-
-CODE:
 */
 
-// int subarraySum(vector<int> &nums, int k)
-// {
-//     int pref_sum = 0;
-//     unordered_map<int, int> mp;
-//     int ans = 0;
-
-//     for (int i = 0; i < nums.size(); i++)
-//     {
-//         pref_sum += nums[i];
-
-//         if (pref_sum == k)
-//             ans++;
-
-//         if (mp.find(pref_sum - k) != mp.end())
-//         {
-//             ans += mp[pref_sum - k];
-//         }
-
-//         mp[pref_sum]++;
-//     }
-
-//     return ans;
-// }
-
+// CODE:
 #include<iostream>
 using namespace std;
 #include<vector>
 #include<map>
 
+int subarrayNumBF(vector<int> &arr, int k)
+{
+    int n = arr.size();
+    int count = 0;
+    for(int i=0; i<n; ++i)
+    {
+        int sum = 0;
+        for(int j=i; j<n; ++j)
+        {
+            sum += arr[j];
+            if(sum == k)
+            {
+                count++;
+            }
+        }
+    }
+    return count;
+}
 
+int subarraySumOpt(vector<int> &arr, int k)
+{
+    int n = arr.size();
+    unordered_map<int, int> mpp;
+    int ans = 0;
+    int preSum = 0;
+
+    for(int i=0; i<arr.size(); ++i)
+    {
+        preSum += arr[i];
+        
+        if(preSum == k)
+        {
+            ans += 1;
+        }
+
+        if(mpp.find(preSum - k) != mpp.end())
+        {
+            ans += mpp[preSum - k];
+        }
+
+        mpp[preSum]++;
+    }
+    return ans;
+}
 
 int main()
 {
+    int n;
+    int k;
+    cin>>n;
+    cin>>k;
+    vector<int> arr(n);
+    for(int i=0; i<n; ++i)
+    {
+        cin>>arr[i];
+    }
 
+    int res1 = subarrayNumBF(arr, k);
+    int res2 = subarraySumOpt(arr, k);
+
+    cout<<res1<<" "<<res2;
 }
 
 /*
