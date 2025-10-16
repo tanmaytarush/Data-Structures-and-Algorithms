@@ -34,16 +34,36 @@ Return max_profit.
 */
 
 // CODE:-
-int maxProfit(vector<int> &prices)
+#include<iostream>
+using namespace std;
+#include<vector>
+
+int stock_sell_and_buy(vector<int> &arr, int n)
 {
-    int minprice = prices[0];
-    int ans = 0;
-    for (int i = 1; i < prices.size(); i++)
+    int minimum = arr[0];
+    int profit = 0;
+    for(int i=0; i<n; ++i)
     {
-        ans = max(ans, prices[i] - minprice);
-        minprice = min(minprice, prices[i]);
+        int cost = arr[i] - minimum;
+        profit = max(profit, cost);
+        minimum = min(minimum, arr[i]);
     }
-    return ans;
+    return profit;
+}
+
+int main()
+{
+    int n;
+    cin>>n;
+    vector<int> arr(n);
+    for(int i=0; i<n; ++i)
+    {
+        cin>>arr[i];
+    }
+
+    int result = stock_sell_and_buy(arr, n);
+    cout<<result;
+    return 0;
 }
 
 // TIME COMPLEXITY = O(N)

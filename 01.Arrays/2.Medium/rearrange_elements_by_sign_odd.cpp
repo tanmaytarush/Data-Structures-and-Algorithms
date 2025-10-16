@@ -29,27 +29,76 @@ Repeat steps 3-5 until the end of the array is reached.
 The array will now be rearranged such that every consecutive pair of integers have opposite signs.
 */
 
-// CODE:-
-vector<int> rearrangeArray(vector<int> &nums)
+#include<iostream>
+using namespace std;
+#include<vector>
+
+vector<int> rearrangePosNeg(vector<int> &arr, int n)
 {
-    int i = 0; // for +ve integers
-    int j = 1; // for -ve integers
-    vector<int> ans(nums.size());
-    for (int k = 0; k < nums.size(); k++)
+    vector<int> pos;
+    vector<int> neg;
+
+    for(int i=0; i<n; ++i)
     {
-        if (nums[k] >= 0)
+        if(arr[i] > 0)
         {
-            ans[i] = nums[k];
-            i += 2;
+            pos.push_back(arr[i]);
         }
         else
         {
-            ans[j] = nums[k];
-            j += 2;
+            neg.push_back(arr[i]);
         }
     }
-    return ans;
+
+    if(pos.size() > neg.size())
+    {
+        for(int i=0; i<neg.size(); ++i)
+        {
+            arr[2*i] = pos[i];
+            arr[2*i + 1] = neg[i];
+        }
+
+        int index = neg.size()*2;
+        for(int i=neg.size(); i<pos.size(); ++i)
+        {
+            arr[index] = pos[i];
+            index++;
+        }
+    }
+
+    else
+    {
+        for(int i=0; i<pos.size(); ++i)
+        {
+            arr[2*i] = pos[i];
+            arr[2*i+1] = neg[i];
+        }
+
+        int index = pos.size()*2;
+        for(int i=pos.size(); i<neg.size(); ++i)
+        {
+            arr[index] = neg[i];
+            index++;
+        }
+    }
+    
+    return arr;
 }
 
-// TIME COMPLEXITY = O(N)
-// SPACE COMPLEXITY = O(0)
+int main()
+{
+    int n;
+    cin>>n;
+    vector<int> arr(n);
+    for(int i=0; i<n; ++i)
+    {
+        cin>>arr[i];
+    }
+
+    vector<int> result = rearrangePosNeg(arr, n);
+    for(vector<int>::iterator it = result.begin(); it!=result.end(); ++it)
+    {
+        cout<<*it<<" ";
+    }
+    return 0;
+}
