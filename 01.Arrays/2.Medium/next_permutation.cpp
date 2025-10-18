@@ -33,34 +33,62 @@ To find the next permutation of an array, we can follow these steps:
 */
 
 // CODE:
+#include<iostream>
+using namespace std;
+#include<vector>
 
-void nextPermutation(vector<int> &nums)
+vector<int> nextPermutationOpt(vector<int> &arr, int n)
 {
-
-    int bp = -1;
-    // finding the break point
-    for (int i = nums.size() - 2; i >= 0; i--)
+    int index = -1;
+    for(int i=n-2; i>=0; i--)
     {
-        if (nums[i] < nums[i + 1])
+        if(arr[i]<arr[i+1])
         {
-            bp = i;
+            index = i;
             break;
         }
     }
-    // first greater element from back
-    if (bp != -1)
+    if(index == -1)
     {
-        for (int i = nums.size() - 1; i >= 0; i--)
+        reverse(arr.begin(), arr.end());
+    }
+    for(int i=n-2; i>index; --i)
+    {
+        if(arr[i] > arr[index])
         {
-            if (nums[i] > nums[bp])
-            {
-                swap(nums[i], nums[bp]);
-                break;
-            }
+            swap(arr[i], arr[index]);
+            break;
         }
     }
-    // reverse the array from bp+1 to end
-    reverse(nums.begin() + bp + 1, nums.end());
+    reverse(arr.begin() + index + 1, arr.end());
+    return arr;
+}
+
+
+void nextPermutationSTL(vector<int> &arr, int n)
+{
+    next_permutation(arr.begin(), arr.end());
+}
+
+int main()
+{
+    int n;
+    cin>>n;
+    vector<int> arr(n);
+    for(int i=0; i<n; ++i)
+    {
+        cin>>arr[i];
+    }
+
+    nextPermutationSTL(arr, n);
+    vector<int> result = nextPermutationOpt(arr, n);
+
+    for(vector<int>::iterator it = result.begin(); it!=result.end(); ++it)
+    {
+        cout<<*it<<" ";
+    }
+
+    return 0;
 }
 
 // TIME COMPLEXITY: O(n), where n is the size of the input array.
