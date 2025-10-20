@@ -36,45 +36,74 @@ To traverse the matrix in a spiral order, we can use the following steps:
 */
 
 // CODE:
+#include<iostream>
+using namespace std;
+#include<vector>
+#include<algorithm>
 
-vector<int> spiralOrder(vector<vector<int>>& matrix) {
-    int n = matrix.size(); 
-    int m = matrix[0].size();
-    int top = 0, bottom = n - 1;
-    int left = 0, right = m - 1;
-    vector<int> ans;
+void spiralMatrix(vector<vector<int>> matrix)
+{
+    int n=matrix.size();
+    int m=matrix[0].size();
+    int top = 0;
+    int bottom = n-1;
+    int left = 0;
+    int right = m-1;
 
-    while (top <= bottom && left <= right) {
-        // Traverse top row
-        for (int i = left; i <= right; i++) {
-            ans.push_back(matrix[top][i]);
+    while(top<=bottom && left<=right)
+    {
+        for(int i=left; i<=right; ++i)
+        {
+            cout<<matrix[top][i];
         }
         top++;
 
-        // Traverse right column
-        for (int i = top; i <= bottom; i++) {
-            ans.push_back(matrix[i][right]);
+        for(int i=top; i<=bottom; ++i)
+        {
+            cout<<matrix[i][right];
         }
         right--;
 
-        // Traverse bottom row
-        if (top <= bottom) {
-            for (int i = right; i >= left; i--) {
-                ans.push_back(matrix[bottom][i]);
+        if(top<=bottom)
+        {
+            for(int i=right; i>=left; --i)
+            {
+                cout<<matrix[bottom][i];
             }
             bottom--;
         }
 
-        // Traverse left column
-        if (left <= right) {
-            for (int i = bottom; i >= top; i--) {
-                ans.push_back(matrix[i][left]);
+        if(left<=right)
+        {
+            for(int i=bottom; i>=top; --i)
+            {
+                cout<<matrix[i][left];
             }
             left++;
         }
     }
+}
 
-    return ans;
+
+int main()
+{
+    int n;
+    int m;
+    cin>>n>>m;
+
+    vector<vector<int>> matrix(n, vector<int>(m));
+
+    for(int i=0; i<n; ++i)
+    {
+        for(int j=0; j<m; ++j)
+        {
+            cin>>matrix[i][j];
+        }
+    }
+
+    spiralMatrix(matrix);
+    cout<<endl;
+    return 0;
 }
 
 // TIME COMPLEXITY: O(N), where N is the total number of elements in the matrix.

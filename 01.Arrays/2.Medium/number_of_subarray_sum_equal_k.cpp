@@ -69,6 +69,22 @@ int subarraySumOpt(vector<int> &arr, int k)
     return ans;
 }
 
+int subArrayOpt2(vector<int> &arr, int k)
+{
+    int preSum = 0;
+    int count = 0;
+    unordered_map<int, int> mpp;
+    mpp[0] = 1;
+    for(int i=0; i<arr.size(); ++i)
+    {
+        preSum += arr[i];
+        int remove = preSum - k;
+        count += mpp[remove];
+        mpp[preSum] += 1;
+    }
+    return count;
+}
+
 int main()
 {
     int n;
@@ -83,8 +99,9 @@ int main()
 
     int res1 = subarrayNumBF(arr, k);
     int res2 = subarraySumOpt(arr, k);
+    int res3 = subArrayOpt2(arr, k);
 
-    cout<<res1<<" "<<res2;
+    cout<<res1<<" "<<res2<<" "<<res3;
 }
 
 /*
