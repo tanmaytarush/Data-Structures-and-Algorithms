@@ -17,31 +17,59 @@ To find the length of the largest subarray with a sum of 0, we can use a techniq
 4. For each prefix sum encountered, check if it exists in the map. If it does, update the answer by taking the maximum of the current answer and the difference between the current index and the index stored in the map for that prefix sum.
 5. If the prefix sum is not found in the map, add it to the map with its corresponding index.
 6. Finally, return the answer as the length of the largest subarray with a sum of 0.
-
-CODE:
 */
 
-int maxLen(vector<int> &A, int n)
-{
-    unordered_map<int, int> mp;
-    mp[0] = -1;
-    int pref_sum = 0;
-    int ans = 0;
+// CODE:
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#include<map>
+using namespace std;
 
-    for (int i = 0; i < n; i++)
+int longestSubarray(vector<int> &arr)
+{
+    unordered_map<int, int> mpp;
+    int n = arr.size();
+    int maximum = 0;
+    int sum = 0;
+
+    for(int i=0; i<n; ++i)
     {
-        pref_sum += A[i];
-        if (mp.find(pref_sum) != mp.end())
+        sum += arr[i];
+        if(sum == 0)
         {
-            ans = max(ans, i - mp[pref_sum]);
+            maximum = i+1; // If zero exists then simply return length to the maximum
         }
         else
         {
-            mp[pref_sum] = i;
+            if(mpp.find(sum) != mpp.end())
+            {
+                maximum = max(maximum, i - mpp[sum]); // If element exists that means the preSum exists, (i - mpp[sum]) is the maximum
+            }
+            else
+            {
+                mpp[sum] = i; // If element doesn't exist then push that (element, index) to the hashmap
+            }
         }
     }
+    return maximum;
+}
 
-    return ans;
+int main()
+{
+    int n;
+    cin>>n;
+
+    vector<int> arr(n);
+    for(int i=0; i<n; ++i)
+    {
+        cin>>arr[i];
+    }
+
+    int result = longestSubarray(arr);
+    cout<<result;
+
+    return 0;
 }
 
 /*
