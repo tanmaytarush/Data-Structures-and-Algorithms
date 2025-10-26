@@ -18,34 +18,165 @@ To merge two sorted arrays, nums1 and nums2, into nums1, we can use a two-pointe
 4. Otherwise, swap the element at nums2[j] with the element at nums1[k], decrement j and k.
 5. Repeat steps 3 and 4 until all elements in nums1 and nums2 have been merged.
 6. If there are still elements remaining in nums2 after merging, copy them to the remaining positions in nums1.
-
-CODE:
 */
 
-void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
-    int i = m - 1; // Pointer for nums1
-    int j = n - 1; // Pointer for nums2
-    int k = m + n - 1; // Pointer for merged array nums1
-    
-    while (i >= 0 && j >= 0) {
-        if (nums1[i] > nums2[j]) {
-            swap(nums1[i], nums1[k]);
-            i--;
-            k--;
-        } else {
-            swap(nums2[j], nums1[k]);
-            j--;
-            k--;
+// CODE:
+#include<iostream>
+using namespace std;
+#include<vector>
+#include<map>
+#include<algorithm>
+
+class Merge2Sorted
+{
+    private:
+    void swapIfGreater(long long arr1[], long long arr2[], int ind1, int ind2)
+    {
+        if(arr1[ind1] > arr2[ind2])
+        {
+            swap(arr1[ind1], arr2[ind2]);
         }
     }
-    
-    // Copy remaining elements from nums2 to nums1 if any
-    while (j >= 0) {
-        swap(nums2[j], nums1[k]);
-        j--;
-        k--;
+
+    public:
+
+    void mergeBF(long long arr1[], long long arr2[], int n, int m)
+    {
+        long long arr3[n+m];
+        int left = 0;
+        int right = 0;
+        int index = 0;
+        
+        while(left < n && right < m)
+        {
+            if(arr1[left] < arr2[right])
+            {
+                arr3[index] = arr1[left];
+                left++;
+                index++;
+            }
+            else
+            {
+                arr3[index] = arr2[right];
+                index++;
+                right++;
+            }
+        }
+
+        while(left<n)
+        {
+            arr3[index] = arr1[left];
+            index++;
+            left++;
+        }
+
+        while(right<n)
+        {
+            arr3[index] = arr2[right];
+            index++;
+            right++;
+        }
+
+        for(int i=0; i<n+m; ++i)
+        {
+            if(i<n) arr1[i] = arr3[i];
+            else arr2[i-n] = arr3[i];
+        }
     }
+
+    void mergeOptimal1(long long arr1[], long long arr2[], int n, int m)
+    {
+        int left = n-1;
+        int right = 0;
+        while(left>=0 && right<m)
+        {
+            if(arr1[left] > arr2[right])
+            {
+                swap(arr1[left], arr2[right]);
+                left--;
+                right++;
+            }
+            else
+            {
+                break;
+            }
+        }
+        sort(arr1, arr1 + n);
+        sort(arr2, arr2 + m);
+    }
+
+    void mergeOptimal2(long long arr1[], long long arr2[], int n, int m)
+    {
+        int len = (n+m);
+        int gap = (len / 2) + (len % 2);
+        while(gap > 0)
+        {
+            int left = 0;
+            int right = left + gap;
+            while(right < n)
+            {
+                // arr1 and arr2
+                if(left<n && right>=n)
+                {
+                    swapIfGreater(arr1, arr2, left, right - n);
+                }
+                // arr2 and arr2
+                else if(left>=n && right>=n)
+                {
+                    swapIfGreater(arr1, arr2, left - n, right - n);
+                }
+                // arr1 and arr1
+                else
+                {
+                    swapIfGreater(arr1, arr1, left, right);
+                }
+                left++;
+                right++;
+            }
+            if(gap == 1) break;
+            gap = (gap / 2) + (gap % 2);
+        }
+    }
+};
+
+
+int main()
+{
+    int n;
+    int m;
+    cin>>n>>m;
+
+    long long arr1[n];
+    long long arr2[m];
+
+    for(int i=0; i<n; ++i)
+    {
+        cin>>arr1[i];
+    }
+
+    for(int i=0; i<m; ++i)
+    {
+        cin>>arr2[i];
+    }
+
+    Merge2Sorted ms;
+
+    ms.mergeBF(arr1, arr2, n, m);
+    ms.mergeOptimal1(arr1, arr2, n, m);
+    ms.mergeOptimal2(arr1, arr2, n, m);
+
+    for(int i=0; i<n; ++i)
+    {
+        cout<<arr1[i]<<" ";
+    }
+    for(int i=0; i<m; ++i)
+    {
+        cout<<arr2[i]<<" ";
+    }
+
+    return 0;
 }
+
 
 /*
 TIME COMPLEXITY: O(m + n), where m and n are the lengths of nums1 and nums2 respectively.
