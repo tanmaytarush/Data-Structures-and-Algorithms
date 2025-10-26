@@ -21,49 +21,115 @@ To find the inversion count in the array, we can utilize the merge sort algorith
 CODE:
 */
 
-long long int inv_cnt = 0;
+#include<iostream>
+using namespace std;
+#include<algorithm>
+#include<vector>
+#include<map>
 
-long long int merge(long long start, long long mid, long long end, long long arr[]) {
-    long long leftsize = mid - start + 1;
-    long long rightsize = end - mid;
-    long long left[leftsize], right[rightsize];
-    
-    for (long long i = 0; i < leftsize; i++) {
-        left[i] = arr[start + i];
-    }
-    for (long long i = 0; i < rightsize; i++) {
-        right[i] = arr[mid + 1 + i];
-    }
-    
-    long long i = 0, j = 0, k = start;
-    while (i < leftsize && j < rightsize) {
-        if (left[i] > right[j]) {
-            inv_cnt += leftsize - i;
-            arr[k++] = right[j++];
-        } else {
-            arr[k++] = left[i++];
+int countInversionsBF(vector<int> &arr)
+{
+    int n = arr.size();
+    int count = 0;
+    for(int i=0; i<n; ++i)
+    {
+        for(int j=i+1; j<n; ++j)
+        {
+            if(arr[i] > arr[j])
+            {
+                count++;
+            }
         }
     }
-    while (i < leftsize) {
-        arr[k++] = left[i++];
-    }
-    while (j < rightsize) {
-        arr[k++] = right[j++];
-    }
+    return count;
 }
 
-void mergesort(long long start, long long end, long long arr[]) {
-    if (start >= end)
-        return;
-    long long mid = start + (end - start) / 2;
-    mergesort(start, mid, arr);
-    mergesort(mid + 1, end, arr);
-    merge(start, mid, end, arr);
+
+int merge(vector<int> &arr, int low, int mid, int high)
+{
+    vector<int> temp;
+    int left = low;
+    int right = mid+1;
+
+    int count = 0;
+
+    while(left<=mid && right<=high)
+    {
+        if(arr[left] <= arr[right])
+        {
+            temp.push_back(arr[left]);
+            // count += (mid - left + 1);
+            left++;
+        }
+
+        else
+        {
+            temp.push_back(arr[right]);
+            count += (mid - left + 1);
+            right++;
+        }
+    }
+
+    while(left <= mid)
+    {
+        temp.push_back(arr[left]);
+        left++;
+    }
+
+    while(right<=high)
+    {
+        temp.push_back(arr[right]);
+        right++;
+    }
+
+    for(int i=low; i<=high; ++i)
+    {
+        arr[i] = temp[i-low];
+    }
+
+    return count;
 }
 
-long long int inversionCount(long long arr[], long long N) {
-    mergesort(0, N - 1, arr);
-    return inv_cnt;
+int mergeSort(vector<int> &arr, int low, int high)
+{
+    int mid = (low + high) / 2;
+    int count = 0;
+    
+    if(low >= high)
+    {
+        return count;
+    }
+
+    count += mergeSort(arr, low, mid);
+    count += mergeSort(arr, mid+1, high);
+    count += merge(arr, low, mid, high);
+
+    return count;
+}
+
+int countInversionOptimal(vector<int> &arr)
+{
+    int n = arr.size();
+    return mergeSort(arr, 0, n-1);
+}
+
+int main()
+{
+    int n;
+    cin>>n;
+
+    vector<int> arr(n);
+    for(int i=0; i<n; ++i)
+    {
+        cin>>arr[i];
+    }
+
+    int result1 = countInversionsBF(arr);
+    int result2 = countInversionOptimal(arr);
+
+    cout<<result1<<" "<<result2;
+
+    return 0;
 }
 
 /*
