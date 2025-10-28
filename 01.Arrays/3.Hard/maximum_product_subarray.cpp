@@ -13,30 +13,17 @@ APPROACH:
 To find the subarray with the largest product, we iterate through the array while keeping track of the current product. We maintain two variables: `ans` to store the maximum product found so far and `prdct` to store the current product. Since negative numbers can change the sign and potentially result in a larger product, we run the loop twice, once from left to right and once from right to left.
 
 CODE:*/
+#include<iostream>
+using namespace std;
+#include<vector>
+#include<map>
+#include<algorithm>
 
-int maxProduct(vector<int>& nums) {
-    int ans = INT_MIN;
-    int prdct = 1;
 
-    // Iterate from left to right
-    for (int i = 0; i < nums.size(); i++) {
-        prdct = prdct * nums[i];
-        ans = max(ans, prdct);
-        if (prdct == 0)
-            prdct = 1;
-    }
 
-    prdct = 1;
+int main()
+{
 
-    // Iterate from right to left
-    for (int i = nums.size() - 1; i >= 0; i--) {
-        prdct = prdct * nums[i];
-        ans = max(ans, prdct);
-        if (prdct == 0)
-            prdct = 1;
-    }
-
-    return ans;
 }
 
 /*
