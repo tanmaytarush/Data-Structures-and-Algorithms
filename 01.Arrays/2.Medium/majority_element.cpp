@@ -28,8 +28,8 @@ Return the candidate as the result.
 // CODE:-
 #include<iostream>
 #include<vector>
-using namespace std;
 #include<map>
+using namespace std;
 
 int majorityElementBF(vector<int> &arr, int n)
 {
