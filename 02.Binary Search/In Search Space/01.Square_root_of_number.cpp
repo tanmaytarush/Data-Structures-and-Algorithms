@@ -27,23 +27,6 @@ We can use binary search to find the square root of x.
 CODE:
 */
 
-long long int floorSqrt(long long int x) 
-{
-    long long int low = 1, high = x;
-    long long int ans = -1;
-    while(low <= high){
-        long long int mid = low + (high - low) / 2;
-        if(x == mid * mid)
-            return mid;
-        else if(mid * mid < x){
-            ans = mid;
-            low = mid + 1;
-        }
-        else
-            high = mid - 1;
-    }
-    return ans;
-}
 
 /*
 Time Complexity: O(log(x))

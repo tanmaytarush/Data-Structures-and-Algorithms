@@ -25,17 +25,58 @@ To find the value of K, we can use binary search.
 
 CODE:
 */
+#include<iostream>
+#include<vector>
+#include<map>
+using namespace std;
 
-int findKRotation(int arr[], int n) {
-    int low = 0, high = n - 1;
-    while (low < high) {
-        int mid = low + (high - low) / 2;
-        if (arr[mid] > arr[n - 1])
+int freqRotation(vector<int> &arr)
+{
+    int n = arr.size();
+    int low = 0;
+    int high = n-1;
+    int ans = 0;
+
+    while(low <= high)
+    {
+        int mid = low + (high - low)/2;
+
+        // Checking for left neighbour and right neighbour element
+        if(arr[mid] < arr[(mid - 1 + n) % n] && arr[mid] < arr[(mid + 1) % n])
+        {
+            return mid;
+        }
+
+        // left sorted
+        if(arr[low] <= arr[mid])
+        {
             low = mid + 1;
+        }
+        // right sorted
         else
-            high = mid;
+        {
+            high = mid - 1;
+        }
     }
-    return low;
+    return -1;
+}
+
+int main()
+{
+    int n;
+    cin>>n;
+
+    vector<int> arr(n);
+    for(int i=0; i<n; ++i)
+    {
+        cin>>arr[i];
+    }
+
+    int result = freqRotation(arr);
+
+    cout<<result;
+
+    return 0;
 }
 
 // TIME COMPLEXITY: O(log n)

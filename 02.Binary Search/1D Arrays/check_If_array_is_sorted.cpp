@@ -19,8 +19,46 @@ Explanation: The given array is sorted.
 
 CODE:
 */
+#include<iostream>
+#include<vector>
+#include<map>
+using namespace std;
 
+bool checkArraySorted(vector<int> arr, int low, int high)
+{
+    int n = arr.size();
+    int mid = low + (high - low)/2;
 
+    if(low >= high) return true;
+    if(arr[mid] > arr[mid + 1]) return false;
+
+    return checkArraySorted(arr, low, mid) && checkArraySorted(arr, mid + 1, high);
+}
+
+bool isSorted(vector<int> &arr)
+{
+    int n = arr.size();
+    if(n<=1) return true;
+    return checkArraySorted(arr, 0, n-1);
+}
+
+int main()
+{
+    int n;
+    cin>>n;
+
+    vector<int> arr(n);
+    for(int i=0; i<n; ++i)
+    {
+        cin>>arr[i];
+    }
+
+    bool result = isSorted(arr);
+
+    cout<<result;
+
+    return 0;
+}
 
 // TIME COMPLEXITY: O(log N)
 // SPACE COMPLEXITY: O(log N) (for recursion stack)

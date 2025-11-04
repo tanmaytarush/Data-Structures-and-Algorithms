@@ -18,17 +18,62 @@ We can use the binary search approach to find the minimum element.
 
 CODE:
 */
+#include<iostream>
+#include<vector>
+#include<map>
+using namespace std;
 
-int findMin(vector<int>& nums) {
-    int low = 0, high = nums.size()-1;
-    while(low < high){
-        int mid = low + (high - low) / 2;
-        if(nums[mid] > nums[high])
-            low = mid+1;
+int minSorted(vector<int> &arr)
+{
+    int n = arr.size();
+    int low = 0;
+    int high = n-1;
+    int ans = INT_MAX;
+
+    while(low <= high)
+    {
+        int mid = (low + (high - low)/2);
+
+        // edge condition (already on sorted portion)
+        if(arr[low] <= arr[high])
+        {
+            ans = min(ans, arr[low]);
+            break;
+        }
+
+        // left sorted
+        if(arr[low] <= arr[mid])
+        {
+            ans = min(ans, arr[low]);
+            low = mid + 1;
+        }
+
+        // right sorted
         else
-            high = mid;
+        {
+            ans = min(ans, arr[mid]);
+            high = mid - 1;
+        }
     }
-    return nums[low];
+    return ans;
+}
+
+int main()
+{
+    int n;
+    cin>>n;
+
+    vector<int> arr(n);
+    for(int i=0; i<n; ++i)
+    {
+        cin>>arr[i];
+    }
+
+    int result = minSorted(arr);
+
+    cout<<result;
+
+    return 0;
 }
 
 // TIME COMPLEXITY: O(log n)
