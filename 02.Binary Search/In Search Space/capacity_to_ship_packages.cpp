@@ -22,43 +22,98 @@ To find the least weight capacity of the ship, we can use binary search. We set 
 
 Code:
 */
+#include<iostream>
+using namespace std;
+#include<vector>
+#include<map>
+#include<algorithm>
+#include<math.h>
+#include<numeric>
 
-bool isPossible(int mid, vector<int>& weights, int days){
-    int req_day = 1, temp = mid;
-    for(auto it:weights){
-        if(it <= temp){
-            temp -= it;
-        }
-        else{
-            req_day++;
-            if(it > mid)
-                return false;
-            temp = mid - it;
+int NoOfDays(vector<int> &weights, int capacity)
+{
+    int n = weights.size();
+    int days = 1;
+    int load = 0;
+
+    for(int i=0; i<n; ++i)
+    {
+        if(load + weights[i] > capacity)
+        {
+            days += 1;
+            load = weights[i];
+        } 
+
+        else
+        {
+            load += weights[i];
         }
     }
-    if(req_day <= days)
-        return true;
-    return false;
+    return days;
 }
 
-int shipWithinDays(vector<int>& weights, int days) {
-    int ans = -1;
-    int low = INT_MAX, high = 0;
-    for(auto it:weights){
-        low = min(low, it);
-        high += it;
+int shipPackagesBF(vector<int> &weights, int days)
+{
+    int n = weights.size();
+    int initial = *max_element(weights.begin(), weights.end());
+    int ending = accumulate(weights.begin(), weights.end(), 0);
+    int ans = 1;
+    for(int i=initial; i<=ending; ++i)
+    {
+        int daysReq = NoOfDays(weights, i);
+        if(daysReq <= days)
+        {
+            ans = i;
+            break;
+        }
     }
-    while(low <= high){
-        int mid = low + (high - low) / 2;
-        if(isPossible(mid, weights, days)){
+    return ans;
+}
+
+int shipPackagesOpt(vector<int> &weights, int days)
+{
+    int low = *max_element(weights.begin(), weights.end());
+    int high = accumulate(weights.begin(), weights.end(), 0);
+    int ans = 1;
+
+    while(low <= high)
+    {
+        int mid = (low + high) / 2;
+        if(NoOfDays(weights, mid) <= days)
+        {
             ans = mid;
             high = mid - 1;
         }
         else
+        {
             low = mid + 1;
+        }
     }
     return ans;
 }
+
+int main()
+{
+    int n;
+    cin>>n;
+
+    int days;
+    cin>>days;
+
+    vector<int> weights(n);
+    for(int i=0; i<n; ++i)
+    {
+        cin>>weights[i];
+    }
+
+    int result1 = shipPackagesBF(weights, days);
+    int result2 = shipPackagesOpt(weights, days);
+
+    cout<<result1<<" "<<result2;
+
+    return 0;
+}
+
 
 /*
 - Time Complexity: O(N log M), where N is the size of the weights array and M is the sum of all the weights.

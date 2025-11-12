@@ -23,29 +23,88 @@ Approach:
 Code:
 */
 
-int smallestDivisor(vector<int>& nums, int threshold) {
-    int ans = -1;
-    int low = 1, high = INT_MIN;
+#include<iostream>
+#include<vector>
+#include<math.h>
+#include<algorithm>
+using namespace std;
 
-    // Finding the maximum value in the array
-    for (auto it : nums)
-        high = max(high, it);
+int sumOfD(vector<int> &arr, int div)
+{
+    int sum = 0;
+    int n = arr.size();
+    for(int i=0; i<n; ++i)
+    {
+        sum += ceil((double)arr[i] / div);
+    }
+    return sum;
+}
 
-    // Binary search for the smallest divisor
-    while (low <= high) {
-        int mid = low + (high - low) / 2;
-        int sum = 0;
-        for (auto num : nums) {
-            sum += (num + mid - 1) / mid;
-        }
-        if (sum <= threshold) {
+int findSmallestDivisorOpt(vector<int> &arr, int limit)
+{
+    int n = arr.size();
+    int low = 1;
+    int high = *max_element(arr.begin(), arr.end());
+    int ans = 1;
+
+    // if(n > limit) return -1;
+
+    while(low <= high)
+    {
+        int mid = (low + high) / 2;
+
+        if(sumOfD(arr, mid) <= limit)
+        {
             ans = mid;
             high = mid - 1;
-        } else {
+        }
+        else
+        {
             low = mid + 1;
         }
     }
     return ans;
+}
+
+int findSmallestDivisorBF(vector<int> &arr, int threshold)
+{
+    int maxi = *max_element(arr.begin(), arr.end());
+    int n = arr.size();
+    for(int div = 1; div <= maxi; ++div)
+    {
+        int sum = 0;
+        for(int i=0; i<n; ++i)
+        {
+            sum += ceil((double)arr[i] / div);
+        }
+        if(sum <= threshold)
+        {
+            return div;
+        }
+    }
+    return -1;
+}
+
+int main()
+{
+    int n;
+    cin>>n;
+
+    int limit;
+    cin>>limit;
+
+    vector<int> arr(n);
+    for(int i=0; i<n; ++i)
+    {
+        cin>>arr[i];
+    }
+
+    int result1 = findSmallestDivisorBF(arr, limit);
+    int result2 = findSmallestDivisorOpt(arr, limit);
+
+    cout<<result1<<" "<<result2;
+
+    return 0;
 }
 
 // Time Complexity: O(n log(max(nums)))

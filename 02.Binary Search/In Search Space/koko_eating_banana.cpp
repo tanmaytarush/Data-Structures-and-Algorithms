@@ -27,35 +27,77 @@ APPROACH:
 CODE:
 */
 
-bool isPossible(int mid, vector<int>& piles, int h){
-    long req = 0;
-    for(auto it:piles){
-        int time = it/mid;
-        req += time;
-        if(it%mid!=0) req++;
+#include<iostream>
+#include<vector>
+using namespace std;
+#include<algorithm>
+#include<math.h>
+
+int findMax(vector<int> &arr)
+{
+    int maxi = INT_MIN;
+    int n = arr.size();
+    for(int i=0; i<n; ++i)
+    {
+        maxi = max(maxi, arr[i]);
     }
-    if(req<=h)
-        return true;
-    return false;
+    return maxi;
 }
 
-int minEatingSpeed(vector<int>& piles, int h) {
-    int ans = -1;
-    int low = 1, high = INT_MIN;
-    for(auto it:piles){
-        high = max(high,it);
+int countHours(vector<int> &arr, int hourly)
+{
+    int n = arr.size();
+    int maximum = findMax(arr);
+    int totalHours = 0; 
+    for(int i=0; i<n; ++i)
+    {
+        totalHours += ceil((double)arr[i] / hourly);
     }
-    while(low<=high){
-        int mid = low+(high-low)/2;
-        if(isPossible(mid,piles,h)){
+    return totalHours;
+}
+
+int KokoBananas(vector<int> &arr, int h)
+{
+    int n = arr.size();
+    int low = 1;
+    int high = findMax(arr);
+    long long ans = 1;
+    while(low <= high)
+    {
+        int mid = (low + high)/2;
+        int totalHours = countHours(arr, mid);
+
+        if(totalHours <= h)
+        {
             ans = mid;
-            high = mid-1;
+            high = mid - 1;  // move left and increase the total hours from lower values
         }
-        else{
-            low = mid+1;
+
+        else
+        {
+            low = mid + 1;
         }
     }
     return ans;
+}
+
+int main()
+{
+    int n;
+    cin>>n;
+
+    int h;
+    cin>>h;
+
+    vector<int> arr(n);
+    for(int i=0; i<n; ++i)
+    {
+        cin>>arr[i];
+    }
+
+    int result = KokoBananas(arr, h);
+    cout<<result;
+    return 0;
 }
 
 // TIME COMPLEXITY: O(N log M), where N is the number of piles and M is the maximum number of bananas in a pile.

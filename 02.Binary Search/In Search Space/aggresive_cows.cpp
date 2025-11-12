@@ -25,35 +25,92 @@ Approach:
 Code:
 */
 
-bool isPossible(int mid, vector<int>& position, int m){
-    int placeM = 1;
-    int start = 0;
-    for(int i=1; i<position.size(); i++){
-        if(position[i]-position[start]>=mid){
-            placeM++;
-            start = i;
+#include<iostream>
+#include<vector>
+using namespace std;
+#include<algorithm>
+
+bool canWeCount(vector<int> &arr, int cows, int difference)
+{
+    int n = arr.size();
+    int count = 1; // Minimum 1 cow is required at first index
+    int last = arr[0];
+    for(int i=0; i<n; ++i)
+    {
+        if(arr[i] - last >= difference)
+        {
+            count += 1;
+            last = arr[i];
         }
     }
-    if(placeM>=m)
-        return true;
-    return false;
+    if(count >= cows) return true;
+    else return false;
 }
 
-int maxDistance(vector<int>& position, int m) {
-    sort(position.begin(),position.end());
-    int low = 1, high = position[position.size()-1]-position[0];
-    int ans = -1; 
-    while(low<=high){
-        int mid = low+(high-low)/2;
-        if(isPossible(mid,position,m)){
-            ans = mid;
-            low = mid+1;
+int requiredForceBF(vector<int> &arr, int cows)
+{
+    sort(arr.begin(), arr.end());
+    int n = arr.size();
+    int max = arr[n-1];
+    int min = arr[0];
+    for(int i=0; i<=(max-min); ++i)
+    {
+        if(canWeCount(arr, cows, i) == true)
+        {
+            continue;
         }
-        else{
-            high = mid-1;
+        else
+        {
+            return i-1;
+        }
+    }
+    return -1;
+}
+
+int requiredForceOpt(vector<int> &arr, int cows)
+{
+    sort(arr.begin(), arr.end());
+    int n = arr.size();
+    int low = *min_element(arr.begin(), arr.end());
+    int high = *max_element(arr.begin(), arr.end());
+    int ans = 0;
+    while(low <= high)
+    {
+        int mid = (low + high) / 2;
+        if(canWeCount(arr, cows, mid) == true)
+        {
+            ans = mid;
+            low = mid + 1;
+        }
+        else
+        {
+            high = mid - 1;
         }
     }
     return ans;
+}
+
+
+int main()
+{
+    int n;
+    cin>>n;
+
+    int cows;
+    cin>>cows;
+
+    vector<int> arr(n);
+    for(int i=0; i<n; ++i)
+    {
+        cin>>arr[i];
+    }
+
+    int result1 = requiredForceBF(arr, cows);
+    int result2 = requiredForceOpt(arr, cows);
+
+    cout<<result1<<" "<<result2;
+
+    return 0;
 }
 
 /*
