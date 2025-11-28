@@ -30,45 +30,99 @@ Approach:
 
 Code:
 */
+#include<iostream>
+#include<vector>
+using namespace std;
+#include<numeric>
+#include<algorithm>
 
-bool isPossible(int mid, int A[], int N, int M) {
-    int pos_m = 1;
-    int temp = 0;
-    for (int i = 0; i < N; i++) {
-        if (temp + A[i] <= mid) {
-            temp += A[i];
-        } else {
-            pos_m++;
-            if (A[i] > mid)
-                return false;
-            temp = A[i];
+int countStudent(vector<int> &arr, int maxpages)
+{
+    int student = 1;
+    int studentPages = 0;
+    int n = arr.size();
+
+    for(int i=0; i<n; ++i)
+    {
+        if(studentPages + arr[i] <= maxpages)
+        {
+            studentPages += arr[i];
+        }
+        else
+        {
+            student += 1;
+            studentPages = arr[i];
         }
     }
-    if (pos_m <= M)
-        return true;
-    return false;
+    return student;
 }
 
-int findPages(int A[], int N, int M) {
-    if (M > N)
-        return -1;
-    int low = INT_MAX, high = 0;
-    int ans = -1;
-    for (int i = 0; i < N; i++) {
-        low = min(low, A[i]);
-        high += A[i];
+int bookAllocationBF(vector<int> &arr, int m)
+{
+    int n = arr.size();
+    int low = *max_element(arr.begin(), arr.end());
+    int high = accumulate(arr.begin(), arr.end(), 0);
+
+    for(int i=low; i<=high; ++i)
+    {
+        if(countStudent(arr, i) == m)
+        {
+            return i;
+        }
     }
-    while (low <= high) {
-        int mid = low + (high - low) / 2;
-        if (isPossible(mid, A, N, M)) {
-            ans = mid;
-            high = mid - 1;
-        } else {
+    return -1;
+}
+
+int bookAllocationOpt(vector<int> &arr, int m)
+{
+    int low = *max_element(arr.begin(), arr.end());
+    int high = accumulate(arr.begin(), arr.end(), 0);
+    int ans = -1;
+    int n = arr.size();
+
+    if(m > n)
+    {
+        return -1;
+    }
+
+    while(low <= high)
+    {
+        int mid = (low + high) / 2;
+        if(countStudent(arr, mid) > m)
+        {
             low = mid + 1;
         }
+        else
+        {
+            ans = mid;
+            high = mid - 1;
+        }
     }
-    return ans;
+    return low;
 }
+
+int main()
+{
+    int n;
+    cin>>n;
+
+    int m;
+    cin>>m;
+
+    vector<int> arr(n);
+    for(int i=0; i<n; ++i)
+    {
+        cin>>arr[i];
+    }
+
+    int result1 = bookAllocationBF(arr, m);
+    int result2 = bookAllocationOpt(arr, m);
+
+    cout<<result1<<" "<<result2;
+
+    return 0;
+}
+
 
 /*
 Time Complexity: O(N log S), where N is the number of books and S is the sum of all the pages in the array. The binary search takes log S iterations, and for each iteration, we check the validity of allocation in O(N) time.

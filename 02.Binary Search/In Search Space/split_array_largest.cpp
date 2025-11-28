@@ -22,37 +22,77 @@ Time Complexity: O(n * log(sum of array))
 Space Complexity: O(1)
 */
 
-bool isPossible(int mid, vector<int>& nums, int k) {
-    int pos_parts = 1, temp = 0;
-    for (auto it : nums) {
-        if (temp + it <= mid) {
-            temp += it;
-        } else {
-            pos_parts++;
-            if (it > mid)
-                return false;
-            temp = it;
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#include<numeric>
+using namespace std;
+
+int countPartitions(vector<int> &arr, int maxcount)
+{
+    int n = arr.size();
+    int partition = 1;
+    int countPartitions = 0;
+
+    for(int i=0; i<n; ++i)
+    {
+        if(countPartitions + arr[i] <= maxcount)
+        {
+            countPartitions += arr[i];
+        }
+        else
+        {
+            partition++;
+            countPartitions = arr[i];
         }
     }
-    if (pos_parts <= k)
-        return true;
-    return false;
+    return partition;
 }
 
-int splitArray(vector<int>& nums, int k) {
-    int low = INT_MAX, high = 0;
+int minmaxSubarray(vector<int> &arr, int k)
+{
+    int n = arr.size();
+    int low = *max_element(arr.begin(), arr.end());
+    int high = accumulate(arr.begin(), arr.end(), 0);
     int ans = -1;
-    for (auto it : nums) {
-        low = min(low, it);
-        high += it;
+
+    if(k > n)
+    {
+        return -1;
     }
-    while (low <= high) {
-        int mid = low + (high - low) / 2;
-        if (isPossible(mid, nums, k)) {
+
+    while(low <= high)
+    {
+        int mid = (low + high) / 2;
+        if(countPartitions(arr, mid) > k)
+        {
+            low = mid + 1;
+        }
+        else
+        {
             ans = mid;
             high = mid - 1;
-        } else
-            low = mid + 1;
+        }
     }
     return ans;
+}
+
+int main()
+{
+    int n;
+    cin>>n;
+
+    int k;
+    cin>>k;
+
+    vector<int> arr(n);
+    for(int i=0; i<n; ++i)
+    {
+        cin>>arr[i];
+    }
+
+    int result1 = minmaxSubarray(arr, k);
+    cout<<result1;
+
+    return 0;
 }

@@ -34,23 +34,79 @@ Time Complexity: O(N log M), where N is the number of existing gas stations and 
 Space Complexity: O(1), as we are using constant extra space.
 */
 
-bool isPossible(double mid, vector<int>& stations, int K) {
-    int req_stations = 0;
-    for (int i = 1; i < stations.size(); i++) {
-        req_stations += floor((stations[i] - stations[i - 1]) / mid);
+#include<iostream>
+#include<numeric>
+#include<algorithm>
+#include<vector>
+using namespace std;
+
+int numberOfGasStationsRequired(vector<int> &arr, long double dist)  // Decimal variations 1e-6
+{
+    int count = 0;
+    int n = arr.size();
+
+    for(int i=1; i<n; ++i)
+    {
+        int numberInBetween = ((arr[i] - arr[i-1]) / dist);
+        if((arr[i] - arr[i-1]) / dist == numberInBetween * dist)
+        {
+            numberInBetween--; // If numbers in between is greater than possible
+        }
+        count += numberInBetween;
     }
-    return req_stations <= K;
+    return count;
 }
 
-double findSmallestMaxDist(vector<int>& stations, int K) {
-    double low = 0, high = stations[stations.size() - 1] - stations[0];
-    while (high - low > 1e-6) {
-        double mid = low + (high - low) / 2;
-        if (isPossible(mid, stations, K)) {
-            high = mid;
-        } else {
+long double minimiseMaxDistance(vector<int> &arr, int k) // k being the number of gas stations
+{
+    int n = arr.size();
+    long double low = 0;
+    long double high = 0;
+
+    for(int i=0; i<n-1; ++i)
+    {
+        high = max(high, (long double)(arr[i+1] - arr[i]));
+    }
+
+    long double diff = 1e-6;
+    // int ans = -1;
+    while(high - low > diff)
+    {
+        long double mid = (low + high) / (2.0);
+        int cnt = numberOfGasStationsRequired(arr, mid);
+        if(cnt > k)
+        {
             low = mid;
         }
+        else
+        {
+            // ans = high;
+            high = mid;
+        }
     }
-    return low + 0.000001;
+    return high;
 }
+
+int main()
+{
+    int n;
+    cin>>n;
+
+    int k;
+    cin>>k;
+
+    vector<int> arr(n);
+    for(int i=0; i<n; ++i)
+    {
+        cin>>arr[i];
+    }
+
+    long double result = minimiseMaxDistance(arr, k);
+    cout<<result;
+
+    return 0;
+}
+
+
+// Time Complexity - O(N logN)
+// Space Complexity - O(1)

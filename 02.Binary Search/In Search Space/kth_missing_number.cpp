@@ -24,23 +24,71 @@ Space Complexity: O(1)
 
 */
 
-int findKthPositive(vector<int>& arr, int k) {
-    int low = 0, high = arr.size() - 1;
-    int pos = -1;
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
 
-    while (low <= high) {
-        int mid = low + (high - low) / 2;
+int kthElementBF(vector<int> &arr, int k)
+{
+    int n = arr.size();
 
-        if ((arr[mid] - (mid + 1)) < k)
+    for(int i=0; i<n; ++i)
+    {
+        if(arr[i] <= k)
+        {
+            k++;
+        }
+    }
+    return k;
+}
+
+int kthElementOpt(vector<int> &arr, int k)
+{
+    int n = arr.size();
+    int low = 0;
+    int high = n-1;
+
+    while(low <= high)
+    {
+        int mid = (low + high) / 2;
+        int missing = arr[mid] - (mid + 1);
+
+        if(missing < k)
+        {
             low = mid + 1;
-        else {
-            pos = mid;
+        }
+        else
+        {
             high = mid - 1;
         }
     }
-
-    if (pos == -1)
-        return arr.size() + k;
-
-    return pos + k;
+    return low + k;
 }
+
+int main()
+{
+    int n;
+    cin>>n;
+
+    int k;
+    cin>>k;
+
+    vector<int> arr(n);
+    for(int i=0; i<n; ++i)
+    {
+        cin>>arr[i];
+    }
+
+    int result1 = kthElementBF(arr, k);
+    int result2 = kthElementOpt(arr, k);
+
+    cout<<result1<<" "<<result2<<endl;
+
+    return 0;
+}
+
+/*
+Time Complexity: O(log(min(N, M)))
+Space Complexity: O(1)
+*/

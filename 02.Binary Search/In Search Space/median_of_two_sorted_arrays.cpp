@@ -19,34 +19,18 @@ To find the median of two sorted arrays, we can apply the concept of binary sear
 5. If no median is found, return 0.0.
 
 CODE:*/
-double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
-    if (nums1.size() > nums2.size())
-        return findMedianSortedArrays(nums2, nums1);
-        
-    int opt_cnt = (nums1.size() + nums2.size() + 1) / 2;
-    int low = 0, high = nums1.size();
+
+#include<iostream>
+#include<vector>
+#include<numeric>
+#include<algorithm>
+using namespace std;
+
+
+
+int main()
+{
     
-    while (low <= high) {
-        int cut1 = low + (high - low) / 2;
-        int cut2 = opt_cnt - cut1;
-        int l1, l2, r1, r2;
-
-        (cut1 - 1 < 0) ? l1 = INT_MIN : l1 = nums1[cut1 - 1];
-        (cut2 - 1 < 0) ? l2 = INT_MIN : l2 = nums2[cut2 - 1];
-        (cut1 >= nums1.size()) ? r1 = INT_MAX : r1 = nums1[cut1];
-        (cut2 >= nums2.size()) ? r2 = INT_MAX : r2 = nums2[cut2];
-
-        if (l1 <= r2 && l2 <= r1) {
-            if ((nums1.size() + nums2.size()) % 2 == 0)
-                return (max(l1, l2) + min(r1, r2)) / 2.0;
-            return max(l1, l2);
-        } else if (l1 > r2) {
-            high = cut1 - 1;
-        } else {
-            low = cut1 + 1;
-        }
-    }
-    return 0.0;
 }
 
 /*
