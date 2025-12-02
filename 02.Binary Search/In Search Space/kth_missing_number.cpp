@@ -29,61 +29,69 @@ Space Complexity: O(1)
 #include<algorithm>
 using namespace std;
 
-int kthElementBF(vector<int> &arr, int k)
-{
-    int n = arr.size();
 
-    for(int i=0; i<n; ++i)
-    {
-        if(arr[i] <= k)
-        {
-            k++;
-        }
-    }
-    return k;
-}
-
-int kthElementOpt(vector<int> &arr, int k)
+int kthElementOpt(vector<int> &a, vector<int> &b, int k)
 {
-    int n = arr.size();
-    int low = 0;
-    int high = n-1;
+    int n1 = a.size();
+    int n2 = b.size();
+
+    if(n1 > n2) return kthElementOpt(b, a, k);
+
+    int low = max(0, k-n2);
+    int high = min(n1, k);
 
     while(low <= high)
     {
-        int mid = (low + high) / 2;
-        int missing = arr[mid] - (mid + 1);
+        int cut1 = (low + high) / 2;
+        int cut2 = k - cut1;
 
-        if(missing < k)
+        int l1 = INT_MIN;
+        int l2 = INT_MIN;
+        int r1 = INT_MAX;
+        int r2 = INT_MAX;
+
+        if(cut1 < n1) r1 = a[cut1];
+        if(cut2 < n2) r2 = b[cut2];
+        if(cut1 > 0) l1 = a[cut1 - 1];
+        if(cut2 > 0) l2 = b[cut2 - 1];
+
+        if(l1 <= r2 && l2<=r1)
         {
-            low = mid + 1;
-        }
-        else
-        {
-            high = mid - 1;
-        }
+            return max(l1, l2);
+        } 
+
+        else if(l1 > r2) high = cut1 - 1;
+        else low = cut1 + 1;
     }
-    return low + k;
+    return -1;
 }
 
 int main()
 {
-    int n;
-    cin>>n;
+    int n1, n2;
+    cin>>n1>>n2;
+
+    int n = (n1 + n2);
 
     int k;
     cin>>k;
 
-    vector<int> arr(n);
-    for(int i=0; i<n; ++i)
+    vector<int> arr1(n1);
+    vector<int> arr2(n2);
+
+    for(int i=0; i<n1; ++i)
     {
-        cin>>arr[i];
+        cin>>arr1[i];
     }
 
-    int result1 = kthElementBF(arr, k);
-    int result2 = kthElementOpt(arr, k);
+    for(int i=0; i<n2; ++i)
+    {
+        cin>>arr2[i];
+    }
 
-    cout<<result1<<" "<<result2<<endl;
+    int result = kthElementOpt(arr1, arr2, k);
+
+    cout<<result<<endl;
 
     return 0;
 }
