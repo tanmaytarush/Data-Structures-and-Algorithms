@@ -39,17 +39,104 @@ We can start the search from the top-right element or the bottom-left element an
 CODE:
 */
 
-bool searchMatrix(vector<vector<int>>& matrix, int target) {
-    int row = 0, col = matrix[0].size() - 1;
-    while (row < matrix.size() && col >= 0) {
-        if (matrix[row][col] == target)
-            return true;
-        else if (matrix[row][col] > target)
-            col--;
-        else
-            row++;
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+
+int binarySearch(vector<int> &arr , int target)
+{
+  int n = arr.size();
+  int low = 0;
+  int high = n-1;
+
+  while(low<=high)
+  {
+    int mid = (low + high) / 2;
+    if(arr[mid] == target)
+    {
+      return mid;
     }
-    return false;
+    else if(arr[mid] > target)
+    {
+      high = mid - 1;
+    }
+    else
+    {
+      low = mid + 1;
+    }
+  }
+
+  return -1;
+} 
+
+pair<int, int> searchInMatrixBF(vector<vector<int>> &arr, int target)
+{
+  int n = arr.size();
+  int m = arr[0].size();
+  for(int i=0; i<n; ++i)
+  {
+    int val = binarySearch(arr[i], target);
+    if(val != -1)
+    {
+      return make_pair(i, val);
+    }
+  }
+  return make_pair(-1, -1);
+}
+
+bool searchInMatrixOpt(vector<vector<int>> &arr, int target)
+{
+  int n = arr.size();
+  int m = arr[0].size();
+  int row = 0;
+  int col = m-1;
+
+  while(row < n && col >= 0)
+  {
+    if(arr[row][col] == target)
+    {
+      return true;
+    }
+    else if(arr[row][col] > target)
+    {
+      col--;
+    }
+    else
+    {
+      row++;
+    }
+  }
+  return false;
+}
+
+int main()
+{
+  int n;
+  int m;
+  cin>>n>>m;
+
+  vector<vector<int>> arr(n, vector<int>(m));
+
+  for(int i=0; i<n; ++i)
+  {
+    for(int j=0; j<m; ++j)
+    {
+      cin>>arr[i][j];
+    }
+  }
+
+  int target;
+  cin>>target;
+
+  pair<int, int> result1 = searchInMatrixBF(arr, target);
+  bool result2 = searchInMatrixOpt(arr, target);
+
+  cout<<result1.first<<" "<<result1.second;
+  cout<<endl;
+  cout<<result2;
+
+  return 0;
 }
 
 /*
