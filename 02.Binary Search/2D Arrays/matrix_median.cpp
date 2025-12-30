@@ -27,32 +27,102 @@ To find the median of a row-wise sorted matrix, we can follow these steps:
 
 CODE:*/
 
-int median(vector<vector<int>>& matrix, int R, int C) {
-    int low = INT_MAX;
-    int high = INT_MIN;
-    int opt_cnt = (R * C + 1) / 2;
-    int ans = -1;
+#include<iostream>
+using namespace std;
+#include<vector>
+#include<algorithm>
+#include<math.h>
 
-    for (int i = 0; i < R; i++) {
-        low = min(low, matrix[i][0]);
-        high = max(high, matrix[i][C - 1]);
-    }
+int upperBound(vector<int> &arr, int ele)
+{
+    int n = arr.size();
+    int low = 0;
+    int high = n-1;
+    int ans = n;
 
-    while (low <= high) {
-        int mid = low + (high - low) / 2;
-        int cnt = 0;
-        for (int i = 0; i < R; i++) {
-            cnt += upper_bound(matrix[i].begin(), matrix[i].end(), mid) - matrix[i].begin();
-        }
-        if (cnt < opt_cnt)
-            low = mid + 1;
-        else {
+    while(low <= high)
+    {
+        int mid = (low + high) / 2;
+
+        if(arr[mid] > ele)
+        {
             ans = mid;
             high = mid - 1;
+        }
+        else
+        {
+            low = mid + 1;
         }
     }
 
     return ans;
+}
+
+int countRequiredElements(vector<vector<int>> &matrix, int ele)
+{
+    int n = matrix.size();
+    int m = matrix[0].size();
+
+    int count = 0;
+
+    for(int i=0; i<n; ++i)
+    {
+        count += upperBound(matrix[i], ele);
+    }
+    return count;
+}
+
+int median2D(vector<vector<int>> &matrix)
+{
+    int n = matrix.size();
+    int m = matrix[0].size();
+
+    int low = INT_MIN;
+    int high = INT_MAX;
+
+    for(int i=0; i<n; ++i)
+    {
+        low = min(low, matrix[i][0]);
+        high = max(high, matrix[i][m-1]);
+    }
+
+    int required = (n*m)/2;
+    while(low <= high)
+    {
+        int mid = (low + high) / 2;
+        int countRequired = countRequiredElements(matrix, mid);
+
+        if(countRequired <= required)
+        {
+            low = mid + 1;
+        }
+        else
+        {
+            high = mid - 1;
+        }
+    }
+    return low;
+}
+
+int main()
+{
+    int n;
+    int m;
+
+    cin>>n>>m;
+
+    vector<vector<int>> matrix(n, vector<int>(m));
+    for(int i=0; i<n; ++i)
+    {
+        for(int j=0; j<m; ++j)
+        {
+            cin>>matrix[i][j];
+        }
+    }
+
+    int result = median2D(matrix);
+
+    cout<<result;
 }
 
 /*
