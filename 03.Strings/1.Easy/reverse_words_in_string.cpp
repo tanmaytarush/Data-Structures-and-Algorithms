@@ -26,29 +26,77 @@ Approach:
 Code:
 */
 
-string reverseWords(string s) {
-    string ans = "";
-    int start = -1, end = -1;
-    for(int i=0; i<s.size(); i++){
-        while(s[i]==' ')
-            i++;
-        start = i;
-        while(i<s.size() && s[i]!=' ')
-            i++;
-        end = i;
-        string temp = s.substr(start,end-start);
-        reverse(temp.begin(),temp.end());
-        ans = ans+" "+temp;
-    }
-    reverse(ans.begin(),ans.end());
-    int i=0, j=ans.size()-1;
-    while(ans[i]==' ')
-        i++;
-    while(ans[j]==' ')
+#include<iostream>
+using namespace std;
+#include<vector>
+#include<algorithm>
+#include<string>
+
+string reverseWords(string str)
+{
+    int n = str.length();
+    int i=0;
+    int j=n-1;
+    while(i<=j)
+    {
+        swap(str[i], str[j]);
+        i++; 
         j--;
-    ans = ans.substr(i,j-i+1);
-    return ans;
+    }
+
+    int start = 0;
+    int end = 0;
+    for(end=0; end<n; ++end)
+    {
+        if(str[end] == ' ')
+        {
+            reverse(str.begin() + start, str.begin() + end);
+            start = end + 1;
+        }
+    }
+
+    reverse(str.begin() + start, str.begin() + end);
+
+    return str;
+
+    // DIDN'T WORK RUNS ONLY ONCE
+
+    // int first = 0;
+    // int second = 0;
+    // int index = 0;
+
+    // if(str[second] != ' ' && str[second] != '\0')
+    // {
+    //     second++;
+    // }
+    // else
+    // {
+    //     int i=0;
+    //     int j=second-1;
+    //     while(i<=j)
+    //     {
+    //         swap(str[i], str[j]);
+    //         i++;
+    //         j--;
+    //     }
+    //     index = second + 1;
+    //     first = index;
+    //     second = first;
+    // }
+
+    // return str;
 }
+
+int main()
+{
+    string str;
+    getline(cin, str);
+
+    cout<<reverseWords(str);
+
+    //cout<<result;
+}
+
 
 /*
 Time Complexity: O(n), where n is the length of the input string 's'.

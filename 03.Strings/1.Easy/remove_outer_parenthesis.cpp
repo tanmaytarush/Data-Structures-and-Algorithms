@@ -9,24 +9,50 @@ Approach:
 
 Code:
 */
-string removeOuterParentheses(string s) {
-    string res;
-    int opened = 0;
 
-    for (auto c : s) {
-        if (c == '(') {
-            if (opened > 0)
+#include<iostream>
+using namespace std;
+#include<vector>
+#include<string>
+#include<algorithm>
+
+string removeParentheses(string s)
+{
+    string res = "";
+    int opened = 0;
+    for(auto c : s)
+    {
+        if(c == '(')
+        {
+            if(opened > 0)
+            {
                 res += c;
-            opened++;
-        } else {
-            if (opened > 1)
+            }
+            opened ++;
+        }
+
+        else
+        {
+            if(opened > 1)
+            {
                 res += c;
-            opened--;
+            }
+            opened --;
         }
     }
-
     return res;
 }
+
+int main()
+{
+    string s;
+    getline(cin, s);
+    string result = removeParentheses(s);
+    cout << result << endl;
+    return 0;
+}
+
+
 /*
 Time Complexity: O(N), where N is the length of the input string `s`.
 Space Complexity: O(N), where N is the length of the input string `s`.
