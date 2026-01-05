@@ -26,18 +26,54 @@ Approach:
 Code:
 */
 
+#include<iostream>
+#include<vector>
+#include<map>
+#include<algorithm>
+using namespace std;
+
 bool isAnagram(string s, string t) {
-    unordered_map<char,int>mp;
-    for(auto c:s)
-        mp[c]++;
-    for(auto c:t){
-        if(mp.find(c)==mp.end())
-            return false;
-        mp[c]--;
-        if(mp[c]==0)
-            mp.erase(c);
+    unordered_map<char, int> mpp;
+
+    for(char c : s)
+    {
+        mpp[c]++;
     }
-    return (mp.size()==0);
+
+    for(char c : t)
+    {
+        if(mpp.find(c) == mpp.end())
+        {
+            return false;
+        }
+        mpp[c]--;
+    }
+
+    for(auto &p : mpp) // map key, value pair
+    {
+        if(p.second != 0)
+        {
+            return false;
+        }
+        //return true;
+    }
+
+    return true;
+}
+
+int main()
+{
+    string s;
+    string t;
+
+    getline(cin, s);
+    getline(cin, t);
+
+    bool result = isAnagram(s, t);
+
+    cout<<result;
+
+    return 0;
 }
 
 /* 

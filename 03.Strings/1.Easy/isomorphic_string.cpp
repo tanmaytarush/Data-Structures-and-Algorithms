@@ -16,20 +16,45 @@ Approach:
 Code:
 */
 
-bool isIsomorphic(string s, string t) {
-    unordered_map<char, char> mps;
-    unordered_map<char, char> mpt;
+#include<iostream>
+#include<map>
+#include<vector>
+#include<algorithm>
+using namespace std;
 
-    for (int i = 0; i < s.size(); i++) {
-        if (mps.find(s[i]) == mps.end() && mpt.find(t[i]) == mpt.end()) {
-            mps[s[i]] = t[i];
-            mpt[t[i]] = s[i];
-        } else if (mps[s[i]] != t[i] || mpt[t[i]] != s[i]) {
+bool isIsomorphic(string s, string t)
+{
+    vector<int> v1(128, -1);
+    vector<int> v2(128, -1);
+
+    if(s.size() != t.size())
+    {
+        return false;
+    }
+
+    for(int i=0; i<s.length(); ++i)
+    {
+        if(v1[s[i]] != v2[t[i]])
+        {
             return false;
         }
+        v1[s[i]] = v2[t[i]] = i;  // i index mapping, works with counter as well (except for "aaabbbba" and "bbbaaaba")
     }
 
     return true;
+}
+
+int main()
+{
+    string s;
+    string t;  
+    getline(cin, s);
+    getline(cin, t);
+
+    bool result = isIsomorphic(s, t);
+
+    cout<<result;
+    return 0;
 }
 
 /*

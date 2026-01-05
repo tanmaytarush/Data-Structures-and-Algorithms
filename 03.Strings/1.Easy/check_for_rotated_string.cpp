@@ -19,12 +19,35 @@ Approach:
 CODE:-
 */
 
-bool rotateString(string s, string goal) {
-    if (s.size() != goal.size())
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#include<math.h>
+using namespace std;
+
+bool rotatedString(string s, string goal)
+{
+    if(s.length() != goal.length())
+    {
         return false;
-    if ((s + s).find(goal) == string::npos)
-        return false;
-    return true;
+    }
+
+    string doubleStr = s + s;
+
+    return doubleStr.find(goal) < doubleStr.length();
+}
+
+int main()
+{
+    string s;
+    string goal;
+    getline(cin, s);
+    getline(cin, goal);
+
+    bool result = rotatedString(s, goal);
+
+    cout<<result;
+    return 0;
 }
 
 /*
