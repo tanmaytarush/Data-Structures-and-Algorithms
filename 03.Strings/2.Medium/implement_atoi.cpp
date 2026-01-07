@@ -53,33 +53,67 @@ Approach:
 7. Return the final integer.
 
 Code:*/
-int myAtoi(string s) {
-    int i = 0;
-    while (i < s.size() && s[i] == ' ')
-        i++;
-    if (i == s.size())
-        return 0;
-    bool sign = true; // indicates the number is positive
 
-    if (s[i] == '-') {
-        i++;
-        sign = false;
-    } else if (s[i] == '+')
-        i++;
+#include<iostream>
+#include<vector>
+#include<map>
+#include<algorithm>
+using namespace std;
 
-    long long ans = 0;
-    while (i < s.size() && (0 <= s[i] - '0' && s[i] - '0' <= 9)) {
-        long long digit = s[i] - '0';
-        ans = (ans * 10) + digit;
-        // handle overflow case
-        if (ans > INT_MAX && sign)
-            return INT_MAX;
-        else if (ans > INT_MAX)
-            return INT_MIN;
+int implementAToI(string s)
+{
+    long res=0;
+
+    int i=0;
+    int sign = 1;
+    // check for whitespaces
+    while(i<s.length() && s[i]==' ')
+    {
         i++;
     }
-    ans = sign ? ans : -1 * ans;
-    return (int) ans;
+
+    // check for complete iteration
+    while(i==s.length()-1)
+    {
+        return 0;
+    }
+
+    // check for positive / negative
+    if(s[i]=='+')
+    {
+        i++;
+    }
+
+    else if(s[i] == '-')
+    {
+        sign = -1;
+        i++;
+    }
+
+    // convert into integer
+    while(i<s.size() && isdigit(s[i]))
+    {
+        res = res * 10 + (s[i] - '0');
+
+        if(res * sign > INT_MAX) return INT_MAX;
+        else if(res * sign < INT_MIN) return INT_MIN;
+
+        i++;
+    }
+
+    return (int)(res * sign);
+}
+
+int main()
+{
+    string s;
+    getline(cin, s);
+
+    int ans = implementAToI(s);
+
+    cout<<ans;
+
+    return 0;
 }
 
 /*

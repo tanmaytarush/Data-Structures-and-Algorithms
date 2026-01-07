@@ -21,28 +21,60 @@ Approach:
 
 Code:*/
 
-void expandFromCenter(string s, int start, int end, int& ans_start, int& ans_end, int& maxLen) {
-    while (start >= 0 && end < s.size() && s[start] == s[end]) {
-        if (end - start + 1 > maxLen) {
-            ans_start = start;
-            ans_end = end;
-            maxLen = end - start + 1;
-        }
-        start--;
-        end++;
+#include<iostream>
+#include<string>
+#include<algorithm>
+#include<vector>
+using namespace std;
+
+int expandFromCentre(string s, int left, int right)
+{
+    while((left>=0 && right<s.size()) && (s[left] == s[right]))
+    {
+        left--;
+        right++;
     }
+    return (right - left - 1); // right and left moved one step ahead already
 }
 
-string longestPalindrome(string s) {
-    string ans = "";
-    int maxLen = 0, ans_start = -1, ans_end = -1;
-    for (int i = 0; i < s.size(); i++) {
-        // For odd length palindromes
-        expandFromCenter(s, i, i, ans_start, ans_end, maxLen);
-        // For even length palindromes
-        expandFromCenter(s, i - 1, i, ans_start, ans_end, maxLen);
+string longestPalindromicString(string s)
+{
+    int start = 0;
+    int end = 0;
+
+    int maxlen = 0;
+
+    for(int current = 0; current<s.size(); ++current)
+    {
+        // check for odd length
+        int lenOdd = expandFromCentre(s, current, current);
+
+        // check for even length
+        int lenEven = expandFromCentre(s, current, current + 1);
+
+        // int maxlength finding out
+        maxlen = max(lenEven, lenOdd);
+
+        if(maxlen > end - start)
+        {
+            start = current - (maxlen - 1)/2;
+            end = current + (maxlen)/2;
+        }
     }
-    return (maxLen == 0) ? "" : s.substr(ans_start, ans_end - ans_start + 1);
+
+    return s.substr(start, end - start + 1);
+}
+
+
+int main()
+{
+    string s;
+    getline(cin, s);
+
+    string result = longestPalindromicString(s);
+
+    cout<<result;
+    return 0;
 }
 
 /*

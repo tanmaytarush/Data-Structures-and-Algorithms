@@ -10,20 +10,52 @@ Approach:
 3. Return `ans` as the maximum nesting depth.
 
 CODE:-
-
 */
 
-int maxDepth(string s) {
-    int opened = 0, ans = 0;
-    for (auto c : s) {
-        if (c == '(') {
-            opened++;
-            ans = max(ans, opened);
-        } else if (c == ')') {
-            opened--;
+#include<iostream>
+#include<vector>
+#include<map>
+#include<queue>
+#include<algorithm>
+using namespace std;
+
+int maxNestingDepth(string s)
+{
+    int opened = 0;
+    int i=0;
+    int max_depth = 0;
+    while(i < s.length())
+    {
+        if(s[i] == '(')
+        {
+            opened ++;
+            max_depth = max(max_depth, opened);
         }
+        else if(s[i] == ')')
+        {
+            opened --;
+            
+        }
+        i++;
     }
-    return ans;
+
+    if(opened != 0) // check for VPS
+    {
+        return -1;
+    }
+    
+    return max_depth;
+}
+
+int main()
+{
+    string s;
+    getline(cin, s);
+
+    int result = maxNestingDepth(s);
+
+    cout<<result;
+    return 0;
 }
 
 /*

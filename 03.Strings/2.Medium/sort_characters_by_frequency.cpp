@@ -11,25 +11,52 @@ Approach:
 Code:
 */
 
-string frequencySort(string s) {
-    unordered_map<char, int> mp;
-    for (auto c : s) {
-        mp[c]++;
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#include<map>
+#include<queue>
+#include<unordered_map>
+using namespace std;
+
+string freqSort(string s)
+{
+    // storing frequencies in the hashmap
+    unordered_map<char, int> mpp; 
+    for(char ch : s)
+    {
+        mpp[ch]++;
     }
 
-    priority_queue<pair<int, char>> pq;
-    for (auto it : mp) {
-        pq.push({ it.second, it.first });
+    // Implementing priority_queue for the re-ranking
+    priority_queue<pair<int, char>> pq;  
+    // <int, char> is used for lexographically considering freq before character for ordering
+    for(auto it : mpp)
+    {
+        pq.push({it.second, it.first});
     }
 
+    // Tracing out the queued max-heap string
     string ans = "";
-    while (!pq.empty()) {
+    while(!pq.empty())
+    {
         auto curr = pq.top();
         pq.pop();
         ans.append(curr.first, curr.second);
     }
+    
+    return ans; 
+}
 
-    return ans;
+int main()
+{
+    string s;
+    getline(cin, s);
+
+    string result = freqSort(s);
+
+    cout<<result;
+    return 0;
 }
 
 /*

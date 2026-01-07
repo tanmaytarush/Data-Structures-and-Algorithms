@@ -33,29 +33,57 @@ Approach:
 
 Code:*/
 
-long long int substrAtmostK(string s, int k) {
-    long long int ans = 0;
-    unordered_map<char, int> mp;
-    int i = 0;
-    for (int j = 0; j < s.size(); j++) {
-        mp[s[j]]++;
-        
-        while (mp.size() > k) {
-            mp[s[i]]--;
-            if (mp[s[i]] == 0)
-                mp.erase(s[i]);
-            i++;
+#include<iostream>
+#include<algorithm>
+#include<unordered_map>
+#include<string>
+using namespace std;
+
+int atMostKSubstring(string s, int k)
+{
+    int left = 0;
+    int right = 0;
+    int result = 0;
+
+    unordered_map<char, int> freq;
+
+    while(right < s.size())
+    {
+        freq[s[right]]++;
+
+        while(freq.size() > k)
+        {
+            freq[s[left]]--;
+            if(freq[s[left]] == 0)
+            {
+                freq.erase(s[left]);
+            }
+            left++;
         }
-        
-        ans += j - i + 1;
+        result += right - left + 1;
+        right++;
     }
-    return ans;
+    return result;
 }
 
-long long int substrCount(string s, int k) {
-    long long int atmostk = substrAtmostK(s, k);
-    long long int atmostk_1 = substrAtmostK(s, k - 1);
-    return atmostk - atmostk_1;
+int countKSubstrings(string s, int k)
+{
+    return atMostKSubstring(s, k) - atMostKSubstring(s, k-1);
+}
+
+int main()
+{
+    string s;
+    int k;
+
+    getline(cin, s);
+    cin>>k;
+
+    int result = countKSubstrings(s, k);
+    
+    cout<<result;
+
+    return 0;
 }
 
 /*Time Complexity: O(N), where N is the length of the input string.

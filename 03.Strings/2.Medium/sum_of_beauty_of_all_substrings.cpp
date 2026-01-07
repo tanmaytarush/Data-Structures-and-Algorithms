@@ -27,28 +27,56 @@ Approach:
 
 CODE:-
 */
-int get_maxmin(vector<int>& freq){
-    int maxi = INT_MIN, mini = INT_MAX;
-    for(auto it:freq){
-        maxi = max(maxi,it);
-        if(it!=0)
-            mini = min(mini,it);
-    }
-    return (mini==INT_MAX)?0:maxi-mini;
-}    
 
-int beautySum(string s) {
-    int ans = 0;
-    // 2 loops to generate all substrings
-    for(int i=0; i<s.size(); i++){
-        vector<int>freq(26,0);
-        for(int j=i; j<s.size(); j++){
-            freq[s[j]-'a']++;
-            int maxmin = get_maxmin(freq);
-            ans += maxmin;
+#include<iostream>
+#include<vector>
+#include<string>
+#include<algorithm>
+#include<map>
+using namespace std;
+
+int getDiff(vector<int> &freq)
+{
+    int maxi = INT_MIN;
+    int mini = INT_MAX;
+
+    for(auto it : freq)
+    {
+        if(it > 0)
+        {
+            maxi = max(maxi, it);
+            mini = min(mini, it);
         }
     }
-    return ans;
+
+    return (maxi - mini);
+}
+
+int beautySum(string s)
+{
+    int sum = 0;
+    for(int i=0; i<s.size(); ++i)
+    {
+        vector<int> freq(26, 0);
+        for(int j=i; j<s.size(); ++j)
+        {
+            freq[s[j] - 'a']++;
+            sum += getDiff(freq);
+        }
+    }
+    return sum;
+}
+
+int main()
+{
+    string s;
+    getline(cin, s);
+
+    int result = beautySum(s);
+
+    cout<<result;
+
+    return 0;
 }
 
 /*
