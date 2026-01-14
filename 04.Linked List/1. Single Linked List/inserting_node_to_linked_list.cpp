@@ -47,23 +47,76 @@ Space complexity is O(1) as we are not using any extra space that grows with the
 CODE:-
 */
 
-Node *insertAtBegining(Node *head, int x) {
-    if(head==NULL)
-        return new Node(x);
-    Node* temp = new Node(x);
-    temp->next = head;
-    return temp;    
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+
+class Node
+{
+    public:
+    int data;
+    Node* next;
+
+    Node(int data1, Node* next1)
+    {
+        this->data = data1;
+        this->next = next1;
+    }
+
+    Node(int data1)
+    {
+        this->data = data1;
+        this->next = nullptr;
+    }
+
+    static void print(Node* head)
+    {
+        Node* temp = head;
+        while(temp != NULL)
+        {
+            cout<<temp->data<<" ";
+            temp = temp->next;
+        }
+        cout << endl;
+    }
+};
+
+Node* convertArrToLL(vector<int> arr)
+{
+    if(arr.empty()) return nullptr;
+    
+    Node* head = new Node(arr[0]);
+    Node* temp = head;
+    for(int i=1; i<arr.size(); ++i)
+    {
+        temp->next = new Node(arr[i]);
+        temp = temp->next;
+    }
+    return head;
 }
 
+Node* insertNode(int value, Node* head)
+{
+    return new Node(value, head);
+}
 
-//Function to insert a node at the end of the linked list.
-Node *insertAtEnd(Node *head, int x)  {
-    if(head==NULL)
-        return new Node(x);
-    Node* curr = head;
-    while(curr->next){
-        curr = curr->next;
+int main()
+{
+    int n;
+    cin>>n;
+    vector<int> arr(n);
+    
+    for(int i=0; i<n; ++i)
+    {
+        cin>>arr[i];
     }
-    curr->next = new Node(x);
-    return head;
+
+    Node* head = convertArrToLL(arr);
+
+    head = insertNode(14, head);
+
+    Node::print(head);
+
+    return 0;
 }

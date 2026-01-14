@@ -36,17 +36,97 @@ Space complexity is O(1) as we are not using any extra space that grows with the
 CODE:-
 */
 
-Node* deleteNode(Node *head,int x)
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+
+class Node
 {
-    if(x==1)
-        return head->next;
-    
-    int cnt = 1;
-    Node* curr = head;
-    while(cnt<x-1){
-        cnt++;
-        curr = curr->next;
+    public:
+    int data;
+    Node* next;
+
+    Node(int data1, Node* next1)
+    {
+        this->data = data1;
+        this->next = next1;
     }
-    curr->next = curr->next->next;
+
+    Node(int data1)
+    {
+        this->data = data1;
+        this->next = nullptr;
+    }
+
+    static void printLL(Node* head)
+    {
+        Node* temp = head;
+        while(temp != NULL)
+        {
+            cout<<temp->data<<" ";
+            temp = temp->next;
+        }
+        cout<<endl;
+    }
+};
+
+Node* convertArrToLL(vector<int> arr)
+{
+    int n = arr.size();
+    Node* head = new Node(arr[0]);
+    Node* temp = head;
+
+    for(int i=1; i<n; ++i)
+    {
+        temp->next = new Node(arr[i]); // assign next node onwards
+        temp = temp->next;
+    }
     return head;
+}
+
+Node* deleteNode(Node* head, int k)
+{
+    Node* temp = head;
+    Node* mover = head;
+    int count = 0;
+
+    Node* prev = NULL;
+
+    while(temp != NULL)
+    {
+        count++;
+
+        if(count == k)
+        {
+            prev->next = temp->next;
+            free(temp);
+        }
+        prev = temp;
+        temp = temp->next;
+    }
+    return head;
+}
+
+int main()
+{
+    int n;
+    cin>>n;
+    vector<int> arr(n);
+
+    for(int i=0; i<n; ++i)
+    {
+        cin>>arr[i];
+    }
+
+    int k;
+    cin>>k;
+
+    Node* head = convertArrToLL(arr);
+
+    Node* temp = deleteNode(head, k);
+
+    Node::printLL(head);
+
+    return 0;
 }

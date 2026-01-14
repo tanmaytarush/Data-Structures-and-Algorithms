@@ -34,15 +34,57 @@ The approach to construct a linked list from an array is as follows:
 CODE:-
 */
 
-Node* constructLL(vector<int>& arr) {
-    Node* head = new Node(arr[0]);
-    Node* curr = head;
-    for(int i=1; i<arr.size(); i++){
-        curr->next = new Node(arr[i]);
-        curr = curr->next;
+#include<iostream>
+#include<vector>
+#include<math.h>
+using namespace std;
+
+class Node     // declaration of a linkedlist 
+{
+    public:
+    int data;
+    Node* next;
+
+    Node(int data1, Node* next1)
+    {
+        this->data = data1;
+        this->next = next1;
     }
-    return head;
+
+    Node(int data1)
+    {
+        this->data = data1;
+        this->next = nullptr;
+    }
+
+    static void printLL(Node* head)
+    {
+        Node* temp = head;
+        while(temp != NULL)
+        {
+            cout<<temp->data<<" ";
+            temp = temp->next;
+        }
+        cout<<endl;
+    }
+};
+
+int main()
+{
+    // create a new array
+    vector<int> arr = {2, 4, 6, 8};
+
+    // creating a new node
+    Node* y = new Node(arr[0]);
+
+    // printing the memory location of the Node
+    cout<<y<<endl;
+
+    // printing the data in the memory location
+    cout<<y->data<<endl;
 }
+
+
 
 /*
 TIME COMPLEXITY:- O(n)
