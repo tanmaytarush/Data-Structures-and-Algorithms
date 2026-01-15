@@ -26,18 +26,3 @@ Time complexity of this approach is O(N), where N is the number of nodes in the 
 Space complexity is O(1) as we are using a constant amount of extra space to store temporary pointers during the reversal process.
 */
 
-Node* reverseDLL(Node * head)
-{
-    Node* curr = head;
-    Node* ans = NULL;
-    while(curr){
-        Node* nxt = curr->next;
-        curr->next = curr->prev;
-        curr->prev = nxt;
-        // this is to get the last node
-        if(curr->prev==NULL)
-            ans = curr;
-        curr = curr->prev;
-    }
-    return ans;
-}

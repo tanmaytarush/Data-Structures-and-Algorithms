@@ -101,6 +101,39 @@ Node* insertNode(int value, Node* head)
     return new Node(value, head);
 }
 
+
+Node* insertAtK(Node* head, int value, int k)
+{
+    if(head == NULL)
+    {
+        return new Node(value);
+    }
+
+    if(head->next == NULL)
+    {
+        if(k==1)
+        {
+            Node* newHead = new Node(value, head);
+            return newHead;
+        }
+    }
+
+    int count = 0;
+    Node* newNode = new Node(value);
+    Node* temp = head;
+    while(temp != NULL)
+    {
+        count++;
+        if(count == k-1)
+        {
+            newNode->next = temp->next;  // point to temp->next before changing the assignment
+            temp->next = newNode;
+        }
+        temp = temp->next;
+    }
+    return head;
+}
+
 int main()
 {
     int n;
@@ -115,6 +148,8 @@ int main()
     Node* head = convertArrToLL(arr);
 
     head = insertNode(14, head);
+
+    head = insertAtK(head, 18, 3);
 
     Node::print(head);
 
