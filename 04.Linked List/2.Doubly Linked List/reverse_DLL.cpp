@@ -25,18 +25,105 @@ APPROACH:-
 
 CODE:-
 */
-Node* reverseDLL(Node *head) {
+
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+
+class Node
+{
+    public:
+    int data;
+    Node* next;
+    Node* prev;
+
+    Node(int data1, Node* next1, Node* prev1)
+    {
+        this->data = data1;
+        this->next = next1;
+        this->prev = prev1;
+    }
+
+    Node(int data1)
+    {
+        this->data = data1;
+        this->next = nullptr;
+        this->prev = nullptr;
+    }
+
+    static void printLL(Node* head)
+    {
+        Node* temp = head;
+        while(temp!=NULL)
+        {
+            cout<<temp->data<<"->";
+            temp = temp->next;
+        }
+    }
+};
+
+Node* convertArrtoDLL(vector<int> &arr)
+{
+    int n = arr.size();
+    Node* head = new Node(arr[0]);
     Node* curr = head;
-    Node* ans = NULL;
-    while(curr) {
-        Node* nxt = curr->next;
-        curr->next = curr->prev;
-        curr->prev = nxt;
-        if(curr->prev == NULL)
-            ans = curr;
+    Node* temp = head;
+
+    for(int i=1; i<n; ++i)
+    {
+        Node* temp = new Node(arr[i]);
+        curr->next = temp;
+        temp->prev = curr;
+        curr = temp;
+    }
+
+    return head;
+}
+
+Node* reverseDLL(Node* head)
+{
+    Node* curr = head;
+    Node* temp = nullptr;
+
+    while(curr != nullptr)
+    {
+        temp = curr->prev;
+        curr->prev = curr->next;
+        curr->next = temp;
+
+        // move forward, i.e. new previous
         curr = curr->prev;
     }
-    return ans;
+
+    // point to new head
+    if(temp != nullptr)
+    {
+        head = temp->prev;
+    }
+
+    return head;
+}
+
+int main()
+{
+    int n;
+    cin>>n;
+
+    vector<int> arr(n);
+
+    for(int i=0; i<n; ++i)
+    {
+        cin>>arr[i];
+    }
+
+    Node* head = convertArrtoDLL(arr);
+
+    head = reverseDLL(head);
+
+    Node::printLL(head);
+
+    return 0;
 }
 
 /*

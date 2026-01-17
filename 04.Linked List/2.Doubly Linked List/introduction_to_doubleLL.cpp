@@ -26,3 +26,76 @@ Time complexity of this approach is O(N), where N is the number of nodes in the 
 Space complexity is O(1) as we are using a constant amount of extra space to store temporary pointers during the reversal process.
 */
 
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+
+class Node
+{
+    public:
+    int data;
+    Node* next;
+    Node* prev;
+
+    Node(int data1, Node* next1, Node* prev1)
+    {
+        this->data = data1;
+        this->next = next1;
+        this->prev = prev1;
+    }
+
+    Node(int data1)
+    {
+        this->data = data1;
+        this->next = nullptr;
+        this->prev = nullptr;
+    }
+
+    static void printLL(Node* head)
+    {
+        Node* tail = head;
+        while(tail != nullptr)
+        {
+            cout<<tail->data<<"->";
+            tail = tail->next;
+        }   
+    }
+};
+
+Node* convertArrtoDLL(vector<int> &arr)
+{
+    int n = arr.size();
+    Node* head = new Node(arr[0]);
+    Node* curr = head;
+    Node* tail = curr;
+
+    for(int i=1; i<n; ++i)
+    {
+        tail = new Node(arr[i]);
+        curr->next = tail;
+        tail->prev = curr;
+        curr = tail;
+    }
+
+    return head;
+}
+
+int main()
+{
+    int n;
+    cin>>n;
+
+    vector<int> arr(n);
+
+    for(int i=0; i<n; ++i)
+    {
+        cin>>arr[i];
+    }
+
+    Node* head = convertArrtoDLL(arr);
+
+    Node::printLL(head);
+
+    return 0;
+}

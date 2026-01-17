@@ -28,26 +28,141 @@ APPROACH:-
 
 CODE:-
 */
-Node* deleteNode(Node *head_ref, int x) {
-  Node* temp = head_ref;
-  
-  // If the node to be deleted is the head node
-  if (x == 1) {
-    temp = temp->next;
-    return temp;
+
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+
+class Node
+{
+  public:
+  int data;
+  Node* next;
+  Node* prev;
+
+  Node(int data1, Node* next1, Node* prev1)
+  {
+    this->data = data1;
+    this->next = next1;
+    this->prev = prev1;
   }
-  
-  // Traverse to the node just before the position to be deleted
-  for (int i = 1; i < (x - 1); i++) {
+
+  Node(int data1)
+  {
+    this->data = data1;
+    this->next = nullptr;
+    this->prev = nullptr;
+  }
+
+  static void printLL(Node* head)
+  {
+    Node* tail = head;
+    while(tail != NULL)
+    {
+      cout<<tail->data<<"->";
+      tail = tail->next;
+    }
+  }
+};
+
+Node* convertArrtoDLL(vector<int> &arr)
+{
+  int n = arr.size();
+  Node* head = new Node(arr[0]);
+  Node* curr = head;
+  Node* tail = head;
+
+  for(int i=1; i<n; ++i)
+  {
+    tail = new Node(arr[i], nullptr, head);
+    curr->next = tail;
+    curr = tail;
+  }
+  return head;
+}
+
+Node* deleteAfterHead(Node* head)
+{
+  Node* temp = head;
+  Node* removableNode = temp->next;
+  Node* curr = temp->next->next;
+  curr->prev = head;
+  delete(removableNode); // removing the second node
+
+  return head;
+}
+
+Node* deleteBeforeTail(Node* head)
+{
+  Node* temp = head;
+  Node* curr = head;
+
+  while(temp->next != NULL)
+  {
+    curr = temp;
     temp = temp->next;
   }
-  
-  // Store the previous and next nodes of the node to be deleted
-  Node* previous = temp;
-  previous->next = temp->next->next;
-  temp->prev = previous;
-  
-  return head_ref;
+
+  Node* secondLast = temp->prev->prev;
+  temp->prev = secondLast;
+  secondLast->next = temp;
+  delete(curr);
+
+  return head;
+}
+
+Node* deleteAtK(Node* head, int k)
+{
+  int count = 0;
+  Node* temp = head;
+
+  while(temp != NULL)
+  {
+    if(count == k-1)
+    {
+      Node* nextNode = temp->next;
+      Node* prevNode = temp->prev;
+
+      prevNode->next = nextNode;
+      nextNode->prev = prevNode;
+
+      delete(temp);
+    }
+
+    count++;
+    temp = temp->next;
+  }
+
+  return head;
+}
+
+int main()
+{
+  int n;
+  cin>>n;
+
+  vector<int> arr(n);
+
+  for(int i=0; i<n; ++i)
+  {
+    cin>>arr[i];
+  }
+
+  int k;
+  cin>>k;
+
+  Node* head = convertArrtoDLL(arr);
+
+  // head = deleteAfterHead(head);
+
+  // head = deleteBeforeTail(head);
+
+  head = deleteAtK(head, k);
+
+  Node::printLL(head);
+
+  return 0;
 }
 
 /*
