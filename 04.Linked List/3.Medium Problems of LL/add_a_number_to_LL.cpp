@@ -76,7 +76,7 @@ Node* convertArrToLL(vector<int> &arr)
 Node* revLL(Node* head)
 {
     Node* temp = head;
-    if(head == NULL || head->next == NULL)
+    if(head==NULL || head->next==NULL)
     {
         return head;
     }
@@ -89,68 +89,50 @@ Node* revLL(Node* head)
     return newHead;
 }
 
-Node* Add2LL(Node* head1, Node* head2)
+Node* AddNumToLL(Node* head, int num)
 {
-    Node* temp1 = head1;
-    Node* temp2 = head2;
+    head = revLL(head);
 
     int sum = 0;
-    int carry = 0;
-    Node* dummyNode = new Node(-1);
-    Node* curr = dummyNode;
+    int carry = num;
 
-    while(temp1 != NULL || temp2 != NULL)
+    Node* temp = head;
+
+    while(temp != NULL)
     {
-        sum = carry;
-        if(temp1) sum += temp1->data;
-        if(temp2) sum += temp2->data;
-
-        Node* newNode = new Node(sum % 10);
+        sum = temp->data + carry;
+        temp->data = sum%10;
         carry = sum/10;
-        curr->next = newNode;
-        curr = newNode;
 
-        if(temp1) temp1 = temp1->next;
-        if(temp2) temp2 = temp2->next;
+        if(temp == NULL && carry)
+        {
+            Node* newNode = new Node(carry);
+            temp->next = newNode;
+            carry = 0;
+        }
+        temp = temp->next;
     }
 
-    if(carry)
-    {
-        Node* lastNode = new Node(carry);
-        curr->next = lastNode;
-        curr = lastNode;
-        carry = 0;
-    }
-
-    return dummyNode->next;
+    head = revLL(head);
+    return head;
 }
 
 int main()
 {
-    int n, m;
-    cin>>n>>m;
+    int n;
+    cin>>n;
 
-    vector<int> arr1(n);
+    vector<int> arr(n);
     for(int i=0; i<n; ++i)
     {
-        cin>>arr1[i];
+        cin>>arr[i];
     }
 
-    vector<int> arr2(m);
-    for(int i=0; i<m; ++i)
-    {
-        cin>>arr2[i];
-    }
-
-    Node* head1 = convertArrToLL(arr1);
-    Node::printLL(head1);
+    Node* head = convertArrToLL(arr);
+    Node::printLL(head);
     cout<<endl;
 
-    Node* head2 = convertArrToLL(arr2);
-    Node::printLL(head2);
-    cout<<endl;
-
-    Node* head = Add2LL(head1, head2);
+    head = AddNumToLL(head, 5);
     Node::printLL(head);
     cout<<endl;
 
