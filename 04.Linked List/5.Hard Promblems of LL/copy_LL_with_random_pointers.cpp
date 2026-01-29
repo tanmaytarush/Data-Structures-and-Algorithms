@@ -37,34 +37,164 @@ The space complexity is also O(n) because we create a new node for each node in 
 
 CODE:
 */
-Node* copyRandomList(Node* head) {
-    if (head == NULL)
-        return head;
 
-    // inserting dupli node in between
-    Node* orig = head;
-    while (orig) {
-        Node* temp = orig->next;
-        orig->next = new Node(orig->val);
-        orig->next->next = temp;
-        orig = orig->next->next;
+#include<iostream>
+#include<vector>
+#include<map>
+#include<algorithm>
+#include<stack>
+using namespace std;
+
+class Node
+{
+    public:
+    int data;
+    Node* next;
+    Node* random;
+
+    Node(int data1, Node* next1, Node* random1)
+    {
+        this->data = data1;
+        this->next = next1;
+        this->random = random1;
     }
-    // setting random pointers
-    orig = head;
-    while (orig) {
-        if (orig->random && orig->next)
-            orig->next->random = orig->random->next;
-        orig = orig->next->next;
+
+    Node(int data1)
+    {
+        this->data = data1;
+        this->next = nullptr;
+        this->random = nullptr;
     }
-    // setting next pointers and dettaching duplicate nodes from the original list
-    orig = head;
-    Node* ans = orig->next;
-    while (orig && orig->next) {
-        Node* temp = orig->next->next;
-        if (orig->next->next)
-            orig->next->next = orig->next->next->next;
-        orig->next = temp;
-        orig = orig->next;
+
+    static void printLL(Node* head)
+    {
+        Node* temp = head;
+        while(temp != NULL)
+        {
+            cout<<temp->data<<" ";
+            temp = temp->next;
+        }
     }
-    return ans;
+};
+
+Node* convertArrToLL(vector<int> &arr)
+{   
+    int n = arr.size();
+    Node* head = new Node(arr[0]);
+    Node* temp = head;
+    Node* curr = temp;
+
+    for(int i=1; i<n; ++i)
+    {
+        curr = new Node(arr[i]);
+        temp->next = curr;
+        temp = curr;
+    }
+
+    temp = head;
+    while(temp->next->next != NULL)
+    {
+        temp->random = temp->next->random;
+        temp = temp->next;
+    }
+
+    return head;
+}
+
+Node* copyRandomLLMap(Node* head)
+{
+    Node* temp = head;
+    map<Node*, Node*> mpp;
+
+    while(temp != NULL)
+    {
+        Node* newNode = new Node(temp->data);
+        mpp[temp] = newNode;
+        temp = temp->next;
+    }
+
+    temp = head;
+    while(temp != NULL)
+    {
+        Node* copyNode = mpp[temp];
+        copyNode->next = mpp[temp->next];
+        copyNode->random = mpp[temp->random];
+        temp = temp->next;
+    }
+
+    return mpp[head];
+}
+
+void createCopyLL(Node* head)
+{
+    Node* temp = head;
+    while(temp != NULL)
+    {
+        Node* copyNode = new Node(temp->data);
+        copyNode->next = temp->next;
+        temp->next = copyNode;
+        temp = temp->next->next;
+    }
+}
+
+void connectRandom(Node* head)
+{
+    Node* temp = head;
+    while(temp != NULL)
+    {
+        Node* copyNode = temp->next;
+        if(temp->random) copyNode->random = temp->random->next; // if random points to nullptr
+        else copyNode->random = nullptr;
+        temp = temp->next->next;
+    }
+}
+
+Node* returnNewLL(Node* head)
+{
+    Node* dummyNode = new Node(-1);
+    Node* res = dummyNode;
+    Node* temp = head;
+
+    while(temp != NULL)
+    {
+        res->next = temp->next;
+        temp->next = temp->next->next;
+
+        res = res->next;
+        temp = temp->next;
+    }
+
+    return dummyNode->next;
+}
+
+Node* deepCopyLL(Node* head)
+{
+    createCopyLL(head);
+    connectRandom(head);
+    return returnNewLL(head);
+}
+
+int main()
+{
+    int n;
+    cin>>n;
+
+    vector<int> arr(n);
+
+    for(int i=0; i<n; ++i)
+    {
+        cin>>arr[i];
+    }
+
+    Node* head = convertArrToLL(arr);
+    Node::printLL(head);
+    cout<<endl;
+
+    head = copyRandomLLMap(head);
+    Node::printLL(head);
+    cout<<endl;
+
+    head = deepCopyLL(head);
+    Node::printLL(head);
+    cout<<endl;
 }
