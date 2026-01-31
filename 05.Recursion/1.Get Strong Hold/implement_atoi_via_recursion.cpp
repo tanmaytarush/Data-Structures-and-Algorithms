@@ -31,40 +31,5 @@ Time Complexity: O(N), where N is the length of the string.
 Space Complexity: O(N), where N is the length of the string (due to the recursive calls).
 
 CODE:*/
-int getnum(int i, string& str)
-{
-    if (i < 0)
-        return 0;
 
-    if (i == 0) {
-        if (str[i] == '-')
-            return 0;
 
-        int digit = str[i] - '0';
-        if (0 <= digit && digit <= 9) {
-            int prev = getnum(i - 1, str);
-            if (prev != 1e9)
-                return (prev * 10) + digit;
-        }
-        return 1e9;
-    }
-
-    int digit = str[i] - '0';
-    if (0 <= digit && digit <= 9) {
-        int prev = getnum(i - 1, str);
-        if (prev != 1e9)
-            return (prev * 10) + digit;
-    }
-    return 1e9;
-}
-
-int atoi(string str)
-{
-    int i = str.size() - 1;
-    int ans = getnum(i, str);
-    if (ans == 1e9)
-        return -1;
-    if (str[0] == '-')
-        return -1 * ans;
-    return ans;
-}
