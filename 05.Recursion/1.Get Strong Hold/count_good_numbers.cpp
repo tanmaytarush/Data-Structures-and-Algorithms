@@ -31,15 +31,4 @@ Space Complexity: O(n) (due to the recursive calls)
 
 CODE:*/
 
-const long long mod = 1e9 + 7;
 
-int countGoodNumbers(long long n) {
-    // Base case
-    if (n == 1)
-        return 5;
-
-    if (n % 2 == 0)
-        return (countGoodNumbers(n - 1) % mod * 4 % mod);
-    else
-        return (countGoodNumbers(n - 1) % mod * 5 % mod);
-}
