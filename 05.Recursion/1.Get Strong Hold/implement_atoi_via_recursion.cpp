@@ -32,4 +32,59 @@ Space Complexity: O(N), where N is the length of the string (due to the recursiv
 
 CODE:*/
 
+#define LOG(x) cerr << #x << " = " << x << endl;
 
+#include<iostream>
+#include<vector>
+#include<string>
+#include<unordered_map>
+#include<stack>
+#include<math.h>
+using namespace std;
+
+int getNum(int index, string str, int res)
+{
+   LOG(index);
+   LOG(res);
+
+   if(res > INT_MAX) return INT_MAX;
+   else if(res < INT_MIN) return INT_MIN;
+
+   if(index < 0)
+   {
+      LOG(index);
+      return res;
+   }
+
+   if(str[index] < '0' || str[index] > '9')
+   {
+      LOG(index);
+      return -1;
+   }
+
+   int digit = str[index] - '0';
+   LOG(digit);
+
+   res += digit * pow(10, str.size() - 1 - index);
+   LOG(res);
+
+   return getNum(index - 1, str, res);
+}
+
+int resultant(string str)
+{
+   int result = getNum(str.size()-1, str, 0);
+   return result;
+}
+
+int main()
+{
+   string str;
+   getline(cin, str);
+
+   int result = resultant(str);
+
+   cout<<result<<endl;
+
+   return 0;
+}
