@@ -33,6 +33,7 @@ Space Complexity: O(N), where N is the length of the string (due to the recursiv
 CODE:*/
 
 #define LOG(x) cerr << #x << " = " << x << endl;
+const int INVALID = 1000000000;
 
 #include<iostream>
 #include<vector>
@@ -41,6 +42,37 @@ CODE:*/
 #include<stack>
 #include<math.h>
 using namespace std;
+
+int getNumOptimal(int index, string str, long long place)
+{
+   LOG(index);
+
+   if(index < 0)
+   {
+      LOG(index);
+      return 0;
+   }
+
+   if(str[index] < '0' && str[index] > '9')
+   {
+      LOG(index);
+      return INVALID;
+   }
+
+   int prev = getNumOptimal(index - 1, str, place * 10);
+
+   if(prev == INVALID)
+   {
+      return INVALID;
+   }
+
+   long long value = prev + (str[index] - '0') * place;
+
+   if(value > INT_MAX) return INT_MAX;
+   else if(value < INT_MIN) return INT_MIN;
+
+   return value;
+}
 
 int getNum(int index, string str, int res)
 {
@@ -77,14 +109,22 @@ int resultant(string str)
    return result;
 }
 
+int resultantOptimal(string str)
+{
+   int result = getNumOptimal(str.size() - 1, str, 1);
+   return result;
+}
+
 int main()
 {
    string str;
    getline(cin, str);
 
    int result = resultant(str);
-
    cout<<result<<endl;
+
+   int result2 = resultantOptimal(str);
+   cout<<result2<<endl;
 
    return 0;
 }
