@@ -28,24 +28,59 @@ Time Complexity: O(N^2) (due to multiple recursive calls)
 Space Complexity: O(N) (due to the internal stack space used for recursion)
 
 CODE:*/
-void placeAtCorrectPos(int ele, stack<int>& st) {
-	if (st.empty() || st.top() < ele) {
-		st.push(ele);
+
+#include<iostream>
+#include<unordered_map>
+#include<vector>
+#include<stack>
+#include<string>
+#include<algorithm>
+using namespace std;
+
+void insert(stack<int> &st, int temp)
+{
+	if(st.empty() || st.top() <= temp)
+	{
+		st.push(temp);
 		return;
 	}
 
-	int first = st.top();
+	int val = st.top();
 	st.pop();
-	placeAtCorrectPos(ele, st);
-	st.push(first);
+	insert(st, temp);
+
+	st.push(val);
 }
 
-void sortSt(stack<int>& st) {
-	if (st.empty())
-		return;
+void sortStack(stack<int> &s)
+{
+	if(!s.empty())
+	{
+		int temp = s.top();
+		s.pop();
 
-	int first = st.top();
-	st.pop();
-	sortSt(st);
-	placeAtCorrectPos(first, st);
+		sortStack(s);
+		insert(s, temp);
+	}
+}
+
+int main()
+{
+	stack<int> s;
+	s.push(4);
+	s.push(2);
+	s.push(3);
+	s.push(1);
+
+	sortStack(s);
+
+	cout<<"Sorted stack in descending order : "<<endl;
+
+	while(!s.empty())
+	{
+		cout<<s.top()<<" ";
+		s.pop();
+	}
+
+	return 0;
 }
