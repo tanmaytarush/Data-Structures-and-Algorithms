@@ -26,20 +26,96 @@ Space Complexity: O(N), where N is the given number of pairs of parentheses (for
 
 CODE:*/
 
-void solve(vector<string>& ans, string s, int open, int close, int n) {
-	if (open == n && close == n){
-		ans.push_back(s);
-        return;
-    }
+#define LOG(x) cerr << #x <<" "<< x << endl;
 
-	if (open <= n)
-		solve(ans, s + '(', open + 1, close, n);
-	if (open > close)
-		solve(ans, s + ')', open, close + 1, n);
+#include<iostream>
+#include<unordered_map>
+#include<string>
+#include<vector>
+#include<algorithm>
+using namespace std;
+
+bool isValid(string s)
+{
+	int balance = 0;
+	for(char c : s)
+	{
+		if(c == '(')
+		{
+			LOG(balance);
+			balance++;
+		}
+		else balance--;
+		LOG(balance);
+
+		if(balance < 0) return false;
+	}
+
+	return balance == 0;
 }
 
-vector<string> generateParenthesis(int n) {
-	vector<string> ans;
-	solve(ans, "", 0, 0, n);
-	return ans;
+void generateValidParenthesesBruteForce(int n, string curr, vector<string>&result)
+{
+	if(curr.length() == 2*n)
+	{
+		if(isValid(curr))
+		{
+			result.push_back(curr);
+		}
+		return;
+	}
+
+	// curr when picked (
+	generateValidParenthesesBruteForce(n, curr + '(', result);
+	// curr when picked )
+	generateValidParenthesesBruteForce(n, curr + ')', result);
+}
+
+void backtrack(int n, string curr, int open, int close, vector<string>&result)
+{
+	if(curr.length() == 2*n)
+	{
+		result.push_back(curr);
+		return;
+	}
+
+	if(open < n) backtrack(n, curr + '(', open + 1, close, result);
+	if(open > close) backtrack(n, curr + ')', open, close + 1, result);
+}
+
+vector<string> generateValidParenthesesOptimal(int n)
+{
+	vector<string> result;
+	string curr = "";
+
+	backtrack(n, curr, 0, 0, result);
+
+	return result;
+}
+
+int main()
+{
+	int n;
+	cin>>n;
+
+	string curr = "";
+	vector<string> result1;
+
+	generateValidParenthesesBruteForce(n, curr, result1);
+
+	for(string str : result1)
+	{
+		cout<<str<<" ";
+	}
+	cout<<endl;
+
+	vector<string> result2 = generateValidParenthesesOptimal(n);
+
+	for(string str : result2)
+	{
+		cout<<str<<" ";
+	}
+	cout<<endl;
+
+	return 0;
 }
