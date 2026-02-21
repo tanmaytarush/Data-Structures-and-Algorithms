@@ -23,24 +23,5 @@ Time Complexity: O(N^2) (due to multiple recursive calls)
 Space Complexity: O(N) (due to the internal stack space used for recursion)
 
 CODE:*/
-void insertAtBottom(int ele, stack<int>& stack) {
-    if (stack.empty()) {
-        stack.push(ele);
-        return;
-    }
 
-    int temp = stack.top();
-    stack.pop();
-    insertAtBottom(ele, stack);
-    stack.push(temp);
-}
 
-void reverseStack(stack<int>& stack) {
-    if (stack.empty())
-        return;
-
-    int first = stack.top();
-    stack.pop();
-    reverseStack(stack);
-    insertAtBottom(first, stack);
-}

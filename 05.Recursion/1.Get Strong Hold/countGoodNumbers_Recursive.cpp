@@ -55,51 +55,37 @@ CODE:*/
 #define MOD 1000000007;
 
 #include<iostream>
-#include<vector>
-#include<algorithm>
-#include<stack>
 #include<unordered_map>
+#include<stack>
+#include<vector>
 #include<string>
+#include<algorithm>
 using namespace std;
-
-bool isPrime(int n)
-{
-    bool prime = true;
-    for(int i=2; i<n; ++i)
-    {
-        if(n % i == 0)
-        {
-            prime = false;
-        }
-    }
-    return prime;
-}
 
 long long power(long long base, long long exp)
 {
-    int result = 1;
-    while(exp > 0)
+    if(exp == 0)
     {
-        if(exp % 2 == 1)
-        {
-            result = (result * base) % MOD; // considering extra product if exp is odd
-        }
+        LOG(exp);
+        return 1;
+    } 
+    long long half = power(base, exp / 2);
+    LOG(half);
+    long long result = (half * half) % MOD;
+    LOG(result);
 
-        base = (base * base) % MOD;
-        exp = exp / 2;
+    if(exp % 2 == 1)
+    {
+        LOG(exp);
+        result = (result * base) % MOD;
     }
+
     return result;
 }
 
 int countGoodNumbers(long long n)
 {
-    long long even = (n+1) / 2;
-    long long odd = n/2;
-
-    long long evenResult = power(5, even); // 5 values which are even between 0 and 9
-    long long oddResult = power(4, odd); // 4 values which are odd between 0 and 9
-
-    return (evenResult * oddResult) % MOD;
+    return (long long)(power(5, (n + 1) / 2) * power(4, n/2)) % MOD;
 }
 
 int main()
@@ -109,7 +95,7 @@ int main()
 
     int result = countGoodNumbers(n);
 
-    cout<<result<<" ";
+    cout<<result<<endl;
 
-    cout<<endl;
+    return 0;
 }
