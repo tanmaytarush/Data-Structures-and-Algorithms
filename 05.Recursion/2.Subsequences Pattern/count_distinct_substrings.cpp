@@ -26,25 +26,44 @@ Time Complexity: O(2^N), where N is the length of the input string 's'.
 Space Complexity: O(2^N), where N is the length of the input string 's' (for storing the distinct subsequences in the set).
 
 CODE:*/
-unordered_set<string> st;
 
-void solve(string& s, int index, string& temp) {
-	if (index == s.size()) {
-		st.insert(temp);
+#define LOG(x) cerr << #x << " " << x <<endl;
+
+#include<iostream>
+#include<vector>
+#include<string>
+#include<unordered_set>
+#include<algorithm>
+using namespace std;
+
+void countDistinctSubstring(int index, string &str, string curr, unordered_set<string> &st)
+{
+	if(index == str.length())
+	{
+		st.insert(curr);
 		return;
 	}
 
-	// Include the character at the current index
-	temp.push_back(s[index]);
-	solve(s, index + 1, temp);
-
-	// Exclude the character at the current index
-	temp.pop_back();
-	solve(s, index + 1, temp);
+	// result.push_back(str);
+	countDistinctSubstring(index + 1, str, curr + str[index], st);
+	// result.pop_back();
+	countDistinctSubstring(index + 1, str, curr, st);
 }
 
-int distinctSubsequences(string s) {
-	string temp = "";
-	solve(s, 0, temp);
-	return st.size() % (int)(1e9 + 7);
+int main()
+{
+	string str;
+	getline(cin, str);
+
+	unordered_set<string> st;
+
+	countDistinctSubstring(0, str, "", st);
+
+	cout<<st.size()<<endl;
+
+	return 0;
 }
+
+
+// Time - O(2^N)
+// Space - O(N)
