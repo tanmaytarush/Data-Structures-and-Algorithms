@@ -27,27 +27,5 @@ Time Complexity: O(3^N * 4^M), where N is the number of digits that map to 3 let
 Space Complexity: O(N + M), where N is the number of digits that map to 3 letters and M is the number of digits that map to 4 letters.
 
 CODE:*/
-void solve(int index, string digits, string& temp, vector<string>& ans, vector<string>& mp) {
-    if (index == digits.size()) {
-        ans.push_back(temp);
-        return;
-    }
 
-    int num = digits[index] - '0';
-    for (int i = 0; i < mp[num].size(); i++) {
-        temp.push_back(mp[num][i]);
-        solve(index + 1, digits, temp, ans, mp);
-        temp.pop_back();
-    }
-}
 
-vector<string> letterCombinations(string digits) {
-    if (digits.empty())
-        return {};
-
-    vector<string> mp{"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
-    string temp = "";
-    vector<string> ans;
-    solve(0, digits, temp, ans, mp);
-    return ans;
-}

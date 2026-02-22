@@ -24,24 +24,57 @@ Time Complexity: O(N * sum), where N is the size of the array and sum is the giv
 Space Complexity: O(N * sum), where N is the size of the array and sum is the given sum (for recursion stack).
 
 CODE:*/
-int solve(int index, int sum, int arr[]) {
-	if (sum == 0) {
-		return 1;
+
+#define LOG(x) cerr << #x <<" "<< x <<endl;
+
+#include<iostream>
+#include<vector>
+#include<unordered_map>
+#include<string>
+#include<algorithm>
+#include<stack>
+using namespace std;
+
+int countSubsetsWithSumK(int index, int s, int sum, vector<int> &arr)
+{
+	if(index == arr.size())
+	{
+		if(s == sum)
+		{
+			return 1;
+		}
+		else return 0;
 	}
-	if (index == 0) {
-		return (arr[0] == sum) ? 1 : 0;
-	}
 
-	int include = 0;
-	if (arr[index] <= sum)
-		include = solve(index - 1, sum - arr[index], arr); // include
+	s += arr[index];
 
-	int exclude = solve(index - 1, sum, arr); // exclude
+	int l = countSubsetsWithSumK(index + 1, s, sum, arr);
 
-	return (include + exclude) % (int)(1e9 + 7);
+	s -= arr[index];
+
+	int r = countSubsetsWithSumK(index + 1, s, sum, arr);
+
+	return l+r;
 }
 
-int perfectSum(int arr[], int n, int sum) {
-	int cnt = solve(n - 1, sum, arr);
-	return cnt % (int)(1e9 + 7);
-}
+int main()
+{
+	int n;
+	cin>>n;
+
+	vector<int> arr(n);
+
+	for(int i=0; i<n; ++i)
+	{
+		cin>>arr[i];
+	}
+
+	int sum;
+	cin>>sum;
+
+	int count = countSubsetsWithSumK(0, 0, sum, arr);
+
+	cout<<count<<endl;
+
+	return 0;
+}	

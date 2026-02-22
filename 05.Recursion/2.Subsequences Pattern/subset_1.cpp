@@ -31,20 +31,5 @@ Time Complexity: O(2^N), where N is the size of the array.
 Space Complexity: O(N), where N is the size of the array (for recursion stack and storing subset sums).
 
 CODE:*/
-void solve(int index, int sum, vector<int>& arr, vector<int>& ans) {
-	if (index == arr.size()) {
-		ans.push_back(sum);
-		return;
-	}
 
-	solve(index + 1, sum + arr[index], arr, ans);
-	solve(index + 1, sum, arr, ans);
-}
 
-vector<int> subsetSums(vector<int> arr, int N) {
-	vector<int> ans;
-	int sum = 0;
-	solve(0, sum, arr, ans);
-	sort(ans.begin(), ans.end());
-	return ans;
-}
