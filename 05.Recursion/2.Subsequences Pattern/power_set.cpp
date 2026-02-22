@@ -29,24 +29,48 @@ Time Complexity: O(2^N), where N is the size of the input array 'nums'.
 Space Complexity: O(N), where N is the size of the input array 'nums' (for the recursion stack and storing subsets).
 
 CODE:*/
-void solve(vector<vector<int>>& ans, vector<int>& temp, vector<int>& nums, int index) {
-	if (index == nums.size()) {
-		ans.push_back(temp);
-		return;
+
+#define LOG(x) cerr << #x << " " << x << endl;
+#define MOD 1000000007;
+
+#include<iostream>
+#include<unordered_map>
+#include<vector>
+#include<string>
+#include<algorithm>
+#include<math.h>
+using namespace std;
+
+vector<string> powerSet(string str)
+{
+	vector<string> result;
+	int n = str.length();
+	for(int i=0; i<(1 << n); ++i) // to the power 2**n
+	{
+		string sub = "";
+		for(int j=0; j<n; ++j)
+		{
+			if(i & (1 << j))
+			{
+				sub += str[j];
+			}
+		}
+		result.push_back(sub);
 	}
-
-	// Include the element at the current index
-	temp.push_back(nums[index]);
-	solve(ans, temp, nums, index + 1);
-
-	// Exclude the element at the current index
-	temp.pop_back();
-	solve(ans, temp, nums, index + 1);
+	return result;
 }
 
-vector<vector<int>> subsets(vector<int>& nums) {
-	vector<vector<int>> ans;
-	vector<int> temp;
-	solve(ans, temp, nums, 0);
-	return ans;
+int main()
+{
+	string str;
+	getline(cin, str);
+
+	vector<string> result = powerSet(str);
+
+	for(string s : result)
+	{
+		cout<<s<<" ";
+	}
+
+	return 0;
 }
