@@ -30,28 +30,59 @@ Space Complexity: O(N), where N is the size of the input array nums. This is the
 
 CODE:*/
 
-void solve(int index, vector<int>& nums, vector<int>& temp, vector<vector<int>>& ans){
-    if(index==nums.size()){
-        ans.push_back(temp);
-        return;
+#define LOG(x) cerr<<#x<<" "<<x<<endl;
+
+#include<iostream>
+#include<vector>
+#include<string>
+#include<algorithm>
+using namespace std;
+
+void solve(int index, vector<int> &arr, vector<vector<int>> &ans, vector<int> &ds)
+{
+    ans.push_back(ds);
+
+    for(int i=index; i<arr.size(); ++i)
+    {
+        if(i != index && arr[i] == arr[i-1]) continue;
+
+        //pick up the element
+        ds.push_back(arr[i]);
+        solve(i + 1, arr, ans, ds); // no value reduction like sum, so only one call
+        ds.pop_back();
     }
-    // to include
-    temp.push_back(nums[index]);
-    solve(index+1,nums,temp,ans);
-    temp.pop_back();
-
-    // to remove duplicates
-    while(index+1<nums.size() && nums[index]==nums[index+1])
-        index++;
-
-    // to exclude
-    solve(index+1,nums,temp,ans);
 }
 
-vector<vector<int>> subsetsWithDup(vector<int>& nums) {
-	sort(nums.begin(), nums.end());
-	vector<vector<int>> ans;
-	vector<int> temp;
-	solve(0, nums, temp, ans);
-	return ans;
+vector<vector<int>> subsetSum(vector<int> &arr)
+{
+    vector<vector<int>> ans;
+    vector<int> ds;
+    sort(arr.begin(), arr.end());
+    solve(0, arr, ans, ds);
+    return ans;
+}
+
+int main()
+{
+    int n;
+    cin>>n;
+
+    vector<int> arr(n);
+    for(int i=0; i<n; ++i)
+    {
+        cin>>arr[i];
+    }
+
+    vector<vector<int>> result = subsetSum(arr);
+
+    for(auto nums : result)
+    {
+        for(auto it : nums)
+        {
+            cout<<it<<" ";
+        }   
+        cout<<endl;
+    }
+
+    return 0;
 }

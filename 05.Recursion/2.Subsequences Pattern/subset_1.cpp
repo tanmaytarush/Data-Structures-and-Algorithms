@@ -32,4 +32,55 @@ Space Complexity: O(N), where N is the size of the array (for recursion stack an
 
 CODE:*/
 
+#define LOG(x) cerr<<#x<<" "<<x<<endl;
 
+#include<iostream>
+#include<vector>
+#include<string>
+#include<algorithm>
+using namespace std;
+
+void solve(int index, int sum, vector<int> &arr, vector<int> &sumSubset)
+{
+	if(index == arr.size())
+	{
+		sumSubset.push_back(sum);
+		return;
+	}
+
+	// pick the given element
+	solve(index + 1, sum + arr[index], arr, sumSubset);
+
+	// do not pick the element
+	solve(index + 1, sum, arr, sumSubset);
+}
+
+vector<int> subsetSum(vector<int> &arr)
+{
+	vector<int> sumSubset;
+	solve(0, 0, arr, sumSubset);
+	sort(sumSubset.begin(), sumSubset.end());
+	return sumSubset;
+}
+
+int main()
+{
+	int n;
+	cin>>n;
+
+	vector<int> arr(n);
+
+	for(int i=0; i<n; ++i)
+	{
+		cin>>arr[i];
+	}
+
+	vector<int> result = subsetSum(arr);
+
+	for(auto it : result)
+	{
+		cout<<it<<" ";
+	}
+
+	return 0;
+}

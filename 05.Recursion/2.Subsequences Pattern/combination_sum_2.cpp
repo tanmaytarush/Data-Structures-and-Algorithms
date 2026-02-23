@@ -28,31 +28,67 @@ Time Complexity: O(N * 2^N), where N is the size of the array of candidates. In 
 Space Complexity: O(target), as the maximum depth of the recursion tree is determined by the target sum.
 
 CODE:*/
-void solve(int index, int target, vector<int>& candidates, vector<int>& temp, vector<vector<int>>& ans) {
-    if (target == 0) {
-        ans.push_back(temp);
+
+#define LOG(x) cerr<<#x<<" "<<x<<endl;
+
+#include<iostream>
+#include<unordered_map>
+#include<stack>
+#include<vector>
+#include<algorithm>
+using namespace std;
+
+void solve(int index, int target, vector<int> &arr, vector<vector<int>> &ans, vector<int> &ds)
+{
+    if(target == 0) 
+    {
+        ans.push_back(ds);
         return;
     }
 
-    if (index == candidates.size() || target < 0)
-        return;
-
-    if (candidates[index] <= target) {
-        temp.push_back(candidates[index]);
-        solve(index + 1, target - candidates[index], candidates, temp, ans);
-        temp.pop_back();
+    for(int i=index; i<arr.size(); ++i)
+    {
+        if(i > index && arr[i] == arr[i - 1]) continue; // continue if same element and not first element
+        if(arr[i] > target) break;
+        ds.push_back(arr[i]);
+        solve(i + 1, target - arr[i], arr, ans, ds);
+        ds.pop_back();
     }
-
-    while (index + 1 < candidates.size() && candidates[index] == candidates[index + 1])
-        index++;
-
-    solve(index + 1, target, candidates, temp, ans);
 }
 
-vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+vector<vector<int>> combinationSum(vector<int> &arr, int target)
+{
+    sort(arr.begin(), arr.end()); // sorting is important for above algo
     vector<vector<int>> ans;
-    vector<int> temp;
-    sort(candidates.begin(), candidates.end());
-    solve(0, target, candidates, temp, ans);
+    vector<int> ds;
+    solve(0, target, arr, ans, ds);
     return ans;
+}
+
+int main()
+{
+    int n;
+    cin>>n;
+
+    vector<int> arr(n);
+    for(int i=0; i<n; ++i)
+    {
+        cin>>arr[i];
+    }
+
+    int target;
+    cin>>target;
+
+    vector<vector<int>> result = combinationSum(arr, target);
+
+    for(auto list : result)
+    {
+        for(auto it : list)
+        {
+            cout<<it<<" ";
+        }
+        cout<<endl;
+    }
+
+    return 0;
 }

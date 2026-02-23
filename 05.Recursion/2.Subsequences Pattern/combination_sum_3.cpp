@@ -30,32 +30,5 @@ Time Complexity: O(2^9), as there are 9 available numbers and we have to explore
 Space Complexity: O(k), as the maximum depth of the recursion tree is determined by the number of elements to choose (k).
 
 CODE:*/
-void solve(int i, int k, int tar, vector<int>& nums, vector<int>& temp, vector<vector<int>>& ans) {
-    if (tar == 0 && temp.size() == k) {
-        ans.push_back(temp);
-        return;
-    }
 
-    if (i == nums.size() || tar < 0)
-        return;
 
-    if (nums[i] <= tar) {
-        temp.push_back(nums[i]);
-        solve(i + 1, k, tar - nums[i], nums, temp, ans);
-        temp.pop_back();
-    }
-
-    solve(i + 1, k, tar, nums, temp, ans);
-}
-
-vector<vector<int>> combinationSum3(int k, int n) {
-    vector<int> nums;
-    for (int i = 1; i <= 9; i++) {
-        nums.push_back(i);
-    }
-
-    vector<vector<int>> ans;
-    vector<int> temp;
-    solve(0, k, n, nums, temp, ans);
-    return ans;
-}
