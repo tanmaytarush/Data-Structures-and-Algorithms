@@ -31,4 +31,80 @@ Space Complexity: O(k), as the maximum depth of the recursion tree is determined
 
 CODE:*/
 
+#define LOG(x) cerr << #x << " "<< x <<endl;
 
+#include<iostream>
+#include<vector>
+#include<string>
+#include<algorithm>
+#include<unordered_map>
+using namespace std;
+
+void solve(int index, int k, int n, vector<int>&arr, vector<vector<int>>&ans, vector<int> &ds)
+{
+    if(k==0 && n==0)
+    {
+        ans.push_back(ds);
+        return;
+    }
+
+    if(k==0 || n<0)
+    {
+        return;
+    }
+
+    for(int i=index; i<10; ++i)
+    {
+        LOG(i);
+        if(i > n) break;
+        // pick up the element
+        ds.push_back(i);
+        solve(i+1, k-1, n-i, arr, ans, ds);
+
+        LOG(i);
+        LOG(n);
+        LOG(k);
+        ds.pop_back();
+        // solve(i+1, k, n, arr, ans, ds);   // all to be picked, that's why no leaving operation
+    }
+}
+
+vector<vector<int>> combinationSum(int k, int n)
+{
+    vector<int> arr;
+    vector<vector<int>> ans;
+    vector<int> ds;
+    solve(1, k, n, arr, ans, ds);
+    return ans;
+}
+
+int main()
+{
+    int n;
+    cin>>n;
+
+    vector<int> arr(n);
+    for(int i=0; i<n; ++i)
+    {
+        cin>>arr[i];
+    }
+
+    int count;
+    cin>>count;
+
+    int s;
+    cin>>s;
+
+    vector<vector<int>> result = combinationSum(count, s);
+
+    for(auto arr : result)
+    {
+        for(auto it : arr)
+        {
+            cout<<it<<" ";
+        }
+        cout<<endl;
+    }
+
+    return 0;
+}

@@ -28,4 +28,61 @@ Space Complexity: O(N + M), where N is the number of digits that map to 3 letter
 
 CODE:*/
 
+#define LOG(x) cerr<<#x<<" "<<x<<endl;
 
+#include<iostream>
+#include<unordered_map>
+#include<vector>
+#include<string>
+using namespace std;
+
+void solve(int index, string digits, string curr, unordered_map<char, string>&keypad, vector<string>&result)
+{
+   if(curr.length() == digits.length())
+   {
+      result.push_back(curr);
+      return;
+   }
+
+   for(char letter : keypad[digits[index]])
+   {  
+      curr.push_back(letter);
+      solve(index + 1, digits, curr, keypad, result);
+      curr.pop_back();
+   }
+}
+
+vector<string> letterCombinations(string digits)
+{
+   unordered_map<char, string> keypad = {
+      {'2', "abc"}, {'3', "def"}, {'4', "ghi"},
+      {'5', "jkl"}, {'6', "mno"}, {'7', "pqrs"},
+      {'8', "tuv"}, {'9', "wxyz"}
+   };
+
+   vector<string> result;
+   string curr = "";
+   solve(0, digits, curr, keypad, result);
+   return result;
+}
+
+int main()
+{
+   string digits;
+   getline(cin, digits);
+
+   unordered_map<char, string> keypad;
+
+   vector<string> result = letterCombinations(digits);
+
+   for(auto str : result)
+   {
+      for(auto it : str)
+      {
+         cout<<it<<" ";
+      }
+      cout<<endl;
+   }
+
+   return 0;
+}
