@@ -36,37 +36,90 @@ Time Complexity: O(3^(N^2)), where N is the size of the matrix. In the worst cas
 Space Complexity: O(N^2), as we are using a vector of strings to store the paths.
 
 CODE:*/
-bool isValid(int i, int j, vector<vector<int>>& m, int n) {
-    if (i < 0 || i >= n || j < 0 || j >= n || m[i][j] == 0)
-        return false;
-    return true;
-}
 
-void solve(int i, int j, string temp, vector<string>& ans, vector<vector<int>>& m, int n) {
-    if (i == n - 1 && j == n - 1) {
-        ans.push_back(temp);
+#define LOG(x) cerr<<#x<<" "<<x<<endl;
+
+#include<iostream>
+#include<unordered_map>
+#include<vector>
+#include<string>
+#include<algorithm>
+using namespace std;
+
+void solve(int i, int j, vector<vector<int>>&m, int n, string move, vector<vector<int>>&vis, vector<string>&ans)
+{
+    if(i==n-1 && j==n-1)
+    {
+        ans.push_back(move);
         return;
     }
 
-    if (!isValid(i, j, m, n))
-        return;
+    // moving downwards
+    if(i+1<n && !vis[i+1][j] && m[i+1][j]==1)
+    {
+        vis[i][j] = 1;
+        solve(i+1, j, m, n, move+"D", vis, ans);
+        vis[i][j] = 0;
+    }
 
-    m[i][j] = 0;
+    // moving leftwards
+    if(j-1>=0 && !vis[i][j-1] && m[i][j-1]==1)
+    {
+        vis[i][j] = 1;
+        solve(i, j-1, m, n, move+"L", vis, ans);
+        vis[i][j] = 0;
+    }
 
-    solve(i, j - 1, temp + 'L', ans, m, n);
-    solve(i, j + 1, temp + 'R', ans, m, n);
-    solve(i - 1, j, temp + 'U', ans, m, n);
-    solve(i + 1, j, temp + 'D', ans, m, n);
+    // moving rightwards
+    if(j+1<n && !vis[i][j+1] && m[i][j+1]==1)
+    {
+        vis[i][j] = 1;
+        solve(i, j+1, m, n, move+"R", vis, ans);
+        vis[i][j] = 0;
+    }
 
-    m[i][j] = 1;
+    // moving upwards
+    if(i-1>=0 && !vis[i-1][j] && m[i-1][j]==1)
+    {
+        vis[i][j] = 1;
+        solve(i-1, j, m, n, move+"U", vis, ans);
+        vis[i][j] = 0;
+    }
 }
 
-vector<string> findPath(vector<vector<int>>& m, int n) {
-    if (m[0][0] == 0 || m[n - 1][n - 1] == 0)
-        return {};
-
+vector<string> ratInMaze(vector<vector<int>>&m, int n)
+{
     vector<string> ans;
-    string temp = "";
-    solve(0, 0, temp, ans, m, n);
+    vector<vector<int>> visited(n, vector<int>(n, 0));
+    string move = "";
+    
+    if(m[0][0] == 1) solve(0, 0, m, n, move, visited, ans);
+
     return ans;
+}
+
+int main()
+{
+    int n;
+    cin>>n;
+
+    LOG(n);
+
+    vector<vector<int>> arr(n, vector<int>(n)); // important to reduce segmentation fault
+    for(int i=0; i<n; ++i)
+    {
+        for(int j=0; j<n; ++j)
+        {
+            cin>>arr[i][j];
+        }
+    }
+
+    vector<string> result = ratInMaze(arr, n);
+
+    for(auto &it : result)
+    {
+        cout<<it<<endl;
+    }
+
+    return 0;
 }
