@@ -26,36 +26,78 @@ Time Complexity: O(N * 2^N), where N is the length of the input string 's'. In t
 Space Complexity: O(N), where N is the length of the input string 's'. The space is used for storing the temporary partition vector and the vector of partitions.
 
 CODE:*/
-bool isPalindrome(string& palin){
-    int i = 0, j = palin.size() - 1;
-    while (i < j) {
-        if (palin[i] != palin[j])
-            return false;
-        i++;
-        j--;
-    }
-    return true;
+
+#define LOG(x) cerr << #x <<" "<<x<<endl;
+
+#include<iostream>
+#include<unordered_map>
+#include<string>
+#include<vector>
+#include<algorithm>
+using namespace std;
+
+bool isPalindrome(string &palin)
+{
+   int i=0;
+   int j=palin.size()-1;
+   while(i<j)
+   {
+      if(palin[i] != palin[j]) return false;
+      i++;
+      j--;
+   }
+   return true;
 }
 
-void solve(int i, string& s, vector<string>& temp, vector<vector<string>>& ans) {
-    if (i >= s.size()) {
-        ans.push_back(temp);
-        return;
-    }
+void solvePartition(int index, string &palin, vector<string> &palindromes, vector<vector<string>> &ans)
+{
+   if(index == palin.size())
+   {
+      ans.push_back(palindromes);
+      return;
+   }
 
-    for (int p = i; p < s.size(); p++) {
-        string palin = s.substr(i, p - i + 1);
-        if (isPalindrome(palin)) {
-            temp.push_back(palin);
-            solve(p + 1, s, temp, ans);
-            temp.pop_back();
-        }
-    }
+   for(int i=index; i<palin.size(); ++i)
+   {
+      string curr = palin.substr(index, i-index+1); // generating check on substrings (important)
+      
+      if(isPalindrome(curr)) 
+      {
+         LOG(curr);
+         palindromes.push_back(curr);
+         LOG(curr);
+         solvePartition(i+1, palin, palindromes, ans);
+         LOG(curr);
+         palindromes.pop_back();
+      }
+   }
 }
 
-vector<vector<string>> partition(string s) {
-    vector<vector<string>> ans;
-    vector<string> temp;
-    solve(0, s, temp, ans);
-    return ans;
+vector<vector<string>> palindromePartitioning(string &palin)
+{
+   vector<vector<string>> ans;
+   vector<string> palindromes;
+
+   solvePartition(0, palin, palindromes, ans);
+
+   return ans;
+}
+
+int main()
+{
+   string str;
+   getline(cin, str);
+
+   vector<vector<string>> result = palindromePartitioning(str);
+
+   for(auto arr : result)
+   {
+      for(auto it : arr)
+      {
+         cout<<it<<" ";
+      }
+      cout<<endl;
+   }
+
+   return 0;
 }

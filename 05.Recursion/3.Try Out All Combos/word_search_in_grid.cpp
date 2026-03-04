@@ -41,53 +41,73 @@ CODE:*/
 // this makes code quite big but if you want to make it compact you could make call for all four cases and after call check if it's valid
 // just check the code of rat in maze for shorter code
 
-bool flag = false;
+#define LOG(x) cerr<<#x<<" "<<x<<endl;
 
-void solve(int i, int j, int ltr, string& word, vector<vector<char>>& board) {
-    if (ltr == word.size()) {
-        flag = true;
-        return;
-    }
+#include<iostream>
+#include<vector>
+#include<string>
+#include<unordered_map>
+#include<algorithm>
+using namespace std;
 
-    // left
-    if (j - 1 >= 0 && board[i][j - 1] == word[ltr]) {
-        board[i][j - 1] = '!';
-        solve(i, j - 1, ltr + 1, word, board);
-        board[i][j - 1] = word[ltr];
-    }
-    // right
-    if (j + 1 < board[0].size() && board[i][j + 1] == word[ltr]) {
-        board[i][j + 1] = '!';
-        solve(i, j + 1, ltr + 1, word, board);
-        board[i][j + 1] = word[ltr];
-    }
-    // top
-    if (i - 1 >= 0 && board[i - 1][j] == word[ltr]) {
-        board[i - 1][j] = '!';
-        solve(i - 1, j, ltr + 1, word, board);
-        board[i - 1][j] = word[ltr];
-    }
-    // bottom
-    if (i + 1 < board.size() && board[i + 1][j] == word[ltr]) {
-        board[i + 1][j] = '!';
-        solve(i + 1, j, ltr + 1, word, board);
-        board[i + 1][j] = word[ltr];
-    }
-}
-
-bool exist(vector<vector<char>>& board, string word) {
-    flag = false;
-
-    for (int i = 0; i < board.size(); i++) {
-        for (int j = 0; j < board[0].size(); j++) {
-            if (board[i][j] == word[0]) {
-                board[i][j] = '!';
-                solve(i, j, 1, word, board);
-                board[i][j] = word[0];
-                if (flag)
-                    return true;
+class Solution
+{
+    private:
+        bool dfs(vector<vector<char>> &board, string word, int i, int j, int idx)
+        {
+            if(idx == word.size())
+            {
+                return true;
             }
+
+            if(i<0 || j<0 || i>=board.size() || j>=board[0].size() || board[i][j] != word[idx])
+            {
+                return false;
+            }
+
+            char temp = board[i][j];
+            board[i][j] = '#';
+
+            bool found = dfs(board, word, i+1, j, idx+1) ||
+                        dfs(board, word, i-1, j, idx+1) ||
+                        dfs(board, word, i, j+1, idx+1) ||
+                        dfs(board, word, i, j-1, idx+1);
+
+            board[i][j] = temp;
+
+            return found;
         }
-    }
-    return false;
+
+    public:
+        bool exist(vector<vector<char>> &board, string word)
+        {
+            int rows = board.size();
+            int cols = board[0].size();
+
+            for(int i=0; i<rows; ++i)
+            {
+                for(int j=0; j<cols; ++j)
+                {
+                    if(dfs(board, word, i, j, 0))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+};
+
+int main()
+{
+    Solution sol;
+
+    vector<vector<char>> board = {
+        {'A','B','C','E'},
+        {'S','F','C','S'},
+        {'A','D','E','E'}
+    };
+    cout << boolalpha << sol.exist(board, "ABCCED") << endl; // true
+    cout << boolalpha << sol.exist(board, "SEE") << endl;    // true
+    cout << boolalpha << sol.exist(board, "ABCB") << endl;   // false
 }
