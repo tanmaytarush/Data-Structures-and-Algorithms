@@ -17,26 +17,62 @@
  * Space Complexity: O(N), where N is the length of the string. The recursion stack can go up to N in the worst case.
  */
 
-bool solve(int index, string& s, unordered_set<string>& dict) {
-    if (index >= s.size()) {
+#define LOG(x) cerr<<#x<<" "<<x<<endl;
+
+#include<iostream>
+#include<unordered_map>
+#include<string>
+#include<vector>
+#include<unordered_set>
+#include<algorithm>
+using namespace std;
+
+bool solve(int index, string str, int n, unordered_set<string>&dict)
+{
+    if(index == n)
+    {
         return true;
     }
 
-    for (int i = index; i < s.size(); i++) {
-        string temp = s.substr(index, i - index + 1);
-
-        if (dict.find(temp) != dict.end() && solve(i + 1, s, dict)) {
-            return true;
+    for(int i=index; i<n; ++i)
+    {
+        string s = str.substr(index, i-index+1);
+        if(dict.find(s) != dict.end())
+        {
+            if(solve(i+1, str, n, dict))
+            {
+                return true;
+            }
         }
     }
-
     return false;
 }
 
-bool wordBreak(string s, vector<string>& wordDict) {
-    unordered_set<string> dict;
-    for (int i = 0; i < wordDict.size(); i++) {
-        dict.insert(wordDict[i]);
+bool wordBreak(string str, vector<string>&wordDict)
+{
+    unordered_set<string> dict(wordDict.begin(), wordDict.end());
+    int n = str.length();
+    bool result = solve(0, str, n, dict);
+    return result;
+}
+
+int main()
+{
+    string str;
+    getline(cin, str);
+
+    int n;
+    cin>>n;
+
+    vector<string> words(n);
+    for(int i=0; i<n; ++i)
+    {
+        cin>>words[i];
     }
-    return solve(0, s, dict);
+
+    bool res = wordBreak(str, words);
+
+    cout<<res<<endl;
+
+    return 0;
 }

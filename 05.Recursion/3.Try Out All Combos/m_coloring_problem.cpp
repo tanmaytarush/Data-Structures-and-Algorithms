@@ -23,33 +23,73 @@ Time Complexity: O(M^N), where M is the number of colors and N is the number of 
 Space Complexity: O(N), as we are using an array of colors to store the assigned colors for each vertex.
 
 CODE:*/
-bool isPossible(bool graph[101][101], int color[], int N, int col, int node) {
-    for (int k = 0; k < N; k++) {
-        if (k != node && graph[node][k] == 1 && color[k] == col)
+
+#define LOG(x) cerr<<#x<<" "<<x<<endl;
+
+#include<iostream>
+#include<unordered_map>
+#include<vector>
+#include<string>
+#include<algorithm>
+using namespace std;
+
+bool isSafe(int node, int color[], bool graph[101][101], int n, int col)
+{
+    for(int k=0; k<n; ++k)
+    {
+        if(k!=node && graph[k][node]==1 && color[k]==col)
+        {
             return false;
+        }
     }
     return true;
 }
 
-bool solve(bool graph[101][101], int m, int N, int color[], int node) {
-    if (node == N)
+bool solve(int node, int color[], int m, int N, bool graph[101][101])
+{
+    if(node == N)
+    {
         return true;
-
-    for (int i = 1; i <= m; i++) {
-        if (isPossible(graph, color, N, i, node)) {
+    }
+    
+    for(int i=1; i<=m; ++i)
+    {
+        if(isSafe(node, color, graph, N, i))
+        {
             color[node] = i;
-            if (solve(graph, m, N, color, node + 1))
-                return true;
+            if(solve(node+1, color, m, N, graph)) return true;
             color[node] = 0;
         }
     }
     return false;
 }
 
-bool graphColoring(bool graph[101][101], int m, int N) {
-    int color[N];
-    memset(color, 0, sizeof color);
-    if (solve(graph, m, N, color, 0))
-        return true;
+bool graphColoring(bool graph[101][101], int m, int N)
+{
+    vector<int> color(N, 0);
+    if(solve(0, color.data(), m, N, graph)) return true;
     return false;
+}
+
+int main()
+{
+    int N, M, E;
+    cin>>N>>M>>E;
+
+    bool graph[101][101] = {0};
+    for(int i=0; i<E; ++i)
+    {
+        int u, v;
+        cin>>u>>v;
+        graph[u][v] = 1;
+        graph[v][u] = 1;
+    }
+
+    if(graphColoring(graph, M, N))
+    {
+        cout<<1<<endl;
+    }
+    else cout<<0<<endl;
+
+    return 0;
 }

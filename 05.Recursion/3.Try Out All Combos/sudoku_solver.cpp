@@ -48,33 +48,92 @@ Space Complexity: The space complexity is O(1) as we are using a constant amount
 
 CODE:-*/
 
-bool isValid(int row, int col, char digit, vector<vector<char>>& board) {
-    for (int i = 0; i < 9; i++) {
-        if (board[row][i] == digit)
-            return false;
-        if (board[i][col] == digit)
-            return false;
-        if (board[3 * (row / 3) + (i / 3)][3 * (col / 3) + (i % 3)] == digit)
-            return false;
-    }
-    return true;
-}
+#define LOG(x) cerr<<#x<<" "<<x<<endl;
 
-bool solve(vector<vector<char>>& board) {
-    for (int i = 0; i < board.size(); i++) {
-        for (int j = 0; j < board[0].size(); j++) {
-            if (board[i][j] == '.') {
-                for (char digit = '1'; digit <= '9'; digit++) {
-                    if (isValid(i, j, digit, board)) {
-                        board[i][j] = digit;
-                        if (solve(board))
-                            return true;
-                        board[i][j] = '.';
+#include<iostream>
+#include<vector>
+#include<unordered_map>
+#include<string>
+#include<algorithm>
+using namespace std;
+
+class Solution 
+{
+    public:
+    void sudokuSolver(vector<vector<char>>&board)
+    {
+        solve(board);
+    }
+
+    bool solve(vector<vector<char>>&board)
+    {
+        for(int i=0; i<board.size(); ++i)
+        {
+            for(int j=0; j<board[0].size(); ++j)
+            {
+                if(board[i][j] == '.')
+                {
+                    for(char c = '1'; c<='9'; ++c)
+                    {
+                        if(isValid(board, i, j, c))
+                        {
+                            board[i][j] = c;
+
+                            if(solve(board) == true) return true;
+                            else board[i][j] = '.';
+                        }
                     }
+                    return false;
                 }
-                return false;
             }
         }
+        return true;
     }
-    return true;
+
+    bool isValid(vector<vector<char>>&board, int row, int col, char c)
+    {
+        for(int i=0; i<9; ++i)
+        {
+            if(board[i][col] == c)
+            {
+                return false;
+            }
+
+            if(board[row][i] == c)
+            {
+                return false;
+            }
+
+            if(board[3*(row/3)+i/3][3*(col/3)+i%3] == c) return false;
+        }
+        return true;
+    }
+};
+
+int main()
+{
+    Solution sol;
+
+    vector<vector<char>>board(9, vector<char>(9));
+
+    for(int i=0; i<9; ++i)
+    {
+        for(int j=0; j<9; ++j)
+        {
+            cin>>board[i][j];
+        }
+    }
+
+    sol.sudokuSolver(board);
+
+    for(int i=0; i<9; ++i)
+    {
+        for(int j=0; j<9; ++j)
+        {
+            cout<<board[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+
+    return 0;
 }
