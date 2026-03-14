@@ -21,20 +21,4 @@ Approach:
 4. To clear the ith bit, perform a bitwise AND operation between num and the complement of (1 << i).
 
 CODE:*/
-void bitManipulation(int num, int i) {
-    i = i - 1; // Adjusting index to 0-based
-    
-    // Get the ith bit
-    if (num & (1 << i))
-        cout << 1 << " ";
-    else
-        cout << 0 << " ";
-    
-    // Set the ith bit
-    int set = num | (1 << i);
-    cout << set << " ";
-    
-    // Clear the ith bit
-    int clear = num & (~(1 << i));
-    cout << clear;
-}
+
