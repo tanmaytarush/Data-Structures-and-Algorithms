@@ -15,17 +15,44 @@ APPROACH:
 To find the minimum number of bit flips required to convert start to goal, we can iterate over each bit position from right to left and compare the corresponding bits in start and goal. If they are different, we increment a counter. Finally, we return the counter.
 
 CODE:*/
-int minBitFlips(int start, int goal) {
-    int i = 0;
-    int cnt = 0;
-    while (i < 32) {
-        int startbit = (start >> i) & 1;
-        int goalbit = (goal >> i) & 1;
-        if (startbit != goalbit)
-            cnt++;
+
+#define LOG(x) cerr<<#x<<" "<<x<<endl;
+
+#include<iostream>
+#include<unordered_map>
+#include<string>
+#include<vector>
+#include<algorithm>
+using namespace std;
+
+int minBitFlips(int start, int goal)
+{
+    int ans = start^goal;
+    int i=0;
+    int count = 0;
+    while(i<32)
+    {
+        if(ans & (1 << i))
+        {
+            count++;
+        }
         i++;
     }
-    return cnt;
+    return count;
+}
+
+int main()
+{
+    int start;
+    int goal;
+
+    cin>>start>>goal;
+
+    int result = minBitFlips(start, goal);
+
+    cout<<result;
+
+    return 0;
 }
 
 // Time Complexity: O(log n), where n is the maximum value between start and goal
