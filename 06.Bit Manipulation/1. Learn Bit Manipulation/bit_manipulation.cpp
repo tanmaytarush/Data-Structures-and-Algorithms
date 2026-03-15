@@ -1,8 +1,9 @@
 /*QUESTION:-
 Given a 32-bit unsigned integer num and an integer i, perform the following operations on the number:
-1. Get the ith bit.
-2. Set the ith bit.
-3. Clear the ith bit.
+1. AND
+2. OR
+3. NOT
+4. Shift
 
 Note: The bits are indexed from 1 instead of 0 (1-based indexing).
 
@@ -22,3 +23,42 @@ Approach:
 
 CODE:*/
 
+#include<iostream>
+#include<unordered_map>
+#include<algorithm>
+#include<vector>
+#include<string>
+using namespace std;
+
+void operations(int a, int b)
+{
+    // AND
+    int and_operation = a & b;
+    cout<<and_operation<<endl;
+
+    // OR
+    int or_operation = a | b;
+    cout<<or_operation<<endl;
+
+    // NOT
+    int not_operation = ~a;
+    cout<<not_operation<<endl;
+
+    // Right Shift
+    int right_shift = a >> 1; // (a / 2^k)
+    cout<<right_shift<<endl;
+
+    // Left Shift
+    int left_shift = a << 1; // (a * 2^k)
+    cout<<left_shift<<endl;
+}
+
+int main()
+{
+    int a,b;
+    cin>>a>>b;
+
+    operations(a, b);
+
+    return 0;
+}

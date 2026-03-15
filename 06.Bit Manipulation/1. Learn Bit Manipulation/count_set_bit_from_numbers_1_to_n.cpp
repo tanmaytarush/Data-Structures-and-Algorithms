@@ -18,11 +18,47 @@ The approach to solve this problem is based on the observation that the count of
 countSetBits(n) = countSetBits(pow(2, x - 1) * x) + (n - pow(2, x) + 1) + countSetBits(n - pow(2, x))
 
 CODE:*/
-int countSetBits(int n) {
-    if (n <= 1)
-        return n;
-    int x = log2(n); // Find the greatest power of 2 less than n
-    return (pow(2, x - 1) * x) + (n - pow(2, x) + 1) + countSetBits(n - pow(2, x));
+
+#include<iostream>
+#include<vector>
+#include<string>
+#include<unordered_map>
+#include<algorithm>
+using namespace std;
+
+int countSetBitsBF(int N)
+{
+    int count = 0;
+    while(N>0)
+    {
+        if(N&1) count++;
+        N = N>>1;
+    }
+    return count;
+}
+
+int countSetBitsOpt(int N)
+{
+    int count=0;
+    while(N!=0)
+    {
+        N = (N & (N-1));
+        count++;
+    }
+    return count;
+}
+
+int main()
+{
+    int N;
+    cin>>N;
+
+    int ans1 = countSetBitsBF(N);
+    int ans2 = countSetBitsOpt(N);
+
+    cout<<ans1<<" "<<ans2<<endl;
+
+    return 0;
 }
 
 // Time Complexity: O(log(n))

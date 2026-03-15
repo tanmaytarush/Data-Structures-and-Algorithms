@@ -15,11 +15,32 @@ To swap two numbers a and b without using a temporary variable, we can use the X
 4. The values of a and b are swapped.
 
 CODE:*/
-pair<int, int> get(int a, int b){
-    a = a^b;
-    b = a^b; 
-    a = a^b;
+
+#include<iostream>
+#include<unordered_map>
+#include<vector>
+#include<string>
+#include<algorithm>
+using namespace std;
+
+pair<int, int> swapNumbers(int a, int b)
+{
+    a = a ^ b;
+    b = a ^ b;
+    a = a ^ b;
+
     return {a, b};
+}
+
+int main()
+{
+    int a, b;
+    cin>>a>>b;
+
+    pair<int, int> result = swapNumbers(a, b);
+    cout<<result.first<<" "<<result.second;
+
+    return 0;
 }
 
 // Time Complexity: O(1)

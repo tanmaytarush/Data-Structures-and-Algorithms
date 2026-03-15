@@ -24,13 +24,33 @@ If the result is 0, then it is a power of two; otherwise, it is not.
 3. If the result is 0, return true; otherwise, return false.
 */
 
-bool isPowerOfTwo(int n) {
-    if(n <= 0)
-        return false;
-    if(n & (n-1))
-        return false;
-    return true;
+#include<iostream>
+#include<string>
+#include<unordered_map>
+#include<vector>
+#include<algorithm>
+using namespace std;
+
+bool checkPower(int N)
+{
+    if(N<0) return false;
+
+    if((N & (N-1)) == 0) return true;
+    else return false;
 }
+
+int main()
+{
+    int N;
+    cin>>N;
+
+    bool result = checkPower(N);
+
+    cout<<result;
+
+    return 0;
+}
+
 
 // Time Complexity: O(1)
 // Space Complexity: O(1)

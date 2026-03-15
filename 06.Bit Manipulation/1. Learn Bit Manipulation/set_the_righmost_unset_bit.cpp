@@ -26,21 +26,47 @@ To set the rightmost unset bit in the binary representation of N, we can follow 
 3. Otherwise, perform the bitwise OR operation between N and (N+1) and return the result.
 
 CODE:*/
-bool isPowerOfTwo(int n) {
-    if(n <= 0)
+
+#include<iostream>
+#include<vector>
+#include<string>
+#include<unordered_map>
+#include<algorithm>
+using namespace std;
+
+bool powerOfTwo(int N)
+{
+    if((N & (N-1)) == 0)
+    {
+        return true;
+    }
+    else
+    {
         return false;
-    if(n & (n-1))
-        return false;
-    return true;
+    }
 }
 
 int setBit(int N)
 {
-    if(isPowerOfTwo(N+1))
-        return N;
+    if(powerOfTwo(N+1))
+    {
+        return N; // all bits are set
+    }
 
-    int ans = (N | (N+1));
+    int ans = (N | (N+1)); // sets the rightmost bit
     return ans;
+}
+
+int main()
+{
+    int N;
+    cin>>N;
+
+    int result = setBit(N);
+
+    cout<<result;
+
+    return 0;
 }
 
 // Time Complexity: O(1)

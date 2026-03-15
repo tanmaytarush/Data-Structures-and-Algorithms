@@ -11,8 +11,33 @@ Approach:
 2. If the result is non-zero, it means the Kth index bit is set (1); otherwise, it is not set (0).
 
 CODE:*/
-bool checkKthBit(int n, int k) {
-    if (n & (1 << k))
+
+#include<iostream>
+#include<vector>
+#include<unordered_map>
+#include<string>
+#include<algorithm>
+using namespace std;
+
+bool checkithBit(int N, int K)
+{
+    if((N & (1<<K)) != 0)
+    {
         return true;
-    return false;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+int main()
+{
+    int N;
+    int K;
+    cin>>N>>K;
+
+    bool result = checkithBit(N, K);
+
+    cout<<result;
 }

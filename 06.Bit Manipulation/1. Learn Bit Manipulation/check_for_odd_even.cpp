@@ -20,10 +20,31 @@ If the result is 1, we return "odd". If the result is 0, we return "even".
 
 CODE*/
 
-string oddEven(int N){
-    if(N&1)
-        return "odd";
-    return "even";
+#include<iostream>
+#include<vector>
+#include<string>
+#include<unordered_map>
+#include<algorithm>
+using namespace std;
+
+void oddevenCheck(int N)
+{
+    if((N & 1) == 1)
+    {
+        cout<<"odd";
+    }
+    else
+    {
+        cout<<"even";
+    }
+}
+
+int main()
+{
+    int N;
+    cin>>N;
+
+    oddevenCheck(N);
 }
 
 // Time Complexity: O(1)

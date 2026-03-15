@@ -22,26 +22,58 @@ To divide two integers without using multiplication, division, and mod operator,
 
 CODE:*/
 
-int divideTwoInteger(int dividend, int divisor) {
-    if (dividend == divisor)
-        return 1;
+#include<iostream>
+#include<vector>
+#include<string>
+#include<unordered_map>
+#include<algorithm>
+using namespace std;
 
-    bool isNegative = ((dividend < 0 && divisor >= 0) || (dividend >= 0 && divisor < 0));
+int divide(int divident, int divisor)
+{
+    if(divident == divisor) return 1;
+
+    bool sign = true;
+    if(divident >= 0 && divisor < 0) sign = false;
+    if(divident <= 0 && divisor > 0) sign = false;
+
+    long n = abs(divident);
+    long d = abs(divisor);
+    divisor = abs(divisor);
+
 
     int ans = 0;
-    int a = abs(dividend);
-    int b = abs(divisor);
 
-    while (a >= b) {
-        // at each stage we will find the greatest power of 2 which is smaller than the dividend
-        int q = 1;
-        while (a > (b << q))
-            q++;
-        ans += (1 << (q - 1));
-        a -= (b << (q - 1));
+    while(n >= d)
+    {
+        int count = 0;
+        while(n >= (d << (count+1)))
+        {
+            count++;
+        }
+        ans += (1 << count); // store largest 2 power as count
+        n = n - (d << (count));
     }
 
-    return (isNegative) ? -ans : ans;
+    if(ans == (1 << 31) && sign == true) return INT_MAX; // if equals to 2**31
+    if(ans == (1 << 31) && sign == false) return INT_MIN; // if equals to 2**31
+
+    return sign ? ans : (-1 * ans);
+}
+
+int main()
+{
+    int divident;
+    int divisor;
+
+    cin>>divident;
+    cin>>divisor;
+
+    int result = divide(divident, divisor);
+
+    cout<<result;
+
+    return 0;
 }
 
 // Time Complexity: O(log n), where n is the absolute value of the dividend
