@@ -18,20 +18,57 @@ To calculate x raised to the power n, we can use the concept of binary exponenti
 5. If isNegative is true, return 1/res; otherwise, return res.
 
 CODE:*/
-double myPow(double x, int n) {
-    if (n == 0)
-        return 1;
-    double res = 1;
-    bool isNegative = (n < 0);
-    n = abs(n);
-    while (n > 0) {
-        if (n & 1) { // Check if n is odd
-            res = res * x;
+
+#include<iostream>
+#include<unordered_map>
+#include<vector>
+#include<string>
+#include<algorithm>
+using namespace std;
+
+class Solution
+{
+    public:
+    int fastPower(int x, int n)
+    {
+        double ans = 1.0;
+        long long nn = n;
+        if(nn < 0) nn = (-1*nn);
+
+        while(nn > 0)
+        {
+            if(nn % 2 == 1)
+            {
+                ans = ans * x;
+                nn -= 1;
+            }
+            else
+            {
+                x = x*x;
+                nn = nn/2;
+            }
         }
-        x = x * x; // Update x to x^2
-        n = n >> 1; // Right-shift n by 1
+
+        if(nn < 0) ans = (double)1.0 / (double)ans;
+
+        return ans;
     }
-    return (isNegative) ? 1 / res : res;
+};
+
+int main()
+{
+    Solution sol;
+
+    int x;
+    cin>>x; 
+
+    int n;
+    cin>>n;
+
+    int result = sol.fastPower(x, n);
+    cout<<result;
+
+    return 0;
 }
 
 // Time Complexity: O(log(n))

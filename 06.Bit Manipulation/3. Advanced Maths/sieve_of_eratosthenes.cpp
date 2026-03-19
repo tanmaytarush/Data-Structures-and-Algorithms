@@ -17,18 +17,56 @@ To count the number of prime numbers less than a given number n, we can use the 
 4. Return `cnt`, which will be the count of prime numbers less than n.
 
 CODE:*/
-int countPrimes(int n) {
-    vector<bool> primes(n + 1, true);
-    int cnt = 0;
-    for (long long i = 2; i < n; i++) {
-        if (primes[i]) {
-            cnt++;
-            for (long long j = i * i; j <= n; j += i) {
-                primes[j] = false;
+
+#include<iostream>
+#include<unordered_map>
+#include<string>
+#include<vector>
+#include<algorithm>
+using namespace std;
+
+class Solution
+{
+    public:
+    int sieveOfEratothenes(int N)
+    {
+        vector<int> prime(N+1);
+        for(int i=0; i<N; ++i)
+        {
+            prime[i] = 1;
+        }
+
+        for(int i=2; i*i<=N; ++i)
+        {
+            if(prime[i] == 1)
+            {
+                for(int j=i*i; j<=N; j+=i)
+                {
+                    prime[j] = 0;
+                }
             }
         }
+
+        int count = 0;
+        for(int i=2; i<N; ++i)
+        {
+            if(prime[i] == 1) count++;
+        }
+
+        return count;
     }
-    return cnt;
+};
+
+int main()
+{
+    Solution sol;
+    int N;
+    cin>>N;
+
+    int result = sol.sieveOfEratothenes(N);
+    cout<<result;
+
+    return 0;
 }
 
 // Time Complexity: O(n log log n)

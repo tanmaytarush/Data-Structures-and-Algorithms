@@ -11,12 +11,41 @@ APPROACH:
 To find the exceptional number, we can use the bitwise XOR operation. XORing a number with itself results in 0, so XORing all the numbers in the array will cancel out the even occurrences, leaving only the exceptional number in the result.
 
 CODE:*/
-int getOddOccurrence(int arr[], int n) {
-    int xr = 0;
-    for (int i = 0; i < n; i++) {
-        xr = xr ^ arr[i];
+
+#include<iostream>
+#include<vector>
+#include<string>
+#include<unordered_map>
+#include<algorithm>
+using namespace std;
+
+int exceptionOdd(vector<int> &nums)
+{
+    int n = nums.size();
+    int xorVal = 0;
+    for(int i=0; i<n; ++i)
+    {
+        xorVal = xorVal ^ nums[i];
     }
-    return xr;
+    return xorVal;
+}
+
+int main()
+{
+    int n;
+    cin>>n;
+
+    vector<int> nums(n);
+    for(int i=0; i<n; ++i)
+    {
+        cin>>nums[i];
+    }   
+
+    int result = exceptionOdd(nums);
+
+    cout<<result;
+
+    return 0;
 }
 
 // Time Complexity: O(n), where n is the number of elements in the array

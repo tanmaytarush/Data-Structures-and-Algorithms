@@ -28,21 +28,42 @@ By calculating the XOR values for L-1 and R separately using the above pattern, 
 Code:
 */
 
-int calculateXOR(int n) {
-    if (n % 4 == 0)
-        return n;
-    if (n % 4 == 1)
-        return 1;
-    if (n % 4 == 2)
-        return n + 1;
-    if (n % 4 == 3)
-        return 0;
+#include<iostream>
+#include<vector>
+#include<string>
+#include<unordered_map>
+#include<algorithm>
+using namespace std;
+
+int xorValues(int N)
+{
+    if(N % 4 == 1) return 1;
+    else if(N % 4 == 2) return N+1;
+    else if(N % 4 == 3) return 0;
+    else return N;
 }
 
-int findXOR(int L, int R) {
-    int uptol = calculateXOR(L - 1);
-    int uptor = calculateXOR(R);
-    return uptor ^ uptol;
+int xorLToR(int L, int R)
+{
+    int xorL = xorValues(L-1);
+    int xorR = xorValues(R);
+
+    return xorL^xorR;
+}
+
+int main()
+{
+    int L;
+    int R;
+
+    cin>>L;
+    cin>>R;
+
+    int result = xorLToR(L, R);
+
+    cout<<result;
+
+    return 0;
 }
 
 /*
