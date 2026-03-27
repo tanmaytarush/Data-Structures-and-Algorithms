@@ -12,34 +12,72 @@ Approach:
 Code:
 */
 
-class MyStack
-{
-private:
-    int arr[1000];
-    int top;
+#include<iostream>
+#include<vector>
+#include<string>
+#include<unordered_map>
+#include<algorithm>
+using namespace std;
 
+class Stack
+{
 public:
-    MyStack() { top = -1; }
-    int pop();
-    void push(int);
+    int size = 1000;
+    int arr[1000];
+    int top = -1;
+
+    void push(int x)
+    {
+        if(top == size - 1)
+        {
+            cout << "Stack overflow\n";
+            return;
+        }
+        arr[++top] = x;
+    }
+
+    int pop()
+    {
+        if(top == -1)
+        {
+            cout << "Empty stack\n";
+            return -1;
+        }
+        return arr[top--];
+    }
+
+    int peek()
+    {
+        if(top == -1)
+        {
+            cout << "No elements\n";
+            return -1;
+        }
+        return arr[top];
+    }
+
+    int getSize()
+    {
+        return top + 1;
+    }
 };
 
-void MyStack::push(int x)
+int main()
 {
-    top++;
-    arr[top] = x;
-}
+    Stack st;
 
-int MyStack::pop()
-{
-    if (top == -1) {
-        return -1;
-    }
-    int ans = arr[top];
-    top--;
-    return ans;
-}
+    st.push(12);
+    st.push(13);
+    st.push(5);
+    st.push(7);
 
+    cout << st.pop() << endl;
+    cout << st.pop() << endl;
+    cout << st.peek() << endl;
+    cout << st.getSize() << endl;
+
+    return 0;
+}
 /*
 Complexity Analysis:
 - The time complexity of both `push()` and `pop()` operations is O(1) since they involve constant-time operations like incrementing/decrementing the top and accessing/modifying the array elements.

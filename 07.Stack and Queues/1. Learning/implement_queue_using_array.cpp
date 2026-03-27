@@ -14,31 +14,83 @@ Approach:
 Code:
 */
 
-class MyQueue {
-private:
-    int arr[100005];
-    int front;
-    int rear;
+#include<iostream>
+#include<unordered_map>
+#include<vector>
+#include<string>
+#include<algorithm>
+using namespace std;
 
-public:
-    MyQueue() { front = 0; rear = 0; }
-    void push(int);
-    int pop();
+class Queue
+{
+    public:
+    int n = 1000;
+    int start = -1;
+    int end = -1;
+    int arr[1000];
+
+    void push(int x)
+    {
+        if((end + 1) % n == start)
+        {
+            cout<<"Stack overflow \n";
+            return;
+        }
+
+        if(start == -1)
+        {
+            start = end = 0;
+            arr[end] = x;  
+            return;          
+        }
+        
+        end = (end + 1) % n;
+        arr[end] = x;
+    }
+
+    void pop()
+    {
+        if(start == end)
+        {
+            cout<<arr[start];
+            start = end = -1;
+        }
+
+        int val = arr[start];
+        start = (start + 1) % n;
+        cout<<val<<endl;
+    }
+
+    void top()
+    {
+        if(start == -1)
+        {
+            cout<<"Queue empty \n";
+            return;
+        }
+        cout<<arr[start]<<endl;
+    }
+
+    int size()
+    {
+        if(start == -1) return 0;
+        if(end >= start) return end-start+1;
+        return n-start+end+1;
+    }
 };
 
-void MyQueue::push(int x)
+int main()
 {
-    arr[rear] = x;
-    rear++;
-}
+    Queue q;
 
-int MyQueue::pop()
-{
-    if (rear == front)
-        return -1;
-    int ans = arr[front];
-    front++;
-    return ans;
+    q.push(26);
+    q.push(13);
+    q.push(6);
+    q.pop();
+    q.top();
+    cout<<q.size();
+
+    return 0;
 }
 
 /*

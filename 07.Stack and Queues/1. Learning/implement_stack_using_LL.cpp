@@ -11,38 +11,81 @@ Approach:
 Code:
 */
 
-class MyStack {
-private:
-    struct StackNode {
-        int data;
-        StackNode* next;
+#include<iostream>
+#include<unordered_map>
+#include<vector>
+#include<string>
+#include<algorithm>
+using namespace std;
 
-        StackNode(int x) : data(x), next(NULL) {}
-    };
+class Node
+{
+    public:
+    int data;
+    Node* next;
 
-    StackNode* top;
-
-public:
-    MyStack() : top(NULL) {}
-    void push(int x);
-    int pop();
+    Node(int data)
+    {
+        this->data = data;
+        this->next = NULL;
+    }
 };
 
-void MyStack::push(int x) {
-    StackNode* temp = new StackNode(x);
-    temp->next = top;
-    top = temp;
-}
+class MyStack
+{
+    public:
+    Node* topNode = NULL;
 
-int MyStack::pop() {
-    if (!top)
-        return -1;
+    void push(int x)
+    {
+        Node* newNode = new Node(x);
+        newNode->next = topNode;
+        topNode = newNode;
+        cout<<topNode->data<<endl;
+    }
 
-    int popped = top->data;
-    StackNode* temp = top;
-    top = top->next;
+    void pop()
+    {
+        Node* temp = topNode;
+        cout<<temp->data<<endl;
+        topNode = topNode->next;
+        delete temp;
+    }
 
-    return popped;
+    void top()
+    {
+        cout<<topNode->data<<endl;
+    }
+
+    void size()
+    {
+        int count=0;
+        Node* curr = topNode;
+
+        while(curr != NULL)
+        {
+            count++;
+            curr = curr->next;
+        }
+        cout<<count<<endl;
+    }
+};
+
+int main()
+{
+    MyStack st;
+    st.push(13);
+    st.push(26);
+    st.push(39);
+    st.push(52);
+    st.pop();
+    st.pop();
+    st.top();
+    st.size();
+    st.push(65);
+    st.size();
+
+    return 0;
 }
 
 /*
