@@ -20,31 +20,60 @@ APPROACH:
 CODE:
 */
 
-bool isAlphaNumeric(char ch) {
-    return ('A' <= ch && ch <= 'Z') || ('a' <= ch && ch <= 'z') || ('0' <= ch && ch <= '9');
-}
+#define LOG(x) cerr<<#x<<" "<<x<<endl;
 
-string postToInfix(string exp) {
-    stack<string> st;
-    
-    for (int i = 0; i < exp.size(); i++) {
-        char ch = exp[i];
-        
-        if (isAlphaNumeric(ch)) {
-            string temp = "";
-            temp += ch;
-            st.push(temp);
-        } else {
-            string a = st.top();
-            st.pop();
-            string b = st.top();
-            st.pop();
-            
-            st.push("(" + b + ch + a + ")");
+#include<iostream>
+#include<unordered_map>
+#include<string>
+#include<vector>
+#include<stack>
+#include<algorithm>
+using namespace std;
+
+class Solution
+{
+    public:
+    string postfixToInfix(string s)
+    {
+        int i=0;
+        int n = s.length();
+        stack<string> st;
+
+        while(i < n)
+        {
+            if(isalpha(s[i]) || isdigit(s[i]))
+            {
+                LOG(s[i]);
+                st.push(string(1, s[i]));
+            }
+            else
+            {
+                string t1 = st.top(); st.pop();
+                string t2 = st.top(); st.pop();
+
+                string res = "(" + t2 + s[i] + t1 + ")";
+                st.push(res);
+            }
+            i++;
         }
+
+        return st.top();
     }
-    
-    return st.top();
+};
+
+int main()
+{
+    Solution sol;
+    string s;
+    getline(cin, s);
+
+    stack<string> st;
+
+    string ans = sol.postfixToInfix(s);
+
+    cout<<ans;
+
+    return 0;
 }
 
 /*

@@ -20,32 +20,57 @@ APPROACH:
 CODE:
 */
 
-bool isAlphaNumeric(char ch) {
-    return ('A' <= ch && ch <= 'Z') || ('a' <= ch && ch <= 'z') || ('0' <= ch && ch <= '9');
-}
+#define LOG(x) cerr<<#x<<" "<<x<<endl;
 
-string postToPre(string post_exp) {
-    stack<string> st;
-    
-    for (int i = 0; i < post_exp.size(); i++) {
-        char ch = post_exp[i];
-        
-        if (isAlphaNumeric(ch)) {
-            string temp = "";
-            temp += ch;
-            st.push(temp);
-        } else {
-            string a = st.top();
-            st.pop();
-            string b = st.top();
-            st.pop();
-            
-            string temp = ch + b + a;
-            st.push(temp);
+#include<iostream>
+#include<unordered_map>
+#include<string>
+#include<vector>
+#include<algorithm>
+#include<stack>
+#include<algorithm>
+using namespace std;
+
+class Solution
+{
+    public:
+    string postfixToPrefix(string s)
+    {
+        int n = s.length();
+        int i = 0;
+        stack<string> st;
+
+        while(i<n)
+        {
+            if(isalpha(s[i]) || isdigit(s[i]))
+            {
+                st.push(string(1, s[i]));
+            }
+            else
+            {
+                string t1 = st.top(); st.pop();
+                string t2 = st.top(); st.pop();
+                string res = s[i] + t2 + t1;
+                st.push(res);
+            }
+            i++;
         }
+
+        return st.top();
     }
-    
-    return st.top();
+};
+
+int main()
+{
+    Solution sol;
+    string s;
+    getline(cin, s);
+
+    string ans = sol.postfixToPrefix(s);
+
+    cout<<ans;
+
+    return 0;
 }
 
 /*

@@ -24,44 +24,99 @@ APPROACH:
 CODE:
 */
 
-string infixToPostfix(string s) {
-    string ans = "";
-    unordered_map<char, int> precedence;
-    precedence['^'] = 3;
-    precedence['*'] = 2;
-    precedence['/'] = 2;
-    precedence['+'] = 1;
-    precedence['-'] = 1;
+#define LOG(x) cerr<<#x<<" "<<x;
 
+#include<iostream>
+#include<unordered_map>
+#include<vector>
+#include<string>
+#include<stack>
+#include<algorithm>
+using namespace std;
+
+class Solution
+{
+    public:
+    int priority(char ch)
+    {
+        unordered_map<char, int> prec;
+        prec['^'] = 3;
+        prec['*'] = 2;
+        prec['/'] = 2;
+        prec['+'] = 1;
+        prec['-'] = 1;
+        return prec[ch];
+    }
+
+    string infixToPrefix(string s)
+    {
+        reverse(s.begin(), s.end());
+        for(auto &it : s)
+        {
+            if(it == '(') it = ')';
+            else if(it == ')') it = '(';
+        }
+
+        int i=0;
+        stack<char> st;
+        int n = s.length();
+        string ans = "";
+
+        while(i<n)
+        {
+            if(isalpha(s[i])) ans += s[i];
+
+            else if(s[i] == '(') st.push(s[i]);
+
+            else if(s[i] == ')')
+            {
+                while(!st.empty() && st.top() != '(')
+                {
+                    ans += st.top();
+                    st.pop();
+                }
+                st.pop(); // pop out (
+            }
+
+            else
+            {
+                while(!st.empty() && (priority(s[i]) < priority(st.top()) ||
+                        (priority(s[i]) == priority(st.top()) && s[i] != '^')))
+                {
+                    ans += st.top();
+                    st.pop();
+                }
+                st.push(s[i]);
+            }
+            i++;
+        }
+
+        while(!st.empty())
+        {
+            ans += st.top();
+            st.pop();
+        }
+
+        reverse(ans.begin(), ans.end());
+        return ans;
+    } 
+};
+
+
+int main()
+{
+    Solution sol;
+    
+    string s;
+    getline(cin, s);
     stack<char> st;
 
-    for (int i = s.size() - 1; i >= 0; i--) {
-        if (('a' <= s[i] && s[i] <= 'z') || ('A' <= s[i] && s[i] <= 'Z') || ('0' <= s[i] && s[i] <= '9')) {
-            ans.push_back(s[i]);
-        } else if (s[i] == ')') {
-            st.push(s[i]);
-        } else if (s[i] == '(') {
-            while (!st.empty() && st.top() != ')') {
-                ans.push_back(st.top());
-                st.pop();
-            }
-            st.pop(); // Pop the closing parenthesis ')'
-        } else {
-            while (!st.empty() && st.top() != ')' && precedence[st.top()] >= precedence[s[i]]) {
-                ans.push_back(st.top());
-                st.pop();
-            }
-            st.push(s[i]);
-        }
-    }
+    int n = s.length();
 
-    while (!st.empty()) {
-        ans.push_back(st.top());
-        st.pop();
-    }
+    string ans = sol.infixToPrefix(s);
 
-    reverse(ans.begin(), ans.end());
-    return ans;
+    cout<<ans;
+    return 0;
 }
 
 /*

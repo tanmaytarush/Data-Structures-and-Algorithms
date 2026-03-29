@@ -20,29 +20,7 @@ APPROACH:
 CODE:
 */
 
-string preToInfix(string pre_exp) {
-    stack<string> st;
-    
-    for (int i = pre_exp.size() - 1; i >= 0; i--) {
-        char ch = pre_exp[i];
-        
-        if (('A' <= ch && ch <= 'Z') || ('a' <= ch && ch <= 'z') || ('0' <= ch && ch <= '9')) {
-            string temp = "";
-            temp += ch;
-            st.push(temp);
-        } else {
-            string a = st.top();
-            st.pop();
-            string b = st.top();
-            st.pop();
-            
-            string temp = "(" + a + ch + b + ")";
-            st.push(temp);
-        }
-    }
-    
-    return st.top();
-}
+
 
 /*
 COMPLEXITY ANALYSIS:

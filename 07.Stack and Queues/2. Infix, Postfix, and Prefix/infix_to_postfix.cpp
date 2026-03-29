@@ -24,43 +24,94 @@ APPROACH:
 CODE:
 */
 
-string infixToPostfix(string s) {
-    string ans = "";
-    unordered_map<char, int> precedence;
-    precedence['^'] = 3;
-    precedence['*'] = 2;
-    precedence['/'] = 2;
-    precedence['+'] = 1;
-    precedence['-'] = 1;
-    
-    stack<char> st;
-    
-    for (int i = 0; i < s.size(); i++) {
-        if (('a' <= s[i] && s[i] <= 'z') || ('A' <= s[i] && s[i] <= 'Z') || ('0' <= s[i] && s[i] <= '9')) {
-            ans.push_back(s[i]);
-        } else if (s[i] == '(') {
-            st.push(s[i]);
-        } else if (s[i] == ')') {
-            while (!st.empty() && st.top() != '(') {
-                ans.push_back(st.top());
+#include<iostream>
+#include<unordered_map>
+#include<string>
+#include<vector>
+#include<string>
+#include<stack>
+#include<algorithm>
+using namespace std;
+
+class Solution
+{
+    public:
+    int priority(char op)
+    {
+        unordered_map<char, int> prec;
+        prec['^'] = 3;
+        prec['*'] = 2;
+        prec['/'] = 2;
+        prec['+'] = 1;
+        prec['-'] = 1;
+        return prec[op];
+    }   
+
+    string infixToPostfix(string s)
+    {
+        int i=0; 
+        stack<char> st;
+        string ans = ""; 
+        int n = s.length();
+
+        while(i<n)
+        {
+            if((s[i]>='A' && s[i]<='Z') || (s[i]>='a' && s[i]<='z') || (s[i]>='0' && s[i]<='9'))
+            {
+                ans += s[i];
+            }
+
+            else if(s[i] == '(')
+            {
+                st.push(s[i]);
+            }
+
+            else if(s[i] == ')')
+            {
+                while(!st.empty() && st.top()!='(')
+                {
+                    ans += st.top();
+                    st.pop();
+                }
                 st.pop();
             }
-            st.pop();
-        } else {
-            while (!st.empty() && st.top() != '(' && precedence[st.top()] >= precedence[s[i]]) {
-                ans.push_back(st.top());
-                st.pop();
+
+            else
+            {
+                while (!st.empty() &&
+                      ((priority(s[i]) < priority(st.top())) ||
+                      (priority(s[i]) == priority(st.top()) && s[i] != '^'))) { 
+                    ans += st.top();
+                    st.pop();
+                }
+                st.push(s[i]); // push when precedence of top() is lesser than char
             }
-            st.push(s[i]);
+            i++;
         }
+
+        while(!st.empty())
+        {
+            ans += st.top();
+            st.pop();
+        }
+
+        return ans;
     }
-    
-    while (!st.empty()) {
-        ans.push_back(st.top());
-        st.pop();
-    }
-    
-    return ans;
+};
+
+int main()
+{
+    Solution sol;
+    string s;
+    getline(cin, s);
+
+    stack<char> st;
+
+    string ans = sol.infixToPostfix(s);
+
+    cout<<ans;
+
+    return 0;
 }
 
 /*
