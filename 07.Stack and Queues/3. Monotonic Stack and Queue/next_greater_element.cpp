@@ -22,30 +22,70 @@ Approach:
 Code:
 */
 
-void nextGstack(vector<int>& nums, unordered_map<int, int>& mp) {
+#define LOG(x) cerr<<#x<<" "<<x<<endl;
+
+#include<iostream>
+#include<vector>
+#include<unordered_map>
+#include<string>
+#include<algorithm>
+#include<stack>
+using namespace std;
+
+vector<int> nextGreaterElement(vector<int>&nums1, vector<int>&nums2)
+{
     stack<int> st;
-    for (int i = nums.size() - 1; i >= 0; i--) {
-        while (!st.empty() && st.top() <= nums[i]) {
+    int n = nums2.size();
+    unordered_map<int, int> mp;
+    for(int i=n-1; i>=0; --i)
+    {
+        while(!st.empty() && st.top()<=nums2[i])
+        {
             st.pop();
         }
-        if (!st.empty())
-            mp[nums[i]] = st.top();
 
-        st.push(nums[i]);
+        if(st.empty()) mp[nums2[i]] = -1;
+        else
+        {
+            mp[nums2[i]] = st.top();
+        }
+
+        st.push(nums2[i]);
     }
+
+    vector<int> ans;
+    for(auto x : nums1)
+    {
+        ans.push_back(mp[x]);
+    }
+
+    return ans;=
 }
 
-vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
-    unordered_map<int, int> mp;
-    nextGstack(nums2, mp);
+int main()
+{
+    int n1; int n2;
+    cin>>n1>>n2;
+    vector<int> arr1(n1), arr2(n2);    
 
-    vector<int> ans(nums1.size(), -1);
-
-    for (int i = 0; i < nums1.size(); i++) {
-        if (mp.find(nums1[i]) != mp.end())
-            ans[i] = mp[nums1[i]];
+    for(int i=0; i<n1; ++i)
+    {
+        cin>>arr1[i];
     }
-    return ans;
+
+    for(int i=0; i<n2; ++i)
+    {
+        cin>>arr2[i];
+    }
+
+    vector<int> result = nextGreaterElement(arr1, arr2);
+
+    for(auto it : result)
+    {
+        cout<<it<<" ";
+    }
+
+    return 0;
 }
 
 /*

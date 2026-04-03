@@ -20,21 +20,63 @@ CODE:*/
 
 // NOTE:- we could also implement this via two for loops from n-1 to 0, instead of a single loop of 2*n to 0; cause the complexity remains the same
 
-vector<int> nextGreaterElements(vector<int>& nums) {
-    vector<int> ans(nums.size(), -1);
-    stack<int> st;
+#define LOG(x) cerr<<#x<<" "<<x<<endl;
 
-    for (int i = 2 * nums.size() - 1; i >= 0; i--) {
-        while (!st.empty() && nums[st.top()] <= nums[i % nums.size()])
-            st.pop();
-        
-        if (!st.empty())
-            ans[i % nums.size()] = nums[st.top()];
-        
-        st.push(i % nums.size());
+#include<iostream>
+#include<unordered_map>
+#include<vector>
+#include<string>
+#include<algorithm>
+#include<stack>
+using namespace std;
+
+class Solution
+{
+    public:
+    vector<int> nextGreaterElement(vector<int> &arr)
+    {
+        int n = arr.size();
+        vector<int> nge(n);
+        stack<int> st;
+        for(int i=2*n-1; i>=0; --i)
+        {
+            while(!st.empty() && st.top()<=arr[i%n])
+            {
+                st.pop();
+            }
+
+            if(i<n)
+            {
+                if(st.empty()) nge[i] = -1;
+                else nge[i] = st.top();
+            }
+
+            st.push(arr[i%n]);
+        }
+        return nge;
+    }
+};
+
+int main()
+{
+    Solution sol;
+    int n;
+    cin>>n;
+
+    vector<int> arr(n);
+    for(int i=0; i<n; ++i)
+    {
+        cin>>arr[i];
     }
 
-    return ans;
+    vector<int> ans = sol.nextGreaterElement(arr);
+
+    for(auto it : ans)
+    {
+        cout<<it<<" ";
+    }
+
+    return 0;
 }
 
 /*
