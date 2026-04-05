@@ -16,21 +16,64 @@ The top of the stack at each iteration will hold the nearest smaller number on t
 
 CODE:*/
 
-vector<int> leftSmaller(int n, int arr[]) {
-    stack<int> st;
-    vector<int> ans(n, -1);
+#define LOG(x) cerr<<#x<<" "<<x<<endl;
+#include<iostream>
+#include<unordered_map>
+#include<vector>
+#include<string>
+#include<stack>
+#include<algorithm>
+using namespace std;
 
-    for (int i = 0; i < n; i++) {
-        while (!st.empty() && st.top() >= arr[i])
-            st.pop();
+class Solution
+{
+    public:
+    vector<int> previousSmaller(vector<int> &arr)
+    {
+        int n = arr.size();
+        stack<int> st;
+        vector<int> psmaller(n);
 
-        if (!st.empty())
-            ans[i] = st.top();
+        for(int i=0; i<n; ++i)
+        {
+            while(!st.empty() && st.top()>=arr[i])
+            {
+                st.pop();
+            }
 
-        st.push(arr[i]);
+            if(i<n)
+            {
+                if(st.empty()) psmaller[i] = -1;
+                else psmaller[i] = st.top();
+            }
+
+            st.push(arr[i]);
+        }
+
+        return psmaller;
+    }
+};
+
+int main()
+{
+    Solution sol;
+    int n;
+    cin>>n;
+
+    vector<int> arr(n);
+    for(int i=0; i<n; ++i)
+    {
+        cin>>arr[i];
     }
 
-    return ans;
+    vector<int> ans = sol.previousSmaller(arr);
+
+    for(auto it : ans)
+    {
+        cout<<it<<" ";
+    }
+
+    return 0;
 }
 
 /*
