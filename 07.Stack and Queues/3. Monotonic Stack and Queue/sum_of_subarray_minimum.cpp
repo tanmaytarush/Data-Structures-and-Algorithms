@@ -15,46 +15,26 @@ To find the sum of the minimums of all subarrays, we can use the concept of prev
 4. Return the final value of `ans` as the sum of minimums of all subarrays modulo `1e9 + 7`.
 
 CODE:*/
-vector<int> prevSmaller(vector<int>& arr){
-    stack<int> st;
-    vector<int> ans(arr.size(), -1);
-    for(int i = 0; i < arr.size(); i++){
-        while(!st.empty() && arr[st.top()] > arr[i])
-            st.pop();
-        if(!st.empty())
-            ans[i] = st.top();
-        st.push(i);
-    }
-    return ans;
-}
 
-vector<int> nextSmaller(vector<int>& arr){
-    stack<int> st;
-    vector<int> ans(arr.size(), arr.size());
-    for(int i = arr.size()-1; i >= 0; i--){
-        while(!st.empty() && arr[st.top()] >= arr[i])
-            st.pop();
-        if(!st.empty())
-            ans[i] = st.top();
-        st.push(i);
-    }
-    return ans;
-}
+#define LOG(x) cerr<<#x<<" "<<x<<endl;
 
-int sumSubarrayMins(vector<int>& arr) {
-    vector<int> prevS = prevSmaller(arr);
-    vector<int> nextS = nextSmaller(arr);
-    long long ans = 0;
-    int mod = 1e9 + 7;
+#include<iostream>
+#include<vector>
+#include<string>
+#include<unordered_map>
+#include<stack>
+#include<algorithm>
+using namespace std;
 
-    for(int i = 0; i < arr.size(); i++){
-        long long leftElements = i - prevS[i];
-        long long rightElements = nextS[i] - i;
-        // this formula is arrived by mathematical calculation
-        ans += ((leftElements % mod) * (rightElements % mod) * (arr[i] % mod)) % mod;
-    }
+class Solution
+{
+    public:
+    
+};
 
-    return (int)ans;
+int main()
+{
+
 }
 
 /*
