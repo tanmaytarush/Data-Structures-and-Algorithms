@@ -67,7 +67,6 @@ Turn right.
 Turn right.
 Move south 5 units and get blocked by the obstacle at (0,0), robot is at (0, 1).
 The furthest point the robot ever gets from the origin is (0, 6), which squared is 62 = 36 units away.
-
  
 
 Constraints:
