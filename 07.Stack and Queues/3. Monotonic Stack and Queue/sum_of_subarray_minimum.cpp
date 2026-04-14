@@ -28,13 +28,87 @@ using namespace std;
 
 class Solution
 {
-    public:
-    
+   public:
+   vector<int> find_psee(vector<int> &nums)
+   {
+      int n = nums.size();
+      vector<int> psee(n);
+      stack<int> st;
+
+      for(int i=0; i<n; i++)
+      {
+         while(!st.empty() && nums[st.top()]>nums[i])
+         {
+            st.pop();
+         }
+
+         psee[i] = st.empty() ? -1 : st.top(); // if empty next smaller is at hypethetical n index
+
+         st.push(i);
+      }
+
+      return psee;
+   }
+
+   vector<int> find_nse(vector<int> &nums)
+   {
+      int n = nums.size();
+      vector<int> nse(n);
+      stack<int> st;
+
+      for(int i=n-1; i>=0; i--)
+      {
+         while(!st.empty() && nums[st.top()] >= nums[i])
+         {
+            st.pop();
+         }
+
+         nse[i] = st.empty() ? n : st.top(); // hypothetical index -1
+
+         st.push(i);
+      }
+
+      return nse;
+   }
+
+   int subArrayMinSum(vector<int> &nums)
+   {
+      int mod = (int)(1e9 + 7);
+      vector<int> pse = find_psee(nums);
+      vector<int> nse = find_nse(nums);
+      int n = nums.size();
+      int total = 0;
+
+      for(int i=0; i<n; ++i)
+      {
+         int prevSubarray = i - pse[i];
+         int nextSubarray = nse[i] - i;
+
+         total += (prevSubarray * nextSubarray * 1LL * nums[i])%mod;
+         total %= mod;
+      }
+
+      return total;
+   }
 };
 
 int main()
 {
+   int n;
+   cin>>n;
 
+   Solution sol;
+   vector<int> arr(n);
+   for(int i=0; i<n; ++i)
+   {
+      cin>>arr[i];
+   }
+
+   int result = sol.subArrayMinSum(arr);
+
+   cout<<result<<endl;
+
+   return 0;
 }
 
 /*
