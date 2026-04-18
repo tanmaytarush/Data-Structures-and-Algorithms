@@ -23,28 +23,76 @@ Explanation: The 10 and -5 collide resulting in 10. The 5 and 10 never collide.
 CODE:
 */
 
-vector<int> asteroidCollision(vector<int>& asteroids) {
-    stack<int> st;
-    for (int i = 0; i < asteroids.size(); i++) {
-        int siz = abs(asteroids[i]);
-        while (!st.empty() && (st.top() > 0 && asteroids[i] < 0) && (st.top() < siz)) {
-            st.pop();
+#define LOG(x) cerr<<#x<<" "<<x<<endl;
+
+#include<iostream>
+#include<unordered_map>
+#include<vector>
+#include<string>
+#include<stack>
+using namespace std;
+
+class Solution
+{
+    public:
+    vector<int> asteroidCollision(vector<int> &asteroids)
+    {
+        int n = asteroids.size();
+        vector<int> st;
+
+        for(int a : asteroids)
+        {
+            bool destroyed = false;
+
+            while(!st.empty() && a<0 && st.back()>0)
+            {
+                if(st.back() < abs(a))
+                {
+                    st.pop_back(); // previous destroyed
+                }
+
+                else if(st.back() == abs(a)) // both previous and current one destroyed
+                {
+                    st.pop_back();
+                    destroyed = true;
+                    break;
+                }
+
+                else              // current one destroyed
+                {
+                    destroyed = true; 
+                    break;
+                }
+            }
+
+            if(!destroyed) st.push_back(a);
         }
-        // Check if same size asteroids collide
-        if (!st.empty() && (st.top() > 0 && asteroids[i] < 0) && st.top() == siz) {
-            st.pop();
-        }
-        else if (st.empty() || !(st.top() > 0 && asteroids[i] < 0)) {
-            st.push(asteroids[i]);
-        }
+        return st;
     }
-    vector<int> ans;
-    while (!st.empty()) {
-        ans.push_back(st.top());
-        st.pop();
+};
+
+int main()
+{
+    Solution sol;
+
+    int n;
+    cin>>n;
+
+    vector<int> st(n);
+
+    for(int i=0; i<n; ++i)
+    {
+        cin>>st[i];
     }
-    reverse(ans.begin(), ans.end());
-    return ans;
+
+    vector<int> result = sol.asteroidCollision(st);
+
+    for(auto it : result)
+    {
+        cout<<it<<" ";
+    }
+
+    return 0;
 }
 
 /*
