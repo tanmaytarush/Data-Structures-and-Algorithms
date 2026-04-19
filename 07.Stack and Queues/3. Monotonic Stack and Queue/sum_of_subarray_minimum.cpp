@@ -14,7 +14,37 @@ To find the sum of the minimums of all subarrays, we can use the concept of prev
    b. Add `(leftElements * rightElements * arr[i]) % mod` to `ans`, where `mod` is `1e9 + 7`.
 4. Return the final value of `ans` as the sum of minimums of all subarrays modulo `1e9 + 7`.
 
-CODE:*/
+*/
+
+/*
+
+INTUITION BRUTE FORCE :-
+
+1. Generating all the subarrays.
+2. Figuring out the minimum element in each subarray.
+3. Summing it up.
+4. Time Complexity here lies at around O(N^2), and Space complexity is O(1).
+
+
+INTUITION OPTIMAL :-
+
+1. Consider an array -> [1 4 6 7 3 7 8 1], now at an index where 3 is present there are 4 elements at the 
+   back with greater elements and 3 at the front which are greater. So, total subarrays are (4x3) 12. Now, 
+   since total addition is required, so total is 12x3 = 36.
+
+2. So, for an element if we could figure out total NSE (Next Smaller Element) and PSE (Previous Smaller Element),
+   then we could probably find total additions on O(2N) complexity.
+
+3. Now, an edge case which arises is, what if there equal elements in an array like [1 1], then subarrays will
+   be considered twice since we are only considering Next-Smaller and Previous-Smaller. So we should eliminate
+   either the previous smaller / next smaller with an equality element check.
+
+4. Finally, if no smaller element lies previous of current-element, then PSEE = -1. Similarly, if no smaller
+   element lies next to current-element, then set NSE = n hypothetically.
+
+5. Time Complexity -> O(2*N) and Space Complexity -> O(1).
+
+*/
 
 #define LOG(x) cerr<<#x<<" "<<x<<endl;
 
