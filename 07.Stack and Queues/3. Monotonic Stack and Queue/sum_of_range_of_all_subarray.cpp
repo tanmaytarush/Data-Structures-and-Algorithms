@@ -91,7 +91,6 @@ class Solution
         return total;
     }
 
-
     vector<int> findPSEE(vector<int> &nums)
     {
         int n = nums.size();
@@ -195,7 +194,6 @@ class Solution
             long long rightMax = nge[i] - i;
             maxSum += leftMax * rightMax * nums[i];
         }
-
         return maxSum - minSum;
     }
 
