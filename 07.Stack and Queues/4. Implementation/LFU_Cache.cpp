@@ -58,6 +58,221 @@ lfu.get(5); Returns -1 (not found).
 
 INTUITION :-
 
+1.  Consider a list of operations being provided from the users end in which I would need to move 
+    from freq to another. In this scenario, we need to remove the least frequently used DLL from 
+    the list. 
 
+2.  We need to maintain two maps KeyNode and Freq_DLL with KeyNode containing <int, Node*> and 
+    FreqDLL containing <int, List*> were List is Doubly-Linked-List.
+
+3.  For each frequency, a DLL will be maintained which will keep all the nodes in that range.
+    If an operation is performed, then in that case we will move from one frequency level to 
+    another where, freq increases by 1. 
+
+4.  Now, if in Freq_DLL, if a freq map becomes empty then min_freq ++ and in that case we
+    remove either the node from previous min_freq and LRU from that freq map.
 
 */
+
+#define LOG(x) cerr<<#x<<" "<<x<<endl;
+#include<iostream>
+#include<unordered_map>
+#include<vector>
+#include<string>
+#include<stack>
+#include<algorithm>
+using namespace std;
+
+class Node
+{
+    public:
+    Node *next;
+    Node *prev;
+
+    int key; int value;
+    int freq;
+
+    Node(int key, int value)
+    {
+        this->key = key;
+        this->value = value;
+        freq = 1;
+        this->next = NULL;
+        this->prev = NULL;
+    }
+};
+
+class List
+{
+    public:
+    int size;
+    Node *head;
+    Node *tail;
+
+    List()
+    {
+        head = new Node(0, 0);
+        tail = new Node(0, 0);
+
+        head->next = tail;
+        tail->prev = head;
+        size = 0;
+    }
+
+    void addNode(Node* node)
+    {
+        Node *temp = head->next;
+        
+        node->next = temp;
+        node->prev = head;
+
+        head->next = node;
+        temp->prev = node;
+
+        size++;
+    }
+
+    void removeNode(Node* node)
+    {
+        Node* prevNode = node->prev;
+        Node* nextNode = node->next;
+
+        prevNode->next = nextNode;
+        nextNode->prev = prevNode;
+
+        size--;
+    }
+
+    Node* removeLRU()
+    {
+        if(size == 0) return nullptr;
+
+        Node* node = tail->prev;
+        removeNode(node);
+        return node;
+    }
+};
+
+class LFUCache
+{
+    private:
+    int capacity;
+    int minFreq;
+    int currSize;
+
+    unordered_map<int, Node*> keyNode;
+    unordered_map<int, List*> freqListMap;
+
+    public:
+    LFUCache(int capacity)
+    {
+        this->capacity = capacity;
+        minFreq = 0;
+        currSize = 0;
+    }
+
+    void updateFreqMap(Node* node)
+    {
+        int freq = node->freq;
+        
+        freqListMap[freq]->removeNode(node); // move to next frequency map
+
+        // increase the min_freq if current freq_map size=0 or min_freq = freq
+        if((freq == minFreq) && (freqListMap[freq]->size == 0))
+        {
+            minFreq++;
+        }
+
+        node->freq++; // increase the frequency count because node moves to next
+
+        // if DLL for that new frequency does not exist, in that case create one
+        if(freqListMap.find(node->freq) == freqListMap.end())
+        {
+            freqListMap[node->freq] = new List();
+        }
+
+        // add node to top of that new frequency
+        freqListMap[node->freq]->addNode(node);
+    }
+
+    int get(int key)
+    {
+        if(keyNode.find(key) == keyNode.end()) return -1;
+
+        Node* node = keyNode[key];
+        updateFreqMap(node);
+        return node->value;
+    }
+
+    void put(int key, int value)
+    {
+        if(capacity == 0) return;
+
+        // if value or node found, update the value directly
+        if(keyNode.find(key) != keyNode.end())
+        {
+            Node* node = keyNode[key];
+            node->value = value;
+            updateFreqMap(node);
+            return;
+        }
+
+        // if capacity is reached, move to min_freq and remove the LRUCache
+        if(currSize == capacity)
+        {
+            List* list = freqListMap[minFreq];
+            Node* nodeToRemove = list->removeLRU();
+
+            keyNode.erase(nodeToRemove->key);
+
+            delete nodeToRemove;
+
+            currSize--;
+        }
+
+        // if not exists create a new one and add it into first freqNodeMap with freq=1
+        Node* newNode = new Node(key, value);
+
+        minFreq = 1;
+        if (freqListMap.find(minFreq) == freqListMap.end()) {
+            freqListMap[minFreq] = new List();
+        }
+        freqListMap[minFreq]->addNode(newNode);
+        keyNode[key] = newNode;
+        currSize++;
+    }
+};
+
+
+int main()
+{
+    int capacity, q;
+    cin>>capacity;
+
+    LFUCache cache(capacity);
+
+    cin>>q;
+
+    while(q--)
+    {
+        int type;
+        cin>>type;
+
+        if(type == 1)
+        {
+            int key, value;
+            cin>>key>>value;
+            cache.put(key, value);
+        }
+
+        else if(type == 2)
+        {
+            int key;
+            cin>>key;
+
+            cout<<cache.get(key)<<endl;
+        }
+    }
+
+    return 0;
+}
