@@ -1,4 +1,3 @@
-QUESTION:
 /*Given an array of integers nums and an integer k, a continuous subarray is called nice if there are k odd numbers in it. Return the number of nice subarrays.
 
 Example 1:
@@ -17,24 +16,8 @@ APPROACH:
 5. In the numberOfSubarrays function, return the difference between atMostK(nums, k) and atMostK(nums, k - 1) to get the number of nice subarrays.
 
 CODE:*/
-int atMostK(vector<int>& nums, int k) {
-    int start = 0, oddCnt = 0, ans = 0;
-    for(int i = 0; i < nums.size(); i++) {
-        if(nums[i] % 2 != 0)
-            oddCnt++;
-        while(oddCnt > k) {
-            if(nums[start] % 2 != 0)
-                oddCnt--;
-            start++;
-        }
-        ans += i - start + 1;
-    }
-    return ans;
-}
 
-int numberOfSubarrays(vector<int>& nums, int k) {
-    return atMostK(nums, k) - atMostK(nums, k - 1);
-}
+
 
 /*
 COMPLEXITY ANALYSIS:
