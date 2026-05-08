@@ -50,7 +50,7 @@ class Solution
 
             while(start<=end && sum>k)
             {
-                sum -= nums[start];
+                sum -= nums[start]%2;
                 start++;
             }
 
