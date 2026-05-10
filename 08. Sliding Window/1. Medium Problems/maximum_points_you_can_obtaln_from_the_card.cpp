@@ -24,33 +24,63 @@ COMPLEXITY ANALYSIS:
 - Space complexity: O(1), as the extra space used is constant throughout the algorithm.
 */
 
-int minimumSumOfSizeK(vector<int>& arr, int k) {
-    int ans = INT_MAX, currsum = 0, start = 0;
-    
-    for (int i = 0; i < arr.size(); i++) {
-        currsum += arr[i];
-        
-        while ((i - start + 1) > k) {
-            currsum -= arr[start];
-            start++;
-        }
-        
-        if ((i - start + 1) == k)
-            ans = min(ans, currsum);
-    }
-    
-    return ans;
-}
+#define LOG(x) cerr<<#x<<" "<<x<<endl;
+#include<iostream>
+#include<unordered_map>
+#include<vector>
+#include<string>
+#include<algorithm>
+#include<stack>
+using namespace std;
 
-int maxScore(vector<int>& cardPoints, int k) {
-    int totalSum = 0;
-    
-    for (auto it : cardPoints) {
-        totalSum += it;
+class Solution
+{
+    public:
+    int maxPoints(vector<int>&cardPoints, int k)
+    {
+        int n = cardPoints.size();
+        int maxPoints = 0;
+        int leftPoints = 0;
+        int rightPoints = 0;
+
+        for(int i=0; i<k; ++i)
+        {
+            leftPoints += cardPoints[i];
+            maxPoints = leftPoints;
+        }   
+        
+        int rightIndex = n-1;
+        for(int i=k-1; i>=0; --i)
+        {
+            leftPoints -= cardPoints[i];
+            rightPoints += cardPoints[rightIndex];
+
+            maxPoints = max(maxPoints, leftPoints+rightPoints);
+            rightIndex--;
+        }
+
+        return maxPoints;
     }
-    
-    int windowSize = cardPoints.size() - k;
-    int discardedSum = minimumSumOfSizeK(cardPoints, windowSize);
-    
-    return totalSum - discardedSum;
+};
+
+int main()
+{
+    Solution sol;
+
+    int n;
+    cin>>n;
+
+    vector<int> cardPoints(n);
+    for(int i=0; i<n; ++i)
+    {
+        cin>>cardPoints[i];
+    }
+
+    int k; cin>>k;
+
+    int result = sol.maxPoints(cardPoints, k);
+
+    cout<<result<<endl;
+
+    return 0;
 }

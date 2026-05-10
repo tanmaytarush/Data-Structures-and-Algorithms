@@ -32,28 +32,22 @@ COMPLEXITY ANALYSIS:
 - Space complexity: O(k), as the space used by the unordered_map is proportional to the number of distinct elements, which can be at most 'k'.
 */
 
-int kDistinctIntegers(int k, vector<int> &s) {
-    unordered_map<int, int> mp;
-    int start = 0, ans = 0;
-    
-    for (int i = 0; i < s.size(); i++) {
-        mp[s[i]]++;
-        
-        while (mp.size() > k) {
-            mp[s[start]]--;
-            
-            if (mp[s[start]] == 0)
-                mp.erase(s[start]);
-            
-            start++;
-        }
-        
-        ans += i - start + 1;
-    }
-    
-    return ans;
-}
+#define LOG(x) cerr<<#x<<" "<<x<<endl;
+#include<iostream>
+#include<unordered_map>
+#include<vector>
+#include<string>
+#include<unordered_set>
+#include<algorithm>
+using namespace std;
 
-int subarraysWithKDistinct(vector<int>& nums, int k) {
-    return kDistinctIntegers(k, nums) - kDistinctIntegers(k - 1, nums);
+class Solution
+{
+    public:
+
+};
+
+int main()
+{
+
 }
