@@ -30,38 +30,75 @@ COMPLEXITY ANALYSIS:
 - Space complexity: O(n), as the space used by the unordered_map is proportional to the number of unique characters in 't', which can be at most 'n'.
 */
 
-string minWindow(string s, string t) {
-    unordered_map<char, int> mp;
+#define LOG(x) cerr<<#x<<" "<<x<<endl;
+#include<iostream>
+#include<unordered_map>
+#include<vector>
+#include<string>
+#include<algorithm>
+using namespace std;
 
-    for (auto it : t) {
-        mp[it]++;
-    }
-    
-    int count = mp.size();
-    int start = 0, minlen = INT_MAX;
-    int substrBegin = 0;
+class Solution
+{
+    public:
+    string minWindowSubstring(string s, string t)
+    {
+        int n = s.length();
+        int m = t.length();
 
-    for (int i = 0; i < s.size(); i++) {
-        mp[s[i]]--;
-        
-        if (mp[s[i]] == 0)
-            count--;
-        
-        while (count == 0) {
-            if (i - start + 1 < minlen) {
-                substrBegin = start;
-                minlen = i - start + 1;
-            }
-            
-            mp[s[start]]++;
-            
-            if (mp[s[start]] > 0) {
-                count++;
-            }
-            
-            start++;
+        int l=0;
+        int r=0;
+        int count = 0;
+
+        int maxLength = INT_MAX;
+        int sIndex = -1;
+
+        int hash[256] = {0};
+
+        for(int i=0; i<m; ++i)
+        {
+            hash[t[i]]++;
         }
+        
+        while(r < n)
+        {
+            if(hash[s[r]] > 0) count += 1;
+            hash[s[r]]--;
+
+            while(count == m)
+            {
+                if(r-l+1 < maxLength)
+                {
+                    maxLength = r-l+1;
+                    sIndex = l;
+                }
+
+                hash[s[l]]++;
+                if(hash[s[l]] > 0) count -= 1;
+
+                l++;
+            }
+
+            r++;
+        }
+
+        return sIndex == -1 ? "" : s.substr(sIndex, maxLength);
     }
-    
-    return (minlen == INT_MAX) ? "" : s.substr(substrBegin, minlen);
+};
+
+int main()
+{   
+    Solution sol;
+
+    string s;
+    getline(cin, s);
+
+    string t;
+    getline(cin, t);
+
+    string result = sol.minWindowSubstring(s, t);
+
+    cout<<result<<endl;
+
+    return 0;
 }

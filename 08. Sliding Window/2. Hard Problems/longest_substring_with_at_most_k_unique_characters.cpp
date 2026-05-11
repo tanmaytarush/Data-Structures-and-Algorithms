@@ -1,45 +1,90 @@
 /*
-QUESTION:
-Given a string 'str' and an integer 'K', find the length of the largest substring with at most 'K' distinct characters.
+Given an integer array nums and an integer k, return the number of good subarrays of nums.
 
-EXAMPLE:
-For example, if we are given 'str' = "abbbbbbc" and 'K' = 2, the substrings that can be formed are ["abbbbbb", "bbbbbbc"]. Hence, the answer is 7.
+A good array is an array where the number of different integers in that array is exactly k.
 
-APPROACH:
-We can use a sliding window approach to solve this problem.
+For example, [1,2,3,1,2] has 3 different integers: 1, 2, and 3.
+A subarray is a contiguous part of an array.
+ 
 
-1. Create a function, kDistinctChars, that takes 'k' and the input string 's' as parameters.
-   - Initialize an unordered_map, mp, to store the frequency of characters.
-   - Initialize 'start' to 0 and 'ans' to 0.
-   - Iterate over the string from left to right:
-     - Increment the frequency of the current character in the map.
-     - If the number of distinct characters in the map exceeds 'k', move the 'start' pointer to the right and remove characters from the map until the number of distinct characters becomes equal to 'k'.
-     - Update 'ans' with the maximum length of the substring (i - start + 1).
-   - Return 'ans', which represents the length of the largest substring with at most 'k' distinct characters.
+Example 1:
 
-COMPLEXITY ANALYSIS:
-- Time complexity: O(n), where n is the length of the string 's'. We iterate over the string once using the sliding window approach.
-- Space complexity: O(k), as the space used by the unordered_map is proportional to the number of distinct characters, which can be at most 'k'.
+Input: nums = [1,2,1,2,3], k = 2
+Output: 7
+Explanation: Subarrays formed with exactly 2 different integers: [1,2], [2,1], [1,2], [2,3], [1,2,1], [2,1,2], [1,2,1,2]
+Example 2:
+
+Input: nums = [1,2,1,3,4], k = 3
+Output: 3
+Explanation: Subarrays formed with exactly 3 different integers: [1,2,1,3], [2,1,3], [1,3,4].
 */
 
-int kDistinctChars(int k, string &s) {
-    unordered_map<char, int> mp;
-    int start = 0, ans = 0;
-    
-    for (int i = 0; i < s.size(); i++) {
-        mp[s[i]]++;
-        
-        while (mp.size() > k) {
-            mp[s[start]]--;
-            
-            if (mp[s[start]] == 0)
-                mp.erase(s[start]);
-            
-            start++;
-        }
-        
-        ans = max(ans, i - start + 1);
+#define LOG(x) cerr<<#x<<" "<<x<<endl;
+#include<iostream>
+#include<unordered_map>
+#include<algorithm>
+#include<vector>
+#include<string>
+#include<stack>
+using namespace std;
+
+class Solution {
+public:
+    int subarraysWithKDistinct(vector<int>& nums, int k) {
+        return numSubarrays(nums, k) - numSubarrays(nums, k-1);
     }
+
+    int numSubarrays(vector<int> &nums, int k)
+    {
+        int n = nums.size();
+        int l=0;
+        int r=0;
+        unordered_map<int, int> mpp;
+        int total = 0;
+
+        while(r < n)
+        {
+            mpp[nums[r]]++;
+
+            while(mpp.size() > k)
+            {
+                mpp[nums[l]]--;
+                if(mpp[nums[l]] == 0) mpp.erase(nums[l]);
+                l++;
+            }
+
+            if(mpp.size() <= k)
+            {
+                total += r-l+1;
+            }
+
+            r++;
+        }
+
+        return total;
+    }
+};
+
+
+int main()
+{
+    Solution sol;
     
-    return ans;
+    int n;
+    cin>>n;
+
+    vector<int> nums(n);
+    for(int i=0; i<n; ++i)
+    {
+        cin>>nums[i];
+    }
+
+    int k;
+    cin>>k;
+
+    int result = sol.subarraysWithKDistinct(nums, k);
+
+    cout<<result<<endl;
+
+    return 0;
 }

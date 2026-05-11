@@ -44,10 +44,77 @@ using namespace std;
 class Solution
 {
     public:
+    int maxLenSubstringBF(string s, int k)
+    {
+        int n = s.length();
+        int maxLength = 0;
+        unordered_map<char, int> mpp;
 
+        for(int i=0; i<n; ++i)
+        {
+            mpp.clear();
+            for(int j=i; j<n; ++j)
+            {
+                mpp[s[j]]++;
+
+                if(mpp.size() <= k) // atmost k elements
+                {
+                    maxLength = max(maxLength, j-i+1);
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+        return maxLength;
+    }
+
+    int maxLenOptimal(string s, int k)
+    {
+        int l=0;
+        int r=0;
+        int n = s.length();
+        unordered_map<char, int> mpp;
+        int maxLength = 0;
+
+        while(r < n)
+        {
+            mpp[s[r]]++;
+
+            if(mpp.size() > k)
+            {
+                mpp[s[l]]--;
+                if(mpp[s[l]] == 0) mpp.erase(mpp[s[l]]);
+                l++;
+            }
+
+            if(mpp.size() <= k)
+            {
+                maxLength = max(maxLength, r-l+1);
+            }
+
+            r++;
+        }
+        return maxLength;
+    }
 };
 
 int main()
 {
+    Solution sol;
 
+    string s;
+    getline(cin, s);
+
+    int k;
+    cin>>k;
+
+    int result_bf = sol.maxLenSubstringBF(s, k);
+    int result_opt = sol.maxLenOptimal(s, k);
+
+    cout<<result_bf<<endl;
+    cout<<result_opt<<endl;
+
+    return 0;
 }
