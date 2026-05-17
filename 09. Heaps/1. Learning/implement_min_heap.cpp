@@ -21,52 +21,21 @@ Overall, the time complexity of the minHeap class methods is O(log n), where n i
 CODE:-
 */
 
+#define LOG(x) cerr<<#x<<" "<<x<<endl;
+#include<iostream>
+#include<unordered_map>
+#include<string>
+#include<vector>
+#include<algorithm>
+#include<stack>
+using namespace std;
 
-class minHeap {
-public:
-    vector<int> pq;
-
-    // Function to heapify the heap.
-    void heapify(int node) {
-        int leftChild = (2 * node) + 1;
-        int rightChild = (2 * node) + 2;
-        int smallest = node;
-
-        if (leftChild < pq.size() && pq[leftChild] < pq[smallest])
-            smallest = leftChild;
-
-        if (rightChild < pq.size() && pq[rightChild] < pq[smallest])
-            smallest = rightChild;
-
-        if (smallest != node) {
-            swap(pq[node], pq[smallest]);
-            heapify(smallest);
-        }
-    }
-
-    void bottomUpHeapify(int node) {
-        int parent = (node - 1) / 2;
-        if (parent >= 0 && pq[parent] > pq[node]) {
-            swap(pq[parent], pq[node]);
-            bottomUpHeapify(parent);
-        }
-    }
-
-    // Function to insert 'val' in the heap.
-    void insert(int val) {
-        pq.push_back(val);
-        bottomUpHeapify(pq.size() - 1);
-    }
-
-    // Function to remove the minimum element.
-    void removeMin() {
-        pq[0] = pq.back();
-        pq.pop_back();
-        heapify(0);
-    }
-
-    // Function to return the minimum element.
-    int minElement() {
-        return (pq.empty()) ? -1 : pq[0];
-    }
+class Heap
+{
+    
 };
+
+int main()
+{
+
+}
