@@ -21,26 +21,72 @@ SPACE COMPLEXITY:
 The space complexity is O(1) as no extra space is used in the conversion process.
 */
 
-void heapify(vector<int>& arr, int node) {
-    int left = (2 * node) + 1;
-    int right = (2 * node) + 2;
-    int largest = node;
-    int n = arr.size();
+#define LOG(x) cerr<<#x<<" "<<x<<endl;
+#include<iostream>
+#include<unordered_map>
+#include<vector>
+#include<string>
+#include<algorithm>
+using namespace std;
 
-    if (left < n && arr[left] > arr[largest])
-        largest = left;
+void heapify(vector<int>&arr, int index, int size, int capacity)
+{
+    int largest = index;
+    int leftIndex = 2*index+1;
+    int rightIndex = 2*index+2;
 
-    if (right < n && arr[right] > arr[largest])
-        largest = right;
+    if(leftIndex<size && arr[largest]<arr[leftIndex])
+    {
+        largest = leftIndex;
+    }
 
-    if (largest != node) {
-        swap(arr[node], arr[largest]);
-        heapify(arr, largest);
+    if(rightIndex<size && arr[largest]<arr[rightIndex])
+    {
+        largest = rightIndex;
+    }
+
+    if(largest!=index)
+    {
+        swap(arr[largest], arr[index]);
+        heapify(arr, largest, size, capacity);
     }
 }
 
-void convertMinToMaxHeap(vector<int>& arr, int N) {
-    for (int i = (N / 2) - 1; i >= 0; i--) {
-        heapify(arr, i);
+void convertMinToMaxHeap(vector<int>&arr, int cap)
+{
+    int n = arr.size();
+    for(int i=(n/2-1); i>=0; --i)
+    {
+        heapify(arr, i, n, cap);
     }
+}
+
+void print(vector<int> &arr)
+{
+    int n = arr.size();
+    for(int i=0; i<n; ++i)
+    {
+        cout<<arr[i]<<" ";
+    }
+    cout<<endl;
+}
+
+int main()
+{
+    int n;
+    cin>>n; 
+
+    vector<int> arr(n);
+    for(int i=0; i<n; ++i)
+    {
+        cin>>arr[i];
+    }
+
+    int cap;
+    cin>>cap;
+
+    convertMinToMaxHeap(arr, cap);
+    print(arr);
+
+    return 0;
 }

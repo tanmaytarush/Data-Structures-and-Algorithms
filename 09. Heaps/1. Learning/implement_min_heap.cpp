@@ -32,10 +32,105 @@ using namespace std;
 
 class Heap
 {
-    
+    public:
+    int capacity;
+    int size;
+    int *arr;
+
+    Heap(int cap)
+    {
+        this->capacity = cap;
+        size = 0;
+        arr = new int[cap];
+    }
+
+    int left(int ind)
+    {
+        return 2*ind+1;
+    }
+
+    int right(int ind)
+    {
+        return 2*ind+2;
+    }
+
+    int parent(int ind)
+    {
+        return (ind-1)/2;
+    }
+
+    void swap(int *x, int *y)
+    {
+        int temp = *x;
+        *x = *y;
+        *y = temp;
+    }
+
+    void insertion(int val)
+    {
+        if(size == capacity)
+        {
+            cout<<"Binary tree already full"<<endl;
+        }
+
+        arr[size] = val;
+        // assign k index before increasing the array size
+        int k = size;
+        size++;
+
+        while(k!=0 && arr[parent(k)]>arr[k])
+        {
+            swap(&arr[parent(k)], &arr[k]);
+            k = parent(k);
+        }
+    }
+
+    void heapify(int index)
+    {
+        int smallest = index;
+        int li = left(index);
+        int ri = right(index);
+
+        if(li < size && arr[li]<arr[smallest])
+        {
+            smallest = li;
+        }
+
+        if(ri<size && arr[ri]<arr[smallest])
+        {
+            smallest = ri;
+        }
+
+        // need to check for the lower part of the binary tree, because upper part is already a min-heap
+        if(smallest != index)
+        {
+            swap(&arr[smallest], &arr[index]);
+            heapify(smallest);
+        }
+    }
+
+    void print()
+    {
+        for(int i=0; i<size; ++i)
+        {
+            cout<<arr[i]<<" ";
+        }
+        cout<<endl;
+    }
 };
 
 int main()
 {
+    Heap h(10);
 
+    h.insertion(10);
+    h.insertion(12);
+    h.insertion(13);
+    h.insertion(9);
+    h.insertion(5);
+    h.heapify(3);
+
+    h.print();
+
+    return 0;
 }

@@ -20,16 +20,49 @@ SPACE COMPLEXITY:
 The space complexity is O(N) due to the recursive calls in the solve function.
 */
 
-bool solve(int a[], int node, int n) {
-    if (node >= n)
+#define LOG(x) cerr<<#x<<" "<<x<<endl;
+#include<iostream>
+#include<unordered_map>
+#include<vector>
+#include<string>
+#include<algorithm>
+using namespace std;
+
+bool solve(vector<int>&arr, int index, int n)
+{
+    if(index > n)
+    {
         return true;
+    }
 
-    int left = (2 * node) + 1;
-    int right = (2 * node) + 2;
+    int leftIndex = 2*index + 1;
+    int rightIndex = 2*index + 2;
 
-    return (solve(a, left, n) && solve(a, right, n) && (a[node] > a[left] && a[node] > a[right]));
+    return (leftIndex<n && rightIndex<n && (arr[index]>arr[leftIndex] && arr[index]>arr[rightIndex]));
 }
 
-bool isMaxHeap(int a[], int n) {
-    return solve(a, 0, n);
+bool maxHeap(vector<int>&arr, int n)
+{
+    return solve(arr, 0, n);
+}
+
+int main()
+{
+    int capacity;
+    cin>>capacity;
+
+    int size;
+    cin>>size;
+
+    vector<int> arr(size);
+    for(int i=0; i<size; ++i)
+    {
+        cin>>arr[i];
+    }
+
+    bool result = maxHeap(arr, size);
+
+    cout<<result<<endl;
+
+    return 0;
 }
