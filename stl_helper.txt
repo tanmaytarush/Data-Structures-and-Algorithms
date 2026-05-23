@@ -1,0 +1,520 @@
+For Leetcode, you do not need all of STL. Around 20–25 functions + patterns cover most problems.
+
+I’d group them like this:
+
+⸻
+
+1. Vector (Most used)
+
+vector<int> v;
+
+Insert / remove
+
+v.push_back(x);
+v.pop_back();
+v.insert(v.begin()+i, x);
+v.erase(v.begin()+i);
+v.clear();
+
+Access
+
+v[i]
+v.front()
+v.back()
+v.size()
+v.empty()
+
+Iteration
+
+for(auto x : v)
+for(int i=0;i<v.size();i++)
+
+Algorithms
+
+sort(v.begin(), v.end());
+reverse(v.begin(), v.end());
+max_element(v.begin(), v.end());
+min_element(v.begin(), v.end());
+accumulate(v.begin(), v.end(), 0);
+
+Know:
+
+lower_bound()
+upper_bound()
+binary_search()
+
+⸻
+
+2. String
+
+string s;
+
+Access
+
+s[i]
+s.length()
+s.size()
+s.empty()
+
+Modify
+
+s.push_back(c);
+s.pop_back();
+s.substr(start,len);
+s.erase(pos,len);
+reverse(s.begin(), s.end());
+
+Conversion
+
+stoi(s);
+stol(s);
+to_string(x);
+
+Search
+
+s.find("abc");
+s.find(c);
+s.compare(s2);
+
+Useful:
+
+isdigit(c)
+isalpha(c)
+tolower(c)
+toupper(c)
+
+⸻
+
+3. Set / unordered_set
+
+Use when:
+
+unique elements
+membership checking
+
+Functions:
+
+insert()
+erase()
+count()
+find()
+size()
+empty()
+
+Ordered set only:
+
+lower_bound()
+upper_bound()
+
+⸻
+
+4. Map / unordered_map
+
+Use:
+
+frequency
+lookup
+pair storage
+
+Functions:
+
+mp[key]
+mp[key]++
+mp[key]--
+count()
+find()
+erase()
+size()
+
+Iteration:
+
+for(auto [k,v] : mp)
+
+Common pattern:
+
+unordered_map<int,int> freq;
+for(int x:nums)
+    freq[x]++;
+
+⸻
+
+5. Stack
+
+stack<int> st;
+
+Functions:
+
+push()
+pop()
+top()
+empty()
+size()
+
+Problems:
+
+monotonic stack
+next greater
+histogram
+parentheses
+
+⸻
+
+6. Queue
+
+queue<int> q;
+
+Functions:
+
+push()
+pop()
+front()
+back()
+empty()
+
+Used in:
+
+BFS
+level order traversal
+
+⸻
+
+7. Deque
+
+deque<int> dq;
+
+Functions:
+
+push_front()
+push_back()
+pop_front()
+pop_back()
+front()
+back()
+
+Used:
+
+sliding window maximum
+0-1 BFS
+
+⸻
+
+8. Priority Queue (Heap)
+
+Max heap:
+
+priority_queue<int> pq;
+
+Min heap:
+
+priority_queue<
+int,
+vector<int>,
+greater<int>
+> pq;
+
+Functions:
+
+push()
+pop()
+top()
+empty()
+size()
+
+Used:
+
+Top K
+Dijkstra
+Median
+Greedy
+
+⸻
+
+9. Pair
+
+Create:
+
+pair<int,int> p;
+p.first
+p.second
+
+Shortcut:
+
+{a,b}
+make_pair(a,b)
+
+Useful:
+
+vector<pair<int,int>>
+priority_queue<pair<int,int>>
+
+⸻
+
+10. Sorting + Comparator
+
+Default:
+
+sort(v.begin(), v.end());
+
+Descending:
+
+sort(v.begin(), v.end(),
+greater<int>());
+
+Custom:
+
+sort(v.begin(), v.end(),
+[](auto a, auto b)
+{
+    return a.second<b.second;
+});
+
+Must know.
+
+⸻
+
+11. Binary Search helpers
+
+lower_bound()
+upper_bound()
+binary_search()
+
+Example:
+
+vector<int> v={1,2,2,3};
+lower_bound
+→ first 2
+upper_bound
+→ after last 2
+
+Distance:
+
+idx=
+lower_bound(
+v.begin(),
+v.end(),
+x
+)-v.begin();
+
+⸻
+
+12. Math helpers
+
+max(a,b)
+min(a,b)
+abs(x)
+pow(a,b)
+sqrt(x)
+ceil(x)
+floor(x)
+log10(x)
+gcd(a,b)
+lcm(a,b)
+
+Modern:
+
+__gcd(a,b)
+
+or
+
+gcd(a,b)
+
+⸻
+
+13. Bit operations
+
+Check bit:
+
+x&(1<<i)
+
+Set:
+
+x|=(1<<i);
+
+Clear:
+
+x&=~(1<<i);
+
+Toggle:
+
+x^=(1<<i);
+
+Count bits:
+
+__builtin_popcount(x)
+__builtin_popcountll(x)
+
+Trailing zeros:
+
+__builtin_ctz(x)
+
+⸻
+
+14. Prefix / accumulation
+
+Prefix sum:
+
+prefix[i]=
+prefix[i-1]+nums[i];
+
+Library:
+
+partial_sum()
+
+Total:
+
+accumulate(
+v.begin(),
+v.end(),
+0
+);
+
+⸻
+
+15. Useful conversions
+
+stoi()
+stol()
+stoll()
+to_string()
+static_cast<int>()
+char-'0'
+string(num,'a')
+
+Example:
+
+int x='7'-'0';
+
+Result:
+
+7
+
+⸻
+
+16. Iterators
+
+Beginning:
+
+begin()
+end()
+
+Reverse:
+
+rbegin()
+rend()
+
+Example:
+
+sort(
+v.rbegin(),
+v.rend()
+);
+
+Descending sort.
+
+⸻
+
+17. Recursion helpers
+
+Backtracking:
+
+path.push_back()
+path.pop_back()
+
+DFS:
+
+visited.insert()
+visited.erase()
+
+⸻
+
+18. Algorithms header gems
+
+Remove duplicates:
+
+unique()
+
+Permutation:
+
+next_permutation()
+prev_permutation()
+
+Count:
+
+count()
+
+Fill:
+
+fill()
+
+Swap:
+
+swap()
+
+⸻
+
+19. Tree / Graph templates
+
+BFS:
+
+queue<TreeNode*> q;
+
+DFS:
+
+stack<TreeNode*> st;
+
+Adjacency list:
+
+vector<vector<int>> adj;
+
+Visited:
+
+vector<bool> vis;
+unordered_set<int> vis;
+
+⸻
+
+20. The REAL Leetcode core (80% problems)
+
+If you master only these:
+
+vector
+string
+unordered_map
+unordered_set
+stack
+queue
+priority_queue
+sort
+binary search
+DFS
+BFS
+prefix sum
+two pointers
+sliding window
+heap
+recursion
+bitmask
+DP
+
+you can solve most medium problems.
+
+⸻
+
+Priority order for you specifically (based on your solving style)
+
+1. unordered_map
+2. unordered_set
+3. vector
+4. sort
+5. binary search
+6. stack
+7. priority_queue
+8. DFS/BFS
+9. prefix sums
+10. DP
+
+You already naturally think in:
+
+hashing → store → lookup → reduce → compare
+
+So lean into that first.

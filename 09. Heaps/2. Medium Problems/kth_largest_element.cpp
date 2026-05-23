@@ -18,16 +18,60 @@ SPACE COMPLEXITY:
 The space complexity is O(k) as we need to store k elements in the min-heap.
 */
 
-int findKthLargest(vector<int>& nums, int k) {
+#define LOG(x) cerr<<#x<<" "<<x<<endl;
+#include<iostream>
+#include<unordered_map>
+#include<vector>
+#include<string>
+#include<unordered_set>
+#include<algorithm>
+#include<queue>
+using namespace std;
+
+int kthLargestElement(vector<int>&arr, int l, int r, int k)
+{
+    int n = arr.size();
+    
+    // min-heap
     priority_queue<int, vector<int>, greater<int>> pq;
-    for (int i = 0; i < k; i++) {
-        pq.push(nums[i]);
+
+    // Step-1 -> Pushing the first set of k-elements in a min-heap
+    for(int i=0; i<k; ++i)
+    {
+        pq.push(arr[i]);
     }
-    for (int i = k; i < nums.size(); i++) {
-        if (nums[i] > pq.top()) {
+
+    // Step-2 -> Checking for remaining elements if a particular element,
+    // if arr[i]>pq.top(), then pq.pop() and pq.push(arr[i])
+    for(int i=k; i<=r; ++i)
+    {
+        if(arr[i]>pq.top())
+        {
             pq.pop();
-            pq.push(nums[i]);
+            pq.push(arr[i]);
         }
     }
+
     return pq.top();
+}
+
+int main()
+{
+    int n;
+    cin>>n;
+
+    vector<int> arr(n);
+    for(int i=0; i<n; ++i)
+    {
+        cin>>arr[i];
+    }
+
+    int k;
+    cin>>k;
+
+    int result = kthLargestElement(arr, 0, n-1, k);
+
+    cout<<result;
+
+    return 0;
 }

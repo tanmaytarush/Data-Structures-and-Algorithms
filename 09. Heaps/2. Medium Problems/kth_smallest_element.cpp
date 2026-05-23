@@ -18,16 +18,60 @@ SPACE COMPLEXITY:
 The space complexity is O(K) as we need to store K elements in the max-heap.
 */
 
-int findKthSmallest(vector<int>& arr, int K) {
+#define LOG(x) cerr<<#x<<" "<<x<<endl;
+#include<iostream>
+#include<unordered_map>
+#include<vector>
+#include<string>
+#include<unordered_set>
+#include<algorithm>
+#include<queue>
+using namespace std;
+
+int kthSmallestElement(vector<int>&arr, int l, int r, int k)
+{
+    int n = arr.size();
+
+    // max-heap by default
     priority_queue<int> pq;
-    for (int i = 0; i < K; i++) {
+
+    // Step-1 -> Push first k elements in the given max-heap
+    for(int i=0; i<k; ++i)
+    {
         pq.push(arr[i]);
     }
-    for (int i = K; i < arr.size(); i++) {
-        if (arr[i] < pq.top()) {
+
+    // Step-2 -> Push remaining by checking if curr_element < pq.top(), then pq.pop() 
+    // and later pq.push(curr_element)
+    for(int i=k; i<=r; ++i)
+    {
+        if(arr[i]<pq.top())
+        {
             pq.pop();
             pq.push(arr[i]);
         }
     }
+
     return pq.top();
+}
+
+int main()
+{
+    int n;
+    cin>>n;
+
+    vector<int> arr(n);
+    for(int i=0; i<n; ++i)
+    {
+        cin>>arr[i];
+    }
+
+    int k;
+    cin>>k;
+
+    int result = kthSmallestElement(arr, 0, n-1, k);
+
+    cout<<result<<endl;
+
+    return 0;
 }
