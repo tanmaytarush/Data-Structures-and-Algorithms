@@ -20,19 +20,87 @@ SPACE COMPLEXITY:
 The space complexity is O(1) because the frequency map has a fixed number of unique tasks (26 lowercase letters).
 */
 
-int leastInterval(vector<char>& tasks, int n) {
-    int siz = tasks.size();
-    unordered_map<char, int> mp;
-    for (auto it : tasks)
-        mp[it]++;
-    int maxfreq = INT_MIN;
-    for (auto it : mp)
-        maxfreq = max(maxfreq, it.second);
-    int ans = (maxfreq - 1) * (n + 1);
-    // number of elements having maxfreq
-    for (auto it : mp) {
-        if (it.second == maxfreq)
-            ans++;
+#include<iostream>
+#include<unordered_map>
+#include<vector>
+#include<string>
+#include<unordered_set>
+#include<algorithm>
+using namespace std;
+
+class Solution
+{
+    public:
+    int leastInterval(vector<char>&tasks, int n)
+    {
+        vector<int> mp(26, 0);
+        for(char ch : tasks)
+        {
+            mp[ch-'A']++;
+        }
+
+        priority_queue<int> pq;
+        for(int i=0; i<26; ++i)
+        {
+            if(mp[i]>0)
+            {
+                pq.push(mp[i]);
+            }
+        }
+
+        int time = 0;
+        while(!pq.empty())
+        {
+            vector<int>temp;
+            for(int i=1; i<=n+1; ++i){
+                if(!pq.empty())
+                {
+                    int top = pq.top();
+                    pq.pop();
+                    top--;
+                    temp.push_back(top);
+                }
+            }
+
+            for(int &f : temp)
+            {
+                if(f>0) pq.push(f);
+            }
+
+            if(pq.empty())
+            {
+                time += temp.size();
+            }
+            else
+            {
+                time += (n+1);
+            }
+        }
+
+        return time;
     }
-    return max(ans, siz);
+};
+
+int main()
+{
+    Solution sol;
+    int n;
+    cin>>n;
+    vector<char> tasks(n);
+
+    for(int i=0; i<n; ++i)
+    {
+        char ch;
+        cin>>ch;
+        tasks[i] = ch;
+    }
+
+    int m;
+    cin>>m;
+
+    int result = sol.leastInterval(tasks, m);
+
+    cout<<result<<endl;
+
+    return 0;
 }

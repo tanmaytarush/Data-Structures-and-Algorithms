@@ -28,25 +28,71 @@ COMPLEXITY ANALYSIS:
 - Space complexity: O(n), to store the frequency map mp.
 */
 
-bool isPossibleDivide(vector<int>& nums, int k) {
-    if (nums.size() % k != 0) {
-        return false;
-    }
-    unordered_map<int, int> mp;
-    for (auto it : nums)
-        mp[it]++;
-    sort(nums.begin(), nums.end());
+#include<iostream>
+#include<unordered_map>
+#include<map>
+#include<unordered_set>
+#include<vector>
+#include<string>
+#include<algorithm>
+using namespace std;
 
-    for (auto num : nums) {
-        if (mp[num] > 0) {
-            for (int i = num + 1; i < num + k; i++) {
-                if (mp[i] == 0)
-                    return false;
-                mp[i]--;
-            }
-            mp[num]--;
+class Solution {
+public:
+    bool isNStraightHand(vector<int>& hand, int groupSize) {
+        int n = hand.size();
+
+        if(n % groupSize != 0)
+        {
+            return false;
         }
-    }
-    return true;
-}
 
+        map<int, int> mp;
+        for(int &handNumber : hand)
+        {
+            mp[handNumber]++;
+        }
+
+        while(!mp.empty())
+        {
+            int current = mp.begin()->first;
+            for(int i=0; i<groupSize; ++i)
+            {
+                if(mp[current+i] == 0)
+                {
+                    return false;
+                }
+
+                mp[current + i]--;
+                if(mp[current + i] < 1)
+                {
+                    mp.erase(current + i);
+                }
+            }
+        }
+
+        return true;
+    }
+};
+
+int main()
+{
+    Solution sol;
+    int n;
+    cin>>n;
+
+    vector<int> hand(n);
+    for(int i=0; i<n; ++i)
+    {
+        cin>>hand[i];
+    }
+
+    int k;
+    cin>>k;
+
+    int result = sol.isNStraightHand(hand, k);
+
+    cout<<result<<endl;
+
+    return 0;
+}
