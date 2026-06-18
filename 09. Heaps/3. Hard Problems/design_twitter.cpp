@@ -28,51 +28,115 @@ SPACE COMPLEXITY:
 The space complexity is O(U + P) where U is the number of users and P is the total number of posts. The posts map stores the tweets of each user, and the size of the posts map is bounded by the number of users. The maximum size of the posts deque for each user is 10.
 */
 
-unordered_map<int, vector<int>> following; // key = userId, value = followeeIds
-unordered_map<int, deque<pair<int, int>>> posts; // key = userId, value = posts corresponding to that userId
-int time;
+#include<iostream>
+#include<unordered_map>
+#include<unordered_set>
+#include<vector>
+#include<algorithm>
+using namespace std;
 
-Twitter() {
-    time = 0;
-}
+class Twitter
+{
+    private:
+    using Tweet = pair<long long, int>;
+    unordered_map<int, deque<Tweet>> tweeting;
+    unordered_map<int, unordered_set<int>> following;
+    long long timestamp;
 
-void postTweet(int userId, int tweetId) {
-    following[userId].push_back(userId); // each user will follow themselves
+    public:
+    Twitter() : timestamp(0) {}
 
-    if (posts.find(userId) != posts.end() && posts[userId].size() > 10)
-        posts[userId].pop_back();
+    void postTweet(int userId, int tweetId)
+    {
+        tweeting[userId].push_front({timestamp++, tweetId});
 
-    posts[userId].push_front({time, tweetId});
-    time++;
-}
-
-vector<int> getNewsFeed(int userId) {
-    vector<int> ans;
-    set<pair<int, int>, greater<pair<int, int>>> allposts;
-    for (int i = 0; i < following[userId].size(); i++) {
-        int followe = following[userId][i];
-        for (int i = 0; i < posts[followe].size(); i++) {
-            allposts.insert(posts[followe][i]);
+        if(tweeting[userId].size() > 10)
+        {
+            tweeting[userId].pop_back();
         }
     }
-    int siz = allposts.size();
-    int n = min(10, siz);
-    for (auto it = allposts.begin(); it != allposts.end() && n; it++) {
-        ans.push_back(it->second);
-        n--;
-    }
-    return ans;
-}
 
-void follow(int followerId, int followeeId) {
-    following[followerId].push_back(followeeId);
-}
+    vector<int> getNewsFeed(int userId)
+    {
+        priority_queue<Tweet> maxHeap;
 
-void unfollow(int followerId, int followeeId) {
-    for (int i = 0; i < following[followerId].size(); i++) {
-        if (following[followerId][i] == followeeId) {
-            following[followerId].erase(following[followerId].begin() + i);
-            return;
+        // posted by the user itself
+        for(const Tweet &tweet : tweeting[userId])
+        {
+            maxHeap.push(tweet);
         }
+
+        // posted by the following ids
+        for(int followeeId : following[userId])
+        {
+            for(const Tweet &tweets : tweeting[followeeId])
+            {
+                maxHeap.push(tweets);
+            }
+        }
+
+        // getting the feed
+        vector<int> newsFeed;
+        int count = 0;
+        while(!maxHeap.empty() && newsFeed.size()<10)
+        {
+            newsFeed.push_back(maxHeap.top().second);
+            maxHeap.pop();
+        }
+
+        return newsFeed;
+    } 
+
+    void follow(int followerId, int followeeId)
+    {
+        following[followerId].insert(followeeId);
     }
+
+    void unfollow(int followerId, int followeeId)
+    {
+        following[followerId].erase(followeeId);
+    }
+};
+
+
+int main()
+{
+    Twitter twitter;
+
+    twitter.postTweet(1, 5);
+
+    vector<int> feed = twitter.getNewsFeed(1);
+
+    cout << "User 1 feed: ";
+    for (int tweetId : feed) {
+        cout << tweetId << " ";
+    }
+    cout << '\n';
+
+    // User 1 follows user 2.
+    twitter.follow(1, 2);
+
+    // User 2 posts a tweet.
+    twitter.postTweet(2, 6);
+
+    feed = twitter.getNewsFeed(1);
+
+    cout << "User 1 feed after following user 2: ";
+    for (int tweetId : feed) {
+        cout << tweetId << " ";
+    }
+    cout << '\n';
+
+    // User 1 unfollows user 2.
+    twitter.unfollow(1, 2);
+
+    feed = twitter.getNewsFeed(1);
+
+    cout << "User 1 feed after unfollowing user 2: ";
+    for (int tweetId : feed) {
+        cout << tweetId << " ";
+    }
+    cout << '\n';
+
+    return 0;
 }

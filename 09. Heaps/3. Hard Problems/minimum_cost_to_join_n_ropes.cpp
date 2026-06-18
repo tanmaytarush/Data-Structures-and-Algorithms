@@ -2,6 +2,8 @@
 Question:
 There are given N ropes of different lengths, we need to connect these ropes into one rope. The cost to connect two ropes is equal to the sum of their lengths. The task is to connect the ropes with the minimum cost. Given an array arr[] containing the lengths of the ropes.
 
+Similar:- https://leetcode.com/problems/minimum-cost-to-merge-stones/
+
 Example:
 Input: arr[] = {4, 3, 2, 6}
 Output: 29
@@ -28,28 +30,61 @@ Complexity Analysis:
 Code:
 */
 
-long long connectRopes(int* arr, int n)
+#include<iostream>
+#include<unordered_map>
+#include<unordered_set>
+#include<algorithm>
+#include<vector>
+#include<queue>
+using namespace std;
+
+class Solution 
 {
-    long long ans = 0;
-    priority_queue<int, vector<int>, greater<int>> pq;
-    
-    // Push all rope lengths into the priority queue
-    for (int i = 0; i < n; i++) {
-        pq.push(arr[i]);
-    }
-    
-    // Connect ropes until only one rope remains
-    while (pq.size() > 1) {
-        int a = pq.top(); pq.pop();
-        int b = pq.top(); pq.pop();
-        int sum = a + b;
-        ans += sum;
-        
-        // Push the sum back into the priority queue if there are more than one rope remaining
-        if (!pq.empty()) {
-            pq.push(sum);
+    public:
+    int minCost(vector<int>&ropes, int n)
+    {
+        priority_queue<int, vector<int>, greater<int>> minHeap;
+
+        for(int i=0; i<n; ++i)
+        {
+            minHeap.push(ropes[i]);
         }
+
+        int totalCost = 0;
+
+        while(minHeap.size() > 1)
+        {
+            int firstHalf = minHeap.top();
+            minHeap.pop();
+
+            int secondHalf = minHeap.top();
+            minHeap.pop();
+
+            int sum = firstHalf + secondHalf;
+            totalCost += sum;
+            minHeap.push(sum);
+        }
+
+        return totalCost;
     }
-    
-    return ans;
+};
+
+int main()
+{
+    Solution sol;
+
+    int n;
+    cin>>n;
+
+    vector<int> ropes(n);
+    for(int i=0; i<n; ++i)
+    {
+        cin>>ropes[i];
+    }
+
+    int sum = sol.minCost(ropes, n);
+
+    cout<<sum<<endl;
+
+    return 0;
 }
