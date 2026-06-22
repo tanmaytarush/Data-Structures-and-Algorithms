@@ -26,13 +26,66 @@ Complexity Analysis:
 Code:
 */
 
-int findContentChildren(vector<int>& g, vector<int>& s) {
-    sort(g.begin(), g.end());
-    sort(s.begin(), s.end());
-    int child = 0;
-    for (int i = 0; i < s.size() && child < g.size(); i++) {
-        if (s[i] >= g[child])
-            child++;
+#include<iostream>
+#include<vector>
+#include<string>
+#include<unordered_map>
+#include<unordered_set>
+#include<queue>
+#include<algorithm>
+using namespace std;
+
+class Solution
+{
+    public:
+    int assignCookies(vector<int>&greed, vector<int>&cookies)
+    {
+        sort(greed.begin(), greed.end());
+        sort(cookies.begin(), cookies.end());
+
+        int n = greed.size();
+        int m = cookies.size();
+
+        int l=0;
+        int r=0;
+
+        while(l<n && r<m)
+        {
+            if(greed[l] <= cookies[r])
+            {
+                l=l+1;
+            }
+            r=r+1;
+        }
+
+        return l;
     }
-    return child;
+};
+
+int main()
+{
+    Solution sol;
+    int n;
+    cin>>n;
+
+    vector<int> greed(n);
+    for(int i=0; i<n; ++i)
+    {
+        cin>>greed[i];
+    }
+
+    int m;
+    cin>>m;
+
+    vector<int> cookies(m);
+    for(int i=0; i<m; ++i)
+    {
+        cin>>cookies[i];
+    }
+
+    int answer = sol.assignCookies(greed, cookies);
+
+    cout<<answer<<" ";
+
+    return 0;
 }

@@ -34,21 +34,70 @@ Complexity Analysis:
 Code:
 */
 
-static bool comp(Item a, Item b) {
-    return a.value / (a.weight * 1.0) > b.value / (b.weight * 1.0);
-}
+#include<iostream>
+#include<iomanip> // for fixed setprecision(2)
+#include<algorithm>
+#include<unordered_map>
+#include<unordered_set>
+#include<vector>
+#include<string>
+using namespace std;
 
-double fractionalKnapsack(int W, Item arr[], int n) {
-    sort(arr, arr + n, comp);
-    double loot = 0;
-    for (int i = 0; i < n && W; i++) {
-        if (arr[i].weight > W) {
-            loot += (W * (arr[i].value / (arr[i].weight * 1.0)));
-            W = 0;
-        } else {
-            loot += arr[i].value;
-            W -= arr[i].weight;
-        }
+class Item
+{
+    public:
+    int value;
+    int weight;
+};
+
+class Solution
+{
+    public:
+    static bool compare(const Item& a, const Item& b)
+    {
+        double r1 = double(a.value) / double(a.weight);
+        double r2 = double(b.value) / double(b.weight);
+
+        return r1 > r2;
     }
-    return loot;
+
+    double fractionalKnapsack(int W, vector<Item>&arr, int n)
+    {
+        sort(arr.begin(), arr.end(), compare);
+        double answer = 0.0;
+
+        for(int i=0; i<n && W>0; ++i)
+        {
+            if(arr[i].weight <= W)
+            {
+                answer += arr[i].value;
+                W -= arr[i].weight;
+            }
+            else
+            {
+                answer += (double)arr[i].value * W / arr[i].weight;
+                W=0;
+            }
+        }
+
+        return answer;
+    }
+};
+
+int main()
+{
+    Solution sol;
+    int n, W;
+    cin>>n>>W;
+
+    vector<Item> arr(n);
+    for(int i=0; i<n; ++i)
+    {
+        cin >> arr[i].value >> arr[i].weight;
+    }
+
+    double ans = sol.fractionalKnapsack(W, arr, n);
+    cout<<fixed<<setprecision(2)<<ans<<endl;
+
+    return 0;
 }
