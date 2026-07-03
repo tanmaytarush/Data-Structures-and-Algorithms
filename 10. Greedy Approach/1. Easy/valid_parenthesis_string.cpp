@@ -36,21 +36,87 @@ Code:
 //  3-> where opencnt--
 //  The base case would be at end if opencnt == 0 return true else false.
 
-bool checkValidString(string s) {
-    int cmin = 0, cmax = 0;
-    for (auto c : s) {
-        if (c == '(') {
-            cmax++;
-            cmin++;
-        } else if (c == ')') {
-            cmax--;
-            cmin = max(cmin - 1, 0);
-        } else { // this is the case of '*'
-            cmax++; // if we treat '*' as '('
-            cmin = max(cmin - 1, 0); // if we treat '*' as ')'
-        }
-        if (cmax < 0) // this means even after treating all '*' as '(' we can't maintain balance
+
+#include<iostream>
+#include<unordered_map>
+#include<unordered_set>
+#include<vector>
+#include<string>
+#include<algorithm>
+using namespace std;
+
+class Solution
+{
+    public:
+    bool isValidRecursive(string str, int index, int count)
+    {
+        int n = str.length();
+        if(count < 0)
+        {
             return false;
+        }
+        if(index == n)
+        {
+            return (count == 0);
+        }
+
+        if(str[index] == '(')
+        {
+            return isValidRecursive(str, index + 1, count + 1);
+        }
+        if(str[index] == ')')
+        {
+            return isValidRecursive(str, index + 1, count - 1);
+        }
+
+        return (isValidRecursive(str, index+1, count+1) || isValidRecursive(str, index+1, count-1)
+                || isValidRecursive(str, index+1, count));
     }
-    return (cmin == 0);
+
+    bool isValidOptimal(string str)
+    {
+        int n = str.length();
+        int min = 0;
+        int max = 0;
+
+        for(int i=0; i<n; ++i)
+        {
+            if(str[i] == '(')
+            {
+                min += 1;
+                max += 1;
+            }
+            else if(str[i] == ')')
+            {
+                min -= 1;
+                max -= 1;
+            }        
+            else
+            {
+                min -= 1;
+                max += 1;
+            }
+
+            if(min < 0) min = 0;
+            if(max < 0) return false;
+        }
+
+        return (min == 0);
+    }
+};
+
+int main()
+{
+    Solution sol;
+
+    string str;
+    getline(cin, str);
+
+    bool res1 = sol.isValidRecursive(str, 0, 0);
+    bool res2 = sol.isValidOptimal(str);
+
+    cout<<res1<<endl;
+    cout<<res2<<endl;
+
+    return 0;
 }

@@ -32,3 +32,79 @@ Complexity Analysis:
 Code:
 */
 
+
+#include<iostream>
+#include<unordered_map>
+#include<unordered_set>
+#include<vector>
+#include<string>
+#include<algorithm>
+#include<queue>
+using namespace std;
+
+class LemonadeExchange
+{
+    public:
+    bool lemonadeExchange(vector<int>&bills)
+    {
+        int n = bills.size();
+        int five = 0;
+        int ten = 0;
+        for(int &bill : bills)
+        {
+            if(bill == 5)
+            {
+                five += 1;
+            }
+            else if(bill == 10)
+            {
+                if(five)
+                {
+                    ten += 1;
+                    five -= 1;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                if(five && ten)
+                {
+                    five -= 1;
+                    ten -= 1;
+                }
+                else if(five >= 3)
+                {
+                    five -= 3;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+};
+
+int main()
+{
+    LemonadeExchange lE;
+    int n;
+    cin>>n;
+
+    vector<int> bills(n);
+    for(int i=0; i<n; ++i)
+    {
+        cin>>bills[i];
+    }
+
+    bool result = lE.lemonadeExchange(bills);
+
+    cout<<result<<endl;
+
+    return 0;
+}
