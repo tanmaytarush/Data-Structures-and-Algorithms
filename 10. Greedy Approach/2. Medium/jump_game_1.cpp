@@ -24,12 +24,47 @@ Complexity Analysis:
 Code:
 */
 
-bool canJump(vector<int>& nums) {
-    int farthest = 0;
-    for (int i = 0; i < nums.size(); i++) {
-        if (farthest < i)
-            return false;
-        farthest = max(farthest, nums[i] + i);
+#include<iostream>
+#include<vector>
+#include<string>
+#include<unordered_map>
+#include<unordered_set>
+#include<algorithm>
+using namespace std;
+
+class Solution {
+public:
+    bool canJump(vector<int>& nums) {
+        int n = nums.size();
+        int maxIndex = 0;
+        for(int i=0; i<n; ++i)
+        {
+            if(i>maxIndex)
+            {
+                return false;
+            }
+
+            maxIndex = max(maxIndex, i + nums[i]);
+        }
+        return true;
     }
-    return true;
+};
+
+int main()
+{
+    Solution sol;
+    int n;
+    cin>>n;
+
+    vector<int> nums(n);
+    for(int i=0; i<n; ++i)
+    {
+        cin>>nums[i];
+    }
+
+    bool result = sol.canJump(nums);
+
+    cout<<result;
+
+    return 0;
 }

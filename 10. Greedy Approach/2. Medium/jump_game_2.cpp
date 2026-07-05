@@ -29,16 +29,78 @@ Complexity Analysis:
 Code:
 */
 
-int jump(vector<int>& nums) {
-    int steps = 0, end = 0, farthest = 0;
-    for (int i = 0; i < nums.size() - 1; i++) {
-        farthest = max(farthest, nums[i] + i);
-        if (farthest >= nums.size() - 1)
-            return steps + 1;
-        if (i == end) {
-            steps++;
-            end = farthest;
+#include<iostream>
+#include<vector>
+#include<unordered_map>
+#include<unordered_set>
+#include<string>
+#include<algorithm>
+using namespace std;
+
+class Solution 
+{
+    public:
+    int tree(vector<int> &nums, int index, int count)
+    {
+        int n = nums.size();
+        int mini = INT_MAX;
+        if(index >= n-1)
+        {
+            return count;
         }
+
+        for(int i = 1; i <= nums[index]; ++i) // only till that number range
+        {
+            mini = min(mini, tree(nums, index + i, count + 1));
+        }
+
+        return mini;
     }
-    return steps;
+
+    int jumpGameRecursive(vector<int> &nums)
+    {
+        return tree(nums, 0, 0);
+    }
+
+    int jumpGameOptimal(vector<int> &nums)
+    {
+        int n = nums.size();
+        int l = 0;
+        int r = 0;
+        int jumps = 0;
+        while(r < n-1)
+        {
+            int farthest = 0;
+            for(int index = l; index <= r; ++index)
+            {
+                farthest = max(farthest, index + nums[index]);
+            }
+            jumps++;
+            l = r+1;
+            r = farthest;
+        }
+
+        return jumps;
+    }
+};
+
+int main()
+{
+    Solution sol;
+    int n;
+    cin>>n;
+
+    vector<int> nums(n);
+    for(int i=0; i<n; ++i)
+    {
+        cin>>nums[i];
+    }
+
+    int res1 = sol.jumpGameRecursive(nums);
+    int res2 = sol.jumpGameOptimal(nums);
+
+    cout<<res1<<endl;
+    cout<<res2<<endl;
+
+    return 0;
 }

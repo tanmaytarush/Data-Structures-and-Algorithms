@@ -30,21 +30,88 @@ Complexity Analysis:
 Code:
 */
 
-int findPlatform(int arr[], int dep[], int n)
+#include<iostream>
+#include<unordered_map>
+#include<unordered_set>
+#include<vector>
+#include<string>
+#include<algorithm>
+using namespace std;
+
+class Solution 
 {
-    sort(arr, arr + n);
-    sort(dep, dep + n);
-    int i = 0, j = 0, plat = 0, ans = 0;
-    while (i < n) {
-        if (arr[i] <= dep[j]) {
-            i++;
-            plat++;
-            ans = max(ans, plat);
+    public:
+    int minPlatformsBF(vector<int>&arr, vector<int>&dep)
+    {
+        int n = arr.size();
+        int ans = 1;
+        for(int i=0; i<n; ++i)
+        {
+            int count = 1;
+            for(int j=i+1; j<n; ++j)
+            {
+                if((arr[i]>=arr[j] && arr[i]<=dep[j]) || 
+                    (arr[j]>=arr[i] && arr[j]<=dep[i]))
+                {
+                    count++;
+                }
+            }
+            ans = max(ans, count);
         }
-        else {
-            j++;
-            plat--;
-        }
+        return ans;
     }
-    return ans;
+
+    int minPlatformsOpt(vector<int>&arr, vector<int>&dep)
+    {
+        int n = arr.size();
+        sort(arr.begin(), arr.end());
+        sort(dep.begin(), dep.end());
+        int i=0;
+        int j=0;
+        int count = 0;
+        int ans = 0;
+
+        while(i < n)
+        {
+            if(arr[i] <= dep[j])
+            {
+                count++;
+                i++;
+            }
+            else
+            {
+                count--;
+                j++;
+            }
+            ans = max(ans, count);
+        }
+        return ans;
+    }
+};
+
+int main()
+{
+    Solution sol;
+    int n;
+    cin>>n;
+
+    vector<int> arr(n);
+    for(int i=0; i<n; ++i)
+    {
+        cin>>arr[i];
+    }
+
+    vector<int> dep(n);
+    for(int j=0; j<n; ++j)
+    {
+        cin>>dep[j];
+    }
+
+    int res1 = sol.minPlatformsBF(arr, dep);
+    cout<<res1<<endl;
+
+    int res2 = sol.minPlatformsOpt(arr, dep);
+    cout<<res2<<endl;
+
+    return 0;
 }
