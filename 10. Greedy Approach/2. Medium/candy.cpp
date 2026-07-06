@@ -27,23 +27,68 @@ Complexity Analysis:
 Code:
 */
 
-int candy(vector<int>& ratings) {
-    int n = ratings.size();
-    if(n == 1) return 1;
-    vector<int> num(n, 1);
-    for(int i = 1; i < n; i++) {
-        if(ratings[i] > ratings[i-1]) {
-            num[i] = num[i-1] + 1;
+#include<iostream>
+#include<unordered_map>
+#include<unordered_set>
+#include<vector>
+#include<string>
+#include<algorithm>
+using namespace std;
+
+class Solution
+{
+    public:
+    int totalCandies(vector<int>&nums)
+    {
+        int n = nums.size();
+        int candies = n;
+        int i=1;
+
+        while(i<n)
+        {
+            if(nums[i] == nums[i-1])
+            {
+                i++;
+                continue;
+            }
+            
+            int peak = 0;
+            while(i<n && nums[i]>nums[i-1])
+            {
+                peak++;
+                candies += peak;
+                i++;
+            }
+            
+            int valley = 0;
+            while(i<n && nums[i]<nums[i-1])
+            {
+                valley++;
+                candies += valley;
+                i++;
+            }
+
+            candies -= min(peak, valley);
         }
+        return candies;
     }
-    for(int i = n-2; i >= 0; i--) {
-        if(ratings[i] > ratings[i+1]) {
-            num[i] = max(num[i], num[i+1] + 1);
-        }
+};
+
+int main()
+{
+    Solution sol;
+    int n;
+    cin>>n;
+
+    vector<int> nums(n);
+    for(int i=0; i<n; ++i)
+    {
+        cin>>nums[i];
     }
-    int sum = 0;
-    for(auto it : num) {
-        sum += it;
-    }
-    return sum;
+
+    int candies = sol.totalCandies(nums);
+
+    cout<<candies<<endl;
+
+    return 0;
 }
