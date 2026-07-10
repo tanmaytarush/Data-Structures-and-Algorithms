@@ -25,21 +25,63 @@ Complexity Analysis:
 Code:
 */
 
-bool comp(vector<int>& a, vector<int>& b) {
-    return a[1] < b[1];
-}
+#include<iostream>
+#include<unordered_map>
+#include<unordered_set>
+#include<vector>
+#include<string>
+#include<algorithm>
+using namespace std;
 
-int eraseOverlapIntervals(vector<vector<int>>& intervals) {
-    if(intervals.size() < 2) return 0;
-    sort(intervals.begin(), intervals.end(), comp);
-    int cnt = 0, end = intervals[0][1];
-    for(int i = 1; i < intervals.size(); i++) {
-        if(intervals[i][0] < end) {
-            cnt++;
+class Solution
+{
+    public:
+    // use static because no object required to access, can be done directly
+    static bool compare(const vector<int>&a, const vector<int>&b)
+    {
+        if(a[1]==b[1]) return a[0]<b[0];
+        return a[1]<b[1];
+    }
+
+    int nonOverlapping(vector<vector<int>> &intervals)
+    {
+        int n = intervals.size();
+        if(n==0) return 0;
+        sort(intervals.begin(), intervals.end(), compare);
+        int kept = 1;
+        int end = intervals[0][1];
+
+        for(int i=1; i<n; i++)
+        {
+            if(intervals[i][0] >= end)
+            {
+                kept++;
+                end = intervals[i][0];
+            }
         }
-        else {
-            end = intervals[i][1];
+
+        return n - kept;
+    }
+};
+
+int main()
+{
+    Solution sol;
+    int n;
+    cin>>n;
+
+    vector<vector<int>> intervals(n, vector<int>(2));
+    for(int i=0; i<n; i++)
+    {
+        for(int j=0; j<2; j++)
+        {
+            cin>>intervals[i][j];
         }
     }
-    return cnt;
+
+    int result = sol.nonOverlapping(intervals);
+
+    cout<<result<<endl;
+
+    return 0;
 }
