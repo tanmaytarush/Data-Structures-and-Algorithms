@@ -20,7 +20,58 @@ APPROACH:
 CODE:
 */
 
+#include<iostream>
+#include<unordered_map>
+#include<unordered_set>
+#include<vector>
+#include<stack>
+#include<string>
+#include<algorithm>
+using namespace std;
 
+class Solution
+{
+    public:
+    string prefixToInfix(string s)
+    {
+        int n = s.length();
+        int i = n-1;
+        stack<string> st;
+
+        while(i>=0)
+        {
+            if(isalpha(s[i]) || isdigit(s[i]))
+            {
+                st.push(string(1, s[i])); // create a string of size 1 and push
+            }
+            else
+            {
+                string t1 = st.top(); st.pop();
+                string t2 = st.top(); st.pop();
+
+                string ans = '(' + t1 + s[i] + t2 + ')';
+                st.push(ans);
+            }
+            i--;
+        }
+
+        return st.top();
+    }
+};
+
+int main()
+{
+    Solution sol;
+
+    string str;
+    getline(cin, str);
+
+    string ans = sol.prefixToInfix(str);
+
+    cout<<ans<<endl;
+
+    return 0;
+}
 
 /*
 COMPLEXITY ANALYSIS:

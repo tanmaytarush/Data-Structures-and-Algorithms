@@ -14,9 +14,15 @@ Complexity Analysis:
 Code:
 */
 
-int numberOfNodes(int N) {
-    if(N <= 1) {
-        return 1;
-    }
-    return pow(2, N - 1);
+#include<iostream>
+#include<unordered_map>
+#include<unordered_set>
+#include<vector>
+#include<string>
+#include<algorithm>
+using namespace std;
+
+int main()
+{
+
 }
