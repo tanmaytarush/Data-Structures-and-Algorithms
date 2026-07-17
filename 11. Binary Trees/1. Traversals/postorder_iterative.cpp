@@ -13,17 +13,46 @@ Complexity Analysis:
 Code:
 */
 
-vector<int> postorderTraversal(TreeNode* root) {
-    vector<int> ans;
-    solve(root, ans);
-    return ans;
-}
+#include<iostream>
+#include<unordered_map>
+#include<unordered_set>
+#include<vector>
+#include<string>
+#include<algorithm>
+#include<stack>
+#include<queue>
+using namespace std;
 
-void solve(TreeNode* root, vector<int>& ans) {
-    if (!root) {
-        return;
+class Node
+{
+    public:
+    int data;
+    Node* left = NULL;
+    Node* right = NULL;
+
+    Node(int data)
+    {
+        this->data = data;
+        this->left = nullptr;
+        this->right = nullptr;
     }
-    solve(root->left, ans);
-    ans.push_back(root->val);
-    solve(root->right, ans);
+};
+
+class Solution
+{
+    public:
+    vector<int> postorder2Stack(Node* root)
+    {
+
+    }
+    
+    vector<int> postorder1Stack(Node* root)
+    {
+
+    }
+};
+
+int main()
+{
+
 }
