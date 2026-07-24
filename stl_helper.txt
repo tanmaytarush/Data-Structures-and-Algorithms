@@ -1,520 +1,377 @@
-For Leetcode, you do not need all of STL. Around 20–25 functions + patterns cover most problems.
+For Leetcode, you do not need all of STL. A small set of containers, algorithms, and built-ins covers most problems.
 
-I’d group them like this:
+Use this as a quick memory sheet.
 
-⸻
+---
 
-1. Vector (Most used)
+1. Vector
 
+```cpp
 vector<int> v;
+```
 
-Insert / remove
+Common operations
 
+```cpp
 v.push_back(x);
 v.pop_back();
-v.insert(v.begin()+i, x);
-v.erase(v.begin()+i);
+v.insert(v.begin() + i, x);
+v.erase(v.begin() + i);
 v.clear();
+```
 
 Access
 
-v[i]
-v.front()
-v.back()
-v.size()
-v.empty()
+```cpp
+v[i];
+v.front();
+v.back();
+v.size();
+v.empty();
+```
 
-Iteration
+Traversal
 
-for(auto x : v)
-for(int i=0;i<v.size();i++)
+```cpp
+for (auto x : v)
+for (int i = 0; i < (int)v.size(); i++)
+```
 
-Algorithms
+Important algorithms
 
+```cpp
 sort(v.begin(), v.end());
 reverse(v.begin(), v.end());
 max_element(v.begin(), v.end());
 min_element(v.begin(), v.end());
 accumulate(v.begin(), v.end(), 0);
+lower_bound(v.begin(), v.end(), x);
+upper_bound(v.begin(), v.end(), x);
+binary_search(v.begin(), v.end(), x);
+```
 
-Know:
-
-lower_bound()
-upper_bound()
-binary_search()
-
-⸻
+---
 
 2. String
 
+```cpp
 string s;
+```
 
 Access
 
-s[i]
-s.length()
-s.size()
-s.empty()
+```cpp
+s[i];
+s.length();
+s.size();
+s.empty();
+```
 
 Modify
 
+```cpp
 s.push_back(c);
 s.pop_back();
-s.substr(start,len);
-s.erase(pos,len);
+s.substr(start, len);
+s.erase(pos, len);
 reverse(s.begin(), s.end());
+```
 
 Conversion
 
+```cpp
 stoi(s);
 stol(s);
 to_string(x);
+```
 
-Search
+Search and compare
 
+```cpp
 s.find("abc");
 s.find(c);
-s.compare(s2);
+s.compare(t);
+```
 
-Useful:
+Character helpers
 
-isdigit(c)
-isalpha(c)
-tolower(c)
-toupper(c)
+```cpp
+isdigit(c);
+isalpha(c);
+islower(c);
+isupper(c);
+tolower(c);
+toupper(c);
+```
 
-⸻
+---
 
-3. Set / unordered_set
+3. Pair / Tuple
 
-Use when:
+```cpp
+pair<int, int> p = {1, 2};
+```
 
-unique elements
-membership checking
+Useful operations
 
-Functions:
+```cpp
+p.first;
+p.second;
+make_pair(a, b);
+```
 
-insert()
-erase()
-count()
-find()
-size()
-empty()
+Sorting pairs is common:
 
-Ordered set only:
+```cpp
+vector<pair<int, int>> vp;
+sort(vp.begin(), vp.end());
+```
 
-lower_bound()
-upper_bound()
+---
 
-⸻
+4. Set / Multiset / Unordered Set
 
-4. Map / unordered_map
+Use when you want:
 
-Use:
+- uniqueness
+- membership checking
+- ordered queries
 
-frequency
-lookup
-pair storage
+Common functions
 
-Functions:
+```cpp
+insert();
+erase();
+count();
+find();
+size();
+empty();
+```
 
-mp[key]
-mp[key]++
-mp[key]--
-count()
-find()
-erase()
-size()
+Ordered `set` / `multiset`
 
-Iteration:
+```cpp
+lower_bound();
+upper_bound();
+```
 
-for(auto [k,v] : mp)
+Notes
 
-Common pattern:
+- `set` keeps unique sorted values
+- `multiset` allows duplicates
+- `unordered_set` is average `O(1)` for lookup
 
-unordered_map<int,int> freq;
-for(int x:nums)
-    freq[x]++;
+---
 
-⸻
+5. Map / Unordered Map
 
-5. Stack
+Use for:
 
+- frequency counting
+- lookup
+- storing related values
+
+Common operations
+
+```cpp
+mp[key];
+mp.count(key);
+mp.find(key);
+mp.erase(key);
+mp.size();
+mp.empty();
+```
+
+Frequency pattern
+
+```cpp
+unordered_map<int, int> freq;
+for (int x : nums) freq[x]++;
+```
+
+Iteration
+
+```cpp
+for (auto [k, v] : mp)
+```
+
+Notes
+
+- `map` is ordered
+- `unordered_map` is faster on average
+
+---
+
+6. Stack
+
+```cpp
 stack<int> st;
+```
 
-Functions:
+Functions
 
-push()
-pop()
-top()
-empty()
-size()
+```cpp
+st.push(x);
+st.pop();
+st.top();
+st.empty();
+st.size();
+```
 
-Problems:
+Common uses
 
-monotonic stack
-next greater
-histogram
-parentheses
+- monotonic stack
+- next greater element
+- histogram problems
+- parentheses matching
 
-⸻
+---
 
-6. Queue
+7. Queue / Deque
 
+Queue
+
+```cpp
 queue<int> q;
+q.push(x);
+q.pop();
+q.front();
+q.back();
+q.empty();
+```
 
-Functions:
+Deque
 
-push()
-pop()
-front()
-back()
-empty()
+```cpp
+deque<int> dq;
+dq.push_front(x);
+dq.push_back(x);
+dq.pop_front();
+dq.pop_back();
+dq.front();
+dq.back();
+```
+
+Common uses
+
+- BFS
+- level order traversal
+- sliding window maximum
+- 0-1 BFS
+
+---
+
+8. Priority Queue
+
+```cpp
+priority_queue<int> pq;
+```
+
+Max heap operations
+
+```cpp
+pq.push(x);
+pq.pop();
+pq.top();
+pq.empty();
+pq.size();
+```
+
+Min heap
+
+```cpp
+priority_queue<int, vector<int>, greater<int>> pq;
+```
 
 Used in:
 
-BFS
-level order traversal
+- top K problems
+- scheduling
+- Dijkstra
+- greedy selection
 
-⸻
+---
 
-7. Deque
+9. Numeric Helpers
 
-deque<int> dq;
+Include `<numeric>` for these.
 
-Functions:
+```cpp
+gcd(a, b);
+lcm(a, b);
+accumulate(v.begin(), v.end(), 0);
+```
 
-push_front()
-push_back()
-pop_front()
-pop_back()
-front()
-back()
+Notes
 
-Used:
+- `accumulate(..., 0LL)` when sum may exceed `int`
+- `gcd` and `lcm` are very common in number theory problems
 
-sliding window maximum
-0-1 BFS
+---
 
-⸻
+10. Bit Helpers
 
-8. Priority Queue (Heap)
+These are very useful in XOR / bit manipulation problems.
 
-Max heap:
+```cpp
+__builtin_popcount(x);
+__builtin_popcountll(x);
+__builtin_clz(x);
+__builtin_clzll(x);
+__builtin_ctz(x);
+__builtin_ctzll(x);
+```
 
-priority_queue<int> pq;
+Meaning
 
-Min heap:
+- `popcount`: number of set bits
+- `clz`: leading zeros
+- `ctz`: trailing zeros
 
-priority_queue<
-int,
-vector<int>,
-greater<int>
-> pq;
+Important warning
 
-Functions:
+- `__builtin_clz(0)` is undefined
+- `__builtin_ctz(0)` is undefined
 
-push()
-pop()
-top()
-empty()
-size()
+Example
 
-Used:
+```cpp
+int x = 10; // 1010
+__builtin_popcount(x); // 2
+```
 
-Top K
-Dijkstra
-Median
-Greedy
+---
 
-⸻
+11. Common Patterns To Remember
 
-9. Pair
+- Use `sort` + `lower_bound` for binary-search style problems
+- Use `unordered_map` for frequency and prefix sum counting
+- Use `stack` for monotonic structure problems
+- Use `queue` for BFS
+- Use `priority_queue` for greedy / top-K / shortest path style problems
+- Use bit built-ins for XOR, masks, and set-bit counting
 
-Create:
+---
 
-pair<int,int> p;
-p.first
-p.second
+12. Very Common Headers
 
-Shortcut:
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+```
 
-{a,b}
-make_pair(a,b)
+If you want to be explicit, remember:
 
-Useful:
+- `<vector>`
+- `<string>`
+- `<algorithm>`
+- `<numeric>`
+- `<set>`
+- `<map>`
+- `<unordered_map>`
+- `<unordered_set>`
+- `<stack>`
+- `<queue>`
+- `<deque>`
+- `<cmath>`
 
-vector<pair<int,int>>
-priority_queue<pair<int,int>>
-
-⸻
-
-10. Sorting + Comparator
-
-Default:
-
-sort(v.begin(), v.end());
-
-Descending:
-
-sort(v.begin(), v.end(),
-greater<int>());
-
-Custom:
-
-sort(v.begin(), v.end(),
-[](auto a, auto b)
-{
-    return a.second<b.second;
-});
-
-Must know.
-
-⸻
-
-11. Binary Search helpers
-
-lower_bound()
-upper_bound()
-binary_search()
-
-Example:
-
-vector<int> v={1,2,2,3};
-lower_bound
-→ first 2
-upper_bound
-→ after last 2
-
-Distance:
-
-idx=
-lower_bound(
-v.begin(),
-v.end(),
-x
-)-v.begin();
-
-⸻
-
-12. Math helpers
-
-max(a,b)
-min(a,b)
-abs(x)
-pow(a,b)
-sqrt(x)
-ceil(x)
-floor(x)
-log10(x)
-gcd(a,b)
-lcm(a,b)
-
-Modern:
-
-__gcd(a,b)
-
-or
-
-gcd(a,b)
-
-⸻
-
-13. Bit operations
-
-Check bit:
-
-x&(1<<i)
-
-Set:
-
-x|=(1<<i);
-
-Clear:
-
-x&=~(1<<i);
-
-Toggle:
-
-x^=(1<<i);
-
-Count bits:
-
-__builtin_popcount(x)
-__builtin_popcountll(x)
-
-Trailing zeros:
-
-__builtin_ctz(x)
-
-⸻
-
-14. Prefix / accumulation
-
-Prefix sum:
-
-prefix[i]=
-prefix[i-1]+nums[i];
-
-Library:
-
-partial_sum()
-
-Total:
-
-accumulate(
-v.begin(),
-v.end(),
-0
-);
-
-⸻
-
-15. Useful conversions
-
-stoi()
-stol()
-stoll()
-to_string()
-static_cast<int>()
-char-'0'
-string(num,'a')
-
-Example:
-
-int x='7'-'0';
-
-Result:
-
-7
-
-⸻
-
-16. Iterators
-
-Beginning:
-
-begin()
-end()
-
-Reverse:
-
-rbegin()
-rend()
-
-Example:
-
-sort(
-v.rbegin(),
-v.rend()
-);
-
-Descending sort.
-
-⸻
-
-17. Recursion helpers
-
-Backtracking:
-
-path.push_back()
-path.pop_back()
-
-DFS:
-
-visited.insert()
-visited.erase()
-
-⸻
-
-18. Algorithms header gems
-
-Remove duplicates:
-
-unique()
-
-Permutation:
-
-next_permutation()
-prev_permutation()
-
-Count:
-
-count()
-
-Fill:
-
-fill()
-
-Swap:
-
-swap()
-
-⸻
-
-19. Tree / Graph templates
-
-BFS:
-
-queue<TreeNode*> q;
-
-DFS:
-
-stack<TreeNode*> st;
-
-Adjacency list:
-
-vector<vector<int>> adj;
-
-Visited:
-
-vector<bool> vis;
-unordered_set<int> vis;
-
-⸻
-
-20. The REAL Leetcode core (80% problems)
-
-If you master only these:
-
-vector
-string
-unordered_map
-unordered_set
-stack
-queue
-priority_queue
-sort
-binary search
-DFS
-BFS
-prefix sum
-two pointers
-sliding window
-heap
-recursion
-bitmask
-DP
-
-you can solve most medium problems.
-
-⸻
-
-Priority order for you specifically (based on your solving style)
-
-1. unordered_map
-2. unordered_set
-3. vector
-4. sort
-5. binary search
-6. stack
-7. priority_queue
-8. DFS/BFS
-9. prefix sums
-10. DP
-
-You already naturally think in:
-
-hashing → store → lookup → reduce → compare
-
-So lean into that first.
