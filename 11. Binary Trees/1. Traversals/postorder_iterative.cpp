@@ -18,41 +18,89 @@ Code:
 #include<unordered_set>
 #include<vector>
 #include<string>
-#include<algorithm>
 #include<stack>
-#include<queue>
 using namespace std;
 
 class Node
 {
     public:
     int data;
-    Node* left = NULL;
-    Node* right = NULL;
+    Node* left;
+    Node* right;
 
     Node(int data)
     {
         this->data = data;
-        this->left = nullptr;
-        this->right = nullptr;
+        this->left = NULL;
+        this->right = NULL;
     }
 };
 
 class Solution
 {
     public:
-    vector<int> postorder2Stack(Node* root)
+    vector<int> postOrderTraversalIterative(Node* root)
     {
+        // left -> right -> root
+        vector<int> post;
+        stack<Node*> st;
+        Node* curr = root;
+        Node* lastVisited = NULL;
 
+        while(curr != NULL || !st.empty())
+        {
+            if(curr != NULL)
+            {
+                st.push(curr);
+                curr = curr->left;
+            }
+            else
+            {
+                Node* peekNode = st.top();
+
+                if(peekNode->right != NULL && lastVisited != peekNode->right)
+                {
+                    curr = peekNode->right;
+                }
+                else
+                {
+                    post.push_back(peekNode->data);
+                    lastVisited = peekNode;
+                    st.pop();
+                }
+            }
+        }
+
+        return post;
     }
-    
-    vector<int> postorder1Stack(Node* root)
-    {
 
+    Node* buildTree()
+    {
+        int val;
+        cin>>val;
+
+        if(val == -1) return NULL;
+
+        Node* root = new Node(val);
+        root->left = buildTree();
+        root->right = buildTree();
+
+        return root;
     }
 };
 
 int main()
 {
+    Solution sol;
+    
+    Node* root = sol.buildTree();
 
+    vector<int> result = sol.postOrderTraversalIterative(root);
+
+    for(int x : result)
+    {
+        cout<<x<<endl;
+    }
+
+    return 0;
 }

@@ -44,27 +44,25 @@ class Solution
     {
         // left->root->right
         vector<int> inorder;
-        Node* node = root;
+        Node* curr = root;
         stack<Node*> st;
 
         // first we would pass and check for left since left is to be printed first
-        while(true)
+        while(curr != NULL || !st.empty())
         {
-            if(node != NULL)
+            // left->root->right
+            while(curr != NULL)
             {
-                st.push(node);
-                node = node->left;
+                st.push(curr);
+                curr = curr->left;
             }
-            else
-            {
-                if(st.empty()) break;
-                node = st.top();
-                st.pop();
-                inorder.push_back(node->val);
 
-                //st.push(node);
-                node = node->right;
-            }
+            curr = st.top();
+            st.pop();
+
+            inorder.push_back(curr->val);
+
+            curr = curr->right;
         }
         return inorder;
     }
