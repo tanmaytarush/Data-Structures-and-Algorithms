@@ -1,0 +1,40 @@
+/*
+
+Print N to i
+
+*/
+
+#include<iostream>
+#include<unordered_map>
+#include<unordered_set>
+#include<vector>
+#include<string>
+#include<algorithm>
+using namespace std;
+
+class Solution
+{
+    public:
+    void print1toN(int i)
+    {
+        if(i<=0)
+        {
+            return;
+        }
+
+        cout<<i<<" ";
+        print1toN(i-1);
+    }
+};
+
+int main()
+{
+    Solution sol;
+
+    int n;
+    cin>>n;
+
+    sol.print1toN(n);
+    
+    return 0;
+}
