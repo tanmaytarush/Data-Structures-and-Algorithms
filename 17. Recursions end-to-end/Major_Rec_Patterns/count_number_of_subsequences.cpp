@@ -28,6 +28,7 @@ class Solution
         sum += arr[index];
         int l = countSubsequences(index+1, n, arr, k, sum);
 
+        // not-pick
         sum -= arr[index];
         int r = countSubsequences(index+1, n, arr, k, sum);
 
