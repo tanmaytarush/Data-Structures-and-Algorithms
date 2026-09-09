@@ -106,3 +106,6 @@ int main()
 
     return 0;
 }
+
+// TC -> O(4^(N*M))
+// SC -> O(N*M)
