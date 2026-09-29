@@ -57,7 +57,7 @@ class Solution
             // preorder traversal [ root->left->right ]
             if(it.second == 1)
             {
-                // push to postfix vector
+                // push to prefix vector
                 pre.push_back(it.first->data);
 
                 // update num value

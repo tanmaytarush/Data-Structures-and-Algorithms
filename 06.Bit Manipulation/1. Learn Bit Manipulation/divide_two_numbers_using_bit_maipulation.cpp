@@ -34,31 +34,38 @@ int divide(int divident, int divisor)
     if(divident == divisor) return 1;
 
     bool sign = true;
-    if(divident >= 0 && divisor < 0) sign = false;
-    if(divident <= 0 && divisor > 0) sign = false;
+    if(divident >=0 && divisor < 0) sign = false;
+    if(divident < 0 && divisor > 0) sign = false;
 
     long n = abs(divident);
     long d = abs(divisor);
     divisor = abs(divisor);
 
-
-    int ans = 0;
+    long quotient = 0;
 
     while(n >= d)
     {
         int count = 0;
-        while(n >= (d << (count+1)))
+        while(n >= (d << (count + 1)))
         {
             count++;
         }
-        ans += (1 << count); // store largest 2 power as count
-        n = n - (d << (count));
+
+        quotient += (1 << (count));
+        n = n - (d << count);
     }
 
-    if(ans == (1 << 31) && sign == true) return INT_MAX; // if equals to 2**31
-    if(ans == (1 << 31) && sign == false) return INT_MIN; // if equals to 2**31
+    if(quotient == (1<<31) && sign)
+    {
+        return INT_MAX;
+    }
 
-    return sign ? ans : (-1 * ans);
+    if(quotient == (1<<31) && !sign)
+    {
+        return INT_MIN;
+    }
+
+    return sign ? quotient : -quotient;
 }
 
 int main()
