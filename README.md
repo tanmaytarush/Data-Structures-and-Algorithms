@@ -6,6 +6,8 @@
 
 My DSA practice, notes and solutions, organised by topic. Problems are grouped from basics up to advanced, with a difficulty split inside most topics. Most solutions have their time and space complexity written in the comments.
 
+> **🐍 Every C++ solution is being ported to Python.** The `Python/` folder will mirror the `C++/` folder topic by topic, so each problem can be read in both languages. See [Python Port Progress](#-python-port-progress).
+
 ---
 
 ## 📂 Repository Layout
@@ -13,7 +15,7 @@ My DSA practice, notes and solutions, organised by topic. Problems are grouped f
 ```
 .
 ├── C++/                 # Main track, organised by topic (01 → 17)
-├── Python/              # Python syntax notes, cheat sheets and DSA templates
+├── Python/              # Python ports of the C++ solutions, plus cheat sheets and templates
 ├── Leetcode_daily/      # LeetCode daily challenge solutions
 └── atcoder_contests/    # AtCoder Beginner Contest (ABC) submissions
 ```
@@ -79,6 +81,46 @@ My DSA practice, notes and solutions, organised by topic. Problems are grouped f
 | `11_gotchas_and_complexity.py` | Common pitfalls and time complexities of built-in operations |
 
 [Python/Basic_Maths](Python/Basic_Maths) has Python versions of the basic maths problems (count digits, reverse a number, palindrome, …).
+
+### 🔁 Python Port Progress
+
+Every solution in `C++/` is getting a Python version in a matching folder under `Python/`. Folder and file names stay the same, with `.py` in place of `.cpp`:
+
+```
+C++/14. Dynamic Programming/2. 1D DP/01. Climbing Stairs.cpp
+Python/14. Dynamic Programming/2. 1D DP/01. Climbing Stairs.py
+```
+
+| C++ Topic | Python Port |
+| --- | --- |
+| Basic_Maths | 🟡 In progress |
+| Basics · Patterns · STL → `Collections` | 🟡 Covered as reference notes |
+| Basic_Hashing · Basic_Recursion · Sorting | ⬜ Planned |
+| 01. Arrays | ⬜ Planned |
+| 02. Binary Search | ⬜ Planned |
+| 03. Strings | ⬜ Planned |
+| 04. Linked List | ⬜ Planned |
+| 05. Recursion | ⬜ Planned |
+| 06. Bit Manipulation | ⬜ Planned |
+| 07. Stack and Queues | ⬜ Planned |
+| 08. Sliding Window | ⬜ Planned |
+| 09. Heaps | ⬜ Planned |
+| 10. Greedy Approach | ⬜ Planned |
+| 11. Binary Trees | ⬜ Planned |
+| 12. Binary Search Trees | ⬜ Planned |
+| 13. Graphs | ⬜ Planned |
+| 14. Dynamic Programming | ⬜ Planned |
+| 15. Tries | ⬜ Planned |
+| 16. Strings (Hard) | ⬜ Planned |
+| 17. Recursions end-to-end | ⬜ Planned |
+
+Legend: ✅ Done · 🟡 In progress · ⬜ Planned
+
+**Porting guidelines**
+
+- Write idiomatic Python rather than a line-by-line translation (`collections.deque`, `heapq`, `functools.cache`, slicing, …).
+- Keep the same approaches as the C++ file (brute → better → optimal) with matching `TC` / `SC` comments.
+- Call out Python-specific differences in comments, for example `heapq` being a min-heap only, the recursion limit (`sys.setrecursionlimit`), and integers that never overflow.
 
 ---
 
