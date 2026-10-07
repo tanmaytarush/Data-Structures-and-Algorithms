@@ -45,3 +45,7 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+
+# Time -> O(log N)
+# Space -> O(1)

@@ -23,7 +23,7 @@ Explanation: Reversing 10 gives 01, which is not the same as 10.
 """
 
 class Solution:
-    def Palindrome(self, n: int) -> bool:
+    def PalindromeSol1(self, n: int) -> bool:
         # Negative numbers cannot be palindromes
         if(n < 0):
             return False
@@ -39,11 +39,26 @@ class Solution:
 
         return num == revNum
 
+    def PalindromeSol2(self, n:int) -> bool:
+        s: str = str(n)
+
+        i: int = 0
+        j: int = len(s) - 1
+
+        while(i < j):
+            if s[i] != s[j]:
+                return False
+            i += 1
+            j -= 1
+
+        return True
+
 
 def main() -> None:
     n = int(input("Enter the number : "))
     sol = Solution()
-    print(sol.Palindrome(n))
+    print(sol.PalindromeSol1(n))
+    print(sol.PalindromeSol2(n))
 
 
 if __name__ == "__main__":
