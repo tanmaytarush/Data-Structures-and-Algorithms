@@ -17,6 +17,10 @@ Input: arr = [7]
 Output: [7]
 Explanation: A single value already occupies the correct position, so no comparison or swap is required.
 
+
+Time -> O(n2)
+Space -> O(1)
+
 """
 
 class Solution:
