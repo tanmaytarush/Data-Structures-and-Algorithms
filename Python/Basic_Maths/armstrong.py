@@ -21,8 +21,6 @@ Output: false
 
 Explanation: 123 has 3 digits, and 1^3 + 2^3 + 3^3 = 1 + 8 + 27 = 36, which is not equal to 123.
 
-
-
 Time Complexity: O(d * k), where d is the number of digits and k is the digit count used as the power, because each digit is processed once and each power is computed over k multiplications in this implementation.
 
 Space Complexity: O(1), because only a few variables are used.
