@@ -62,7 +62,7 @@ class Solution:
         left_index = 0
         right_index = 0
             
-        while(left_part[left_index]<n and right_part[right_index]<m):
+        while(left_index<n and right_index<m):
             if(left_part[left_index] <= right_part[right_index]):
                 arr[index] = left_part[left_index]
                 left_index += 1
