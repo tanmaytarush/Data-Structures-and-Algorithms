@@ -1,8 +1,7 @@
 """
 
 Insertion Sort Algorithm: Steps and Time Complexity
-169k
-4
+
 An integer array arr is given. Rearrange all values in non-decreasing order by applying the insertion sort algorithm.
 
 During every pass, the current value from the unsorted part must be inserted into the correct position inside the sorted prefix. Return the sorted array.
@@ -17,4 +16,35 @@ Input: arr = [4]
 Output: [4]
 Explanation: A single value already forms a sorted array, so no shift or insertion is required.
 
+
+Insertion sort takes an element and places it in its correct position
+
+Time -> O(N2)
+Space -> O(1)
+
 """
+
+class Solution:
+    def Insertion(self, arr):
+        n = len(arr)
+
+        for i in range(1, n):
+            j = i
+            while(j > 0 and arr[j-1]>arr[j]):
+                temp = arr[j]
+                arr[j] = arr[j-1]
+                arr[j-1] = temp
+                j = j-1
+
+        return arr
+
+
+def main() -> None:
+    size = int(input("Enter size : "))
+    li = list(map(int, input().split()))
+    sol = Solution()
+    arr = sol.Insertion(li)
+    print(arr)
+
+if __name__ == "__main__":
+    main()
