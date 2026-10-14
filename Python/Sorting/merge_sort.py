@@ -42,6 +42,10 @@ Compare both current values and take the left value on equality because the smal
 Copy remaining values and write the temporary array back into the current range so the parent call receives one completely sorted range.
 
 
+
+Time -> O(N*LogN)
+Space -> O(N)
+
 """
 
 class Solution:
